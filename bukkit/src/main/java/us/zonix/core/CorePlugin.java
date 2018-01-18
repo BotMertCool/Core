@@ -12,6 +12,7 @@ import us.zonix.core.profile.Profile;
 import us.zonix.core.profile.ProfileListeners;
 import us.zonix.core.punishment.command.*;
 import us.zonix.core.rank.command.RankCommand;
+import us.zonix.core.rank.listeners.RankListeners;
 import us.zonix.core.redis.CoreRedisManager;
 import us.zonix.core.shared.redis.JedisSettings;
 import us.zonix.core.util.command.CommandFramework;
@@ -71,6 +72,7 @@ public class CorePlugin extends JavaPlugin {
 
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(new ProfileListeners(), this);
+		pm.registerEvents(new RankListeners(), this);
 
 		// clean cached profiles every minute
 		new BukkitRunnable() {

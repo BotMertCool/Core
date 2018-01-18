@@ -1,5 +1,6 @@
 package us.zonix.core.profile;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -9,6 +10,7 @@ import org.bukkit.event.player.*;
 import us.zonix.core.CorePlugin;
 import us.zonix.core.punishment.Punishment;
 import us.zonix.core.punishment.PunishmentType;
+import us.zonix.core.rank.Rank;
 
 public class ProfileListeners implements Listener {
 
@@ -66,6 +68,7 @@ public class ProfileListeners implements Listener {
 			Profile.getProfiles().remove(profile);
 		}
 	}
+
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
