@@ -24,8 +24,20 @@ public class RankListeners implements Listener {
 
             Rank rank = profile.getRank();
 
-            if (!player.getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', rank.getPrefix() + rank.getColor() + rank.getName()  + player.getName()))) {
-                player.setDisplayName(ChatColor.translateAlternateColorCodes('&', rank.getPrefix() + rank.getColor() + rank.getName() + player.getName()));
+            String userTag = null;
+
+            if(rank.isAboveOrEqual(Rank.TRIAL_MOD)) {
+                userTag = rank.getPrefix() + rank.getColor() + ChatColor.ITALIC + rank.getName() + rank.getSuffix() + rank.getColor() + player.getName()  + ChatColor.WHITE;
+
+                if(!player.getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', userTag))) {
+                    player.setDisplayName(ChatColor.translateAlternateColorCodes('&', userTag));
+                }
+            } else {
+                userTag = rank.getPrefix() + rank.getColor() + rank.getSuffix() + rank.getColor() +  player.getName() + ChatColor.WHITE;
+
+                if(!player.getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', userTag))) {
+                    player.setDisplayName(ChatColor.translateAlternateColorCodes('&', userTag));
+                }
             }
         }
     }
