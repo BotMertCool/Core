@@ -1,0 +1,86 @@
+package us.zonix.core.redis;
+
+import com.google.gson.JsonObject;
+import net.md_5.bungee.api.chat.BaseComponent;
+import us.zonix.core.CorePlugin;
+import us.zonix.core.punishment.Punishment;
+import us.zonix.core.rank.Rank;
+import us.zonix.core.redis.subscription.GlobalSubscriptionHandler;
+import us.zonix.core.shared.redis.JedisPublisher;
+import us.zonix.core.shared.redis.JedisSubscriber;
+import us.zonix.core.util.chat.Clickable;
+
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class CoreRedisManager {
+
+    private static final Pattern CLICKABLE_PATTERN = Pattern.compile("(.*)(\\{clickable::command=\"(.*)\"})(.*)(\\{/clickable})(.*)");
+
+    private final CorePlugin plugin;
+    private final JedisSubscriber<JsonObject> messagesSubscriber;
+    private final JedisPublisher<JsonObject> messagesPublisher;
+
+    public CoreRedisManager(CorePlugin plugin) {
+        this.plugin = plugin;
+        this.messagesSubscriber = new JedisSubscriber<>(this.plugin.getJedisSettings(), "global-messages", JsonObject.class, new GlobalSubscriptionHandler());
+        this.messagesPublisher = new JedisPublisher<>(this.plugin.getJedisSettings(), "global-messages");
+    }
+
+    private JsonObject generateMessage(String type, JsonObject data) {
+        JsonObject object = new JsonObject();
+        object.addProperty("server", this.plugin.getServerId());
+        object.addProperty("type", type);
+        object.add("data", data);
+        return object;
+    }
+
+    private void write(JsonObject publish) {
+        this.messagesPublisher.write(publish);
+    }
+
+    public void writePunishment(Punishment punishment, String name, String sender, boolean silent) {
+        JsonObject object = punishment.toJson();
+        object.addProperty("name", name);
+        object.addProperty("sender", sender);
+        object.addProperty("silent", silent);
+
+        this.write(this.generateMessage("punishment", object));
+    }
+
+    public void writeRank(UUID uuid, Rank rank) {
+        JsonObject object = new JsonObject();
+        object.addProperty("uuid", uuid.toString());
+        object.addProperty("rank", rank.name());
+
+        this.write(this.generateMessage("rank", object));
+    }
+
+    public void writeStaffChat(String name, Rank rank, String message) {
+        JsonObject object = new JsonObject();
+        object.addProperty("name", name);
+        object.addProperty("rank", rank.name());
+        object.addProperty("message", message);
+
+        this.write(this.generateMessage("staffchat", object));
+    }
+
+    private static BaseComponent[] parseMessage(String message) {
+        Clickable clickable = new Clickable();
+
+        Matcher clickableMatcher = CLICKABLE_PATTERN.matcher(message);
+
+        if (clickableMatcher.matches()) {
+            clickable.add(clickableMatcher.group(1));
+            clickable.add(clickableMatcher.group(4), null, clickableMatcher.group(3));
+            clickable.add(clickableMatcher.group(6));
+        }
+        else {
+            clickable.add(message);
+        }
+
+        return clickable.asComponents();
+    }
+
+}

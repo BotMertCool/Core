@@ -1,0 +1,9 @@
+server:
+  id: 'practice'
+  hub: false
+api:
+  url: "localhost:1982"
+  key: "ce07a742-cccc-4888-b595-a62a7dd3bb19"
+jedis:
+  host: "127.0.0.1"
+  port: 6379
