@@ -2,15 +2,16 @@ package us.zonix.core.rank.command;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.zonix.core.CorePlugin;
 import us.zonix.core.api.callback.AbstractBukkitCallback;
 import us.zonix.core.api.request.PlayerRequest;
 import us.zonix.core.profile.Profile;
 import us.zonix.core.rank.Rank;
+import us.zonix.core.util.Clickable;
 import us.zonix.core.util.UUIDType;
 import us.zonix.core.util.command.BaseCommand;
 import us.zonix.core.util.command.Command;
@@ -26,7 +27,13 @@ public class RankCommand extends BaseCommand {
         String[] args = command.getArgs();
 
         if (args.length < 2) {
-            new FancyMessage(ChatColor.RED + "Usage: /rank <target> <rank>").tooltip(ChatColor.YELLOW + "Give a player a rank.").send(sender);
+
+            Clickable clickable = new Clickable(ChatColor.RED + "Usage: /rank [target] [rank]", ChatColor.YELLOW + "Give a player a rank.", "");
+
+            if(sender instanceof Player) {
+                clickable.sendToPlayer((Player) sender);
+            }
+
             return;
         }
 

@@ -1,13 +1,14 @@
 package us.zonix.core.punishment.command;
 
-import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.zonix.core.CorePlugin;
 import us.zonix.core.punishment.PunishmentHelper;
 import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
+import us.zonix.core.util.Clickable;
 import us.zonix.core.util.command.BaseCommand;
 import us.zonix.core.util.command.Command;
 import us.zonix.core.util.command.CommandArgs;
@@ -20,7 +21,13 @@ public class UnblacklistCommand extends BaseCommand {
         String[] args = command.getArgs();
 
         if (args.length < 2) {
-            new FancyMessage(ChatColor.RED + "Usage: /unblacklist <target> [reason] [-s]").tooltip(ChatColor.YELLOW + "Remove a player's blacklist.").send(sender);
+
+            Clickable clickable = new Clickable(ChatColor.RED + "Usage: /unblacklist <target> [reason] [-s]", ChatColor.YELLOW + "Remove a player's blacklist.\nAdd a \"-s\" at the end to silently ban a player.", "");
+
+            if(sender instanceof Player) {
+                clickable.sendToPlayer((Player) sender);
+            }
+
             return;
         }
 

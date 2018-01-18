@@ -7,12 +7,12 @@ import java.util.UUID;
 import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.Setter;
-import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import us.zonix.core.profile.Profile;
 import us.zonix.core.rank.Rank;
+import us.zonix.core.util.Clickable;
 import us.zonix.core.util.DateUtil;
 import us.zonix.core.util.UUIDType;
 
@@ -105,7 +105,8 @@ public class Punishment {
 			Profile profile = Profile.getByUuid(player.getUniqueId());
 
 			if (profile != null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-				new FancyMessage(ChatColor.RED + "STAFF ONLY: " + ChatColor.GREEN + name + " was " + context + " by " + sender + (undo ? "" : " for " + this.reason) + ".").tooltip(ChatColor.YELLOW + "Duration: " + ChatColor.RED + this.getTimeLeft());
+				Clickable clickable = new Clickable(ChatColor.RED + "STAFF ONLY: " + ChatColor.GREEN + name + " was " + context + " by " + sender + (undo ? "" : " for " + this.reason) + ".", ChatColor.YELLOW + "Duration: " + ChatColor.RED + this.getTimeLeft(), "");
+				clickable.sendToPlayer(player);
 			}
 			else {
 				if (!silent || player.getName().equals(name)) {

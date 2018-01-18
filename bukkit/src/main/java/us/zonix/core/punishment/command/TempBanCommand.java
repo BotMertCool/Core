@@ -1,13 +1,14 @@
 package us.zonix.core.punishment.command;
 
-import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.zonix.core.CorePlugin;
 import us.zonix.core.punishment.PunishmentHelper;
 import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
+import us.zonix.core.util.Clickable;
 import us.zonix.core.util.DateUtil;
 import us.zonix.core.util.command.BaseCommand;
 import us.zonix.core.util.command.Command;
@@ -21,7 +22,13 @@ public class TempBanCommand extends BaseCommand {
         String[] args = command.getArgs();
 
         if (args.length < 3) {
-            new FancyMessage(ChatColor.RED + "Usage: /tempban <target> <time> [reason] [-s]").tooltip(ChatColor.YELLOW + "Temporarily ban a player from the network.\nAdd a \"-s\" at the end to silently ban a player.").send(sender);
+
+            Clickable clickable = new Clickable(ChatColor.RED + "Usage: /tempban <target> <time> [reason] [-s]", ChatColor.YELLOW + "Temporarily ban a player from the network.\nAdd a \"-s\" at the end to silently ban a player.", "");
+
+            if(sender instanceof Player) {
+                clickable.sendToPlayer((Player) sender);
+            }
+
             return;
         }
 
