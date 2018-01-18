@@ -8,7 +8,7 @@ import org.bukkit.ChatColor;
 @Getter
 public enum Rank {
 
-	DEFAULT("", ChatColor.WHITE.toString(), "Default", ""),
+	DEFAULT("", ChatColor.GREEN.toString(), "Default", ""),
 	SILVER("", ChatColor.GRAY.toString(), "Silver", ""),
 	GOLD("", ChatColor.GOLD.toString(), "Gold", ""),
 	PLATINUM("", ChatColor.DARK_AQUA.toString(), "Platinum", ""),

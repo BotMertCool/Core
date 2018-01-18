@@ -43,7 +43,6 @@ public class RankCommand extends BaseCommand {
             rank = Rank.valueOf(args[1].toUpperCase());
         }
         catch (Exception e) {
-            e.printStackTrace();
             sender.sendMessage(ChatColor.RED + "Could not parse that rank.");
             return;
         }
