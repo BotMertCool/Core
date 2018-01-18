@@ -154,8 +154,8 @@ public class Profile {
 		JsonElement response = main.getRequestProcessor().sendRequest(new PlayerRequest.FetchByUuidRequest(this.uuid));
 
 		if (response.isJsonNull() || response.isJsonPrimitive()) {
-			System.out.println("is null or primitive");
-			System.out.println("here: " + response.toString());
+			System.out.println("Error while getting JSON response.");
+			System.out.println("Issue: " + response.toString());
 			return;
 		}
 
@@ -175,14 +175,12 @@ public class Profile {
 		JsonElement response = main.getRequestProcessor().sendRequest(new PunishmentRequest.FetchByUuidRequest(this.uuid));
 
 		if (response.isJsonNull() || response.isJsonPrimitive()) {
-			System.out.println("is null or primitive");
-			System.out.println("here: " + response.toString());
+			System.out.println("Error while getting JSON response.");
+			System.out.println("Issue: " + response.toString());
 			return;
 		}
 
 		JsonArray data = response.getAsJsonArray();
-
-		System.out.println("data: " + data.toString());
 
 		data.iterator().forEachRemaining((punishmentElement) -> {
 			JsonObject punishmentObject = punishmentElement.getAsJsonObject();

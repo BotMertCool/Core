@@ -26,7 +26,7 @@ public class RankListeners implements Listener {
 
             String userTag = null;
 
-            if(rank.isAboveOrEqual(Rank.TRIAL_MOD)) {
+            if(rank.isAboveOrEqual(Rank.BUILDER)) {
                 userTag = rank.getPrefix() + rank.getColor() + ChatColor.ITALIC + rank.getName() + rank.getSuffix() + rank.getColor() + ChatColor.ITALIC + player.getName() + ChatColor.WHITE;
 
                 if(!player.getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', userTag))) {
