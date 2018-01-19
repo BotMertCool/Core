@@ -50,10 +50,7 @@ public class ServerListeners implements Listener {
         final Player player = event.getPlayer();
 
         event.setJoinMessage(null);
-
-        for (int i = 0; i <= 100; i++) {
-            player.sendMessage(" ");
-        }
+        
 
         player.getInventory().clear();
         player.getInventory().setContents(this.items);
@@ -65,18 +62,19 @@ public class ServerListeners implements Listener {
 
         player.getInventory().setHeldItemSlot(4);
 
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&m----------------------------------------------------"));
-        player.sendMessage(" ");
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Welcome to the &c&lZonix Network"));
-        player.sendMessage(" ");
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&l* &6&lWebsite: &7www.zonix.us"));
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&l* &6&lTwitter: &7twitter.com/ZonixUS"));
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&l* &6&lTeamspeak: &7ts.zonix.us"));
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&l* &6&lStore: &7store.zonix.us"));
-        player.sendMessage(" ");
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&m----------------------------------------------------"));
+        String[] message = new String[] {
+                "§8§m----------------------------------------------------",
+                "§7Welcome to the §c§lZonix Network",
+                " ",
+                "§8§l* §6§lWebsite: §7www.zonix.us",
+                "§8§l* §6§lTwitter: §7twitter.com/ZonixUS",
+                "§8§l* §6§lTeamspeak: §7ts.zonix.us",
+                "§8§l* §6§lStore: §7store.zonix.us",
+                " ",
+                "§8§m----------------------------------------------------"
+        };
 
-
+        player.sendMessage(message);
     }
 
 
