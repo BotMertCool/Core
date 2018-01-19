@@ -83,8 +83,8 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
         }
 
         else if (type.equalsIgnoreCase("server-data")) {
-            String serverName = object.get("server-name").getAsString();
-            String action = object.get("action") != null ? object.get("action").getAsString() : null;
+            String serverName = data.get("server-name").getAsString();
+            String action = data.get("action") != null ? data.get("action").getAsString() : null;
             if (action != null) {
                 if (action.equals("online")) {
                     return;
@@ -96,9 +96,9 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
             try {
                 ServerData serverData = CorePlugin.getInstance().getRedisManager().getServers().computeIfAbsent(serverName, k -> new ServerData());
 
-                int playersOnline = object.get("player-count").getAsInt();
-                int maxPlayers = object.get("player-max").getAsInt();
-                boolean whitelisted = object.get("whitelisted").getAsBoolean();
+                int playersOnline = data.get("player-count").getAsInt();
+                int maxPlayers = data.get("player-max").getAsInt();
+                boolean whitelisted = data.get("whitelisted").getAsBoolean();
 
                 serverData.setServerName(serverName);
                 serverData.setOnlinePlayers(playersOnline);

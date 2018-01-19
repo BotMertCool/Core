@@ -25,7 +25,7 @@ public class HubBoard implements BoardAdapter {
 
 	@Override
 	public String getTitle(Player player) {
-		return ChatColor.RED.toString() + ChatColor.BOLD + "ZONIX";
+		return ChatColor.RED.toString() + ChatColor.BOLD + "Zonix Network";
 	}
 
 	@Override
@@ -39,18 +39,15 @@ public class HubBoard implements BoardAdapter {
 
 		Profile profile = Profile.getByUuid(player.getUniqueId());
 
-		strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "-----------------");
-		strings.add(" ");
-		strings.add(ChatColor.YELLOW.toString() + ChatColor.BOLD + "Online:");
+		strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
+		strings.add(ChatColor.GOLD.toString() + ChatColor.BOLD + "Online:");
 		strings.add(ChatColor.WHITE.toString() + this.online);
+		strings.add(" ");
+		strings.add(ChatColor.GOLD.toString() + ChatColor.BOLD + "Rank:");
+		strings.add(profile.getRank().getColor() + profile.getRank().getName());
 		strings.add("  ");
-		strings.add(ChatColor.YELLOW.toString() + ChatColor.BOLD + "Rank:");
-		strings.add(ChatColor.WHITE.toString() + profile.getRank().getName());
-		strings.add("   ");
-		strings.add(ChatColor.YELLOW.toString() + ChatColor.BOLD + "Website:");
-		strings.add("http://www.zonix.us");
-		strings.add("    ");
-		strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "-----------------");
+		strings.add(ChatColor.GOLD.toString() + "www.zonix.us");
+		strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
 
 		return strings;
 	}
