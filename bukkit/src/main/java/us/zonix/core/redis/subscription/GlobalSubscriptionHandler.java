@@ -94,8 +94,20 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
                 }
             }
             try {
-                ServerData serverData = CorePlugin.getInstance().getRedisManager().getServers().computeIfAbsent(serverName, k -> new ServerData());
 
+                if(CorePlugin.getInstance().getRedisManager().getServers() == null) {
+                    return;
+                }
+
+                if(CorePlugin.getInstance().getRedisManager().getServers().size() == 0) {
+                    return;
+                }
+
+                ServerData serverData =  CorePlugin.getInstance().getRedisManager().getServers().get(serverName);
+                if (serverData == null) {
+                    serverData = new ServerData();
+                    CorePlugin.getInstance().getRedisManager().getServers().put(serverName, serverData);
+                }
                 int playersOnline = data.get("player-count").getAsInt();
                 int maxPlayers = data.get("player-max").getAsInt();
                 boolean whitelisted = data.get("whitelisted").getAsBoolean();

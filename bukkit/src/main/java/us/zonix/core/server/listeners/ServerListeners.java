@@ -65,6 +65,17 @@ public class ServerListeners implements Listener {
 
         player.getInventory().setHeldItemSlot(4);
 
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&m----------------------------------------------------"));
+        player.sendMessage(" ");
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7Welcome to the &c&lZonix Network"));
+        player.sendMessage(" ");
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&l* &6&lWebsite: &7www.zonix.us"));
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&l* &6&lTwitter: &7twitter.com/ZonixUS"));
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&l* &6&lTeamspeak: &7ts.zonix.us"));
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&l* &6&lStore: &7store.zonix.us"));
+        player.sendMessage(" ");
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&m----------------------------------------------------"));
+
 
     }
 
