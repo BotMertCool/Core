@@ -114,7 +114,7 @@ public class CorePlugin extends JavaPlugin {
 		}
 
 		new ServerHandlerTask(this).runTaskTimerAsynchronously(this, 20L, 20L);
-		//new ServerHandlerTimeoutTask(this).runTaskTimerAsynchronously(this, 20L, 20L);
+		new ServerHandlerTimeoutTask(this).runTaskTimerAsynchronously(this, 20L, 20L);
 
 		// clean cached profiles every minute
 		new BukkitRunnable() {

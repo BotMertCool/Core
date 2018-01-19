@@ -34,8 +34,6 @@ public class CoreRedisManager {
         this.servers = new HashMap<>();
         this.messagesSubscriber = new JedisSubscriber<>(this.plugin.getJedisSettings(), "global-messages", JsonObject.class, new GlobalSubscriptionHandler());
         this.messagesPublisher = new JedisPublisher<>(this.plugin.getJedisSettings(), "global-messages");
-
-        this.writeServer();
     }
 
     private JsonObject generateMessage(String type, JsonObject data) {
@@ -57,14 +55,6 @@ public class CoreRedisManager {
         object.addProperty("silent", silent);
 
         this.write(this.generateMessage("punishment", object));
-    }
-
-    private void writeServer() {
-        JsonObject object = new JsonObject();
-        object.addProperty("server-name", this.plugin.getServerId());
-        object.addProperty("action", "online");
-
-        this.write(this.generateMessage("server-data", object));
     }
 
     public void writeServer(JsonObject object) {

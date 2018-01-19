@@ -84,42 +84,24 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
 
         else if (type.equalsIgnoreCase("server-data")) {
             String serverName = data.get("server-name").getAsString();
-            String action = data.get("action") != null ? data.get("action").getAsString() : null;
-            if (action != null) {
-                if (action.equals("online")) {
-                    return;
-                } else if (action.equals("offline")) {
-                    CorePlugin.getInstance().getRedisManager().getServers().remove(serverName);
-                    return;
-                }
+
+            ServerData serverData =  CorePlugin.getInstance().getRedisManager().getServers().get(serverName);
+
+            if (serverData == null) {
+                serverData = new ServerData();
             }
-            try {
 
-                if(CorePlugin.getInstance().getRedisManager().getServers() == null) {
-                    return;
-                }
+            int playersOnline = data.get("player-count").getAsInt();
+            int maxPlayers = data.get("player-max").getAsInt();
+            boolean whitelisted = data.get("whitelisted").getAsBoolean();
 
-                if(CorePlugin.getInstance().getRedisManager().getServers().size() == 0) {
-                    return;
-                }
+            serverData.setServerName(serverName);
+            serverData.setOnlinePlayers(playersOnline);
+            serverData.setMaxPlayers(maxPlayers);
+            serverData.setWhitelisted(whitelisted);
+            serverData.setLastUpdate(System.currentTimeMillis());
 
-                ServerData serverData =  CorePlugin.getInstance().getRedisManager().getServers().get(serverName);
-                if (serverData == null) {
-                    serverData = new ServerData();
-                    CorePlugin.getInstance().getRedisManager().getServers().put(serverName, serverData);
-                }
-                int playersOnline = data.get("player-count").getAsInt();
-                int maxPlayers = data.get("player-max").getAsInt();
-                boolean whitelisted = data.get("whitelisted").getAsBoolean();
-
-                serverData.setServerName(serverName);
-                serverData.setOnlinePlayers(playersOnline);
-                serverData.setMaxPlayers(maxPlayers);
-                serverData.setWhitelisted(whitelisted);
-                serverData.setLastUpdate(System.currentTimeMillis());
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            CorePlugin.getInstance().getRedisManager().getServers().put(serverName, serverData);
         }
     }
 
