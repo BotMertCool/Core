@@ -19,6 +19,7 @@ import us.zonix.core.rank.command.RankCommand;
 import us.zonix.core.rank.listeners.RankListeners;
 import us.zonix.core.redis.CoreRedisManager;
 import us.zonix.core.server.ServerManager;
+import us.zonix.core.server.commands.PingCommand;
 import us.zonix.core.server.commands.SetMaxPlayersCommand;
 import us.zonix.core.server.commands.SetSpawnCommand;
 import us.zonix.core.server.listeners.ServerListeners;
@@ -93,6 +94,7 @@ public class CorePlugin extends JavaPlugin {
 		new UnmuteCommand();
 		new RankCommand();
 		new SetMaxPlayersCommand();
+		new PingCommand();
 
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			player.kickPlayer(ChatColor.RED + "This server is currently setting up...");
