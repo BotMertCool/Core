@@ -1,15 +1,19 @@
 package us.zonix.core.redis;
 
 import com.google.gson.JsonObject;
+import lombok.Getter;
 import net.md_5.bungee.api.chat.BaseComponent;
 import us.zonix.core.CorePlugin;
 import us.zonix.core.punishment.Punishment;
 import us.zonix.core.rank.Rank;
 import us.zonix.core.redis.subscription.GlobalSubscriptionHandler;
+import us.zonix.core.server.ServerData;
 import us.zonix.core.shared.redis.JedisPublisher;
 import us.zonix.core.shared.redis.JedisSubscriber;
-import us.zonix.core.util.chat.Clickable;
+import us.zonix.core.util.Clickable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,13 +23,19 @@ public class CoreRedisManager {
     private static final Pattern CLICKABLE_PATTERN = Pattern.compile("(.*)(\\{clickable::command=\"(.*)\"})(.*)(\\{/clickable})(.*)");
 
     private final CorePlugin plugin;
+
+    @Getter private final Map<String, ServerData> servers;
+
     private final JedisSubscriber<JsonObject> messagesSubscriber;
     private final JedisPublisher<JsonObject> messagesPublisher;
 
     public CoreRedisManager(CorePlugin plugin) {
         this.plugin = plugin;
+        this.servers = new HashMap<>();
         this.messagesSubscriber = new JedisSubscriber<>(this.plugin.getJedisSettings(), "global-messages", JsonObject.class, new GlobalSubscriptionHandler());
         this.messagesPublisher = new JedisPublisher<>(this.plugin.getJedisSettings(), "global-messages");
+
+        this.writeServer();
     }
 
     private JsonObject generateMessage(String type, JsonObject data) {
@@ -49,6 +59,18 @@ public class CoreRedisManager {
         this.write(this.generateMessage("punishment", object));
     }
 
+    private void writeServer() {
+        JsonObject object = new JsonObject();
+        object.addProperty("server-name", this.plugin.getServerId());
+        object.addProperty("action", "online");
+
+        this.write(this.generateMessage("server-data", object));
+    }
+
+    public void writeServer(JsonObject object) {
+        this.write(this.generateMessage("server-data", object));
+    }
+
     public void writeRank(UUID uuid, Rank rank) {
         JsonObject object = new JsonObject();
         object.addProperty("uuid", uuid.toString());
@@ -64,6 +86,33 @@ public class CoreRedisManager {
         object.addProperty("message", message);
 
         this.write(this.generateMessage("staffchat", object));
+    }
+
+    public ServerData getServerDataByName(String name) {
+        for (String serverKey : this.getServers().keySet()) {
+            if (serverKey.equalsIgnoreCase(name)) {
+                return this.getServers().get(serverKey);
+            } else {
+                if (this.getServers().get(serverKey).getServerName().equalsIgnoreCase(name)) {
+                    return this.getServers().get(serverKey);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public int getTotalPlayersOnline() {
+
+        int count = 0;
+
+        for (String serverKey : this.getServers().keySet()) {
+            if (this.getServers().containsKey(serverKey)) {
+                count += this.getServers().get(serverKey).getOnlinePlayers();
+            }
+        }
+
+        return count;
     }
 
     private static BaseComponent[] parseMessage(String message) {

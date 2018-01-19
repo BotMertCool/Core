@@ -8,12 +8,16 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.zonix.core.api.CoreProcessor;
+import us.zonix.core.board.BoardManager;
+import us.zonix.core.board.adapter.HubBoard;
 import us.zonix.core.profile.Profile;
 import us.zonix.core.profile.ProfileListeners;
 import us.zonix.core.punishment.command.*;
 import us.zonix.core.rank.command.RankCommand;
 import us.zonix.core.rank.listeners.RankListeners;
 import us.zonix.core.redis.CoreRedisManager;
+import us.zonix.core.server.tasks.ServerHandlerTask;
+import us.zonix.core.server.tasks.ServerHandlerTimeoutTask;
 import us.zonix.core.shared.redis.JedisSettings;
 import us.zonix.core.util.command.CommandFramework;
 import us.zonix.core.util.file.ConfigFile;
@@ -30,9 +34,12 @@ public class CorePlugin extends JavaPlugin {
 	private String apiKey;
 
 	private String serverId;
+	private boolean hub;
 
 	private JedisSettings jedisSettings;
 	private CoreRedisManager redisManager;
+
+	private BoardManager boardManager;
 
 	private CoreProcessor requestProcessor;
 
@@ -47,15 +54,18 @@ public class CorePlugin extends JavaPlugin {
 		this.apiKey = this.configFile.getString("api.key");
 
 		this.serverId = this.configFile.getString("server.id");
+		this.hub = this.configFile.getBoolean("server.hub");
 
 		this.jedisSettings = new JedisSettings(
 				this.configFile.getString("jedis.host"),
 				this.configFile.getInt("jedis.port"),
 				this.configFile.getConfiguration().contains("jedis.password") ? this.configFile.getString("jedis.password") : null
 		);
+
 		this.redisManager = new CoreRedisManager(this);
 
 		this.requestProcessor = new CoreProcessor(this, this.apiUrl, this.apiKey);
+
 
 		new BanCommand();
 		new BlacklistCommand();
@@ -74,12 +84,28 @@ public class CorePlugin extends JavaPlugin {
 		pm.registerEvents(new ProfileListeners(), this);
 		pm.registerEvents(new RankListeners(), this);
 
+		new ServerHandlerTask(this).runTaskTimerAsynchronously(this, 20L, 20L);
+		new ServerHandlerTimeoutTask(this).runTaskTimerAsynchronously(this, 20L, 20L);
+
+		if(this.hub) {
+			this.setBoardManager(new BoardManager(new HubBoard()));
+		}
+
 		// clean cached profiles every minute
 		new BukkitRunnable() {
 			public void run() {
 				Profile.getProfiles().removeIf((profile -> Bukkit.getPlayer(profile.getUuid()) == null));
 			}
 		}.runTaskTimer(this, 0L, 20L * 60);
+
+	}
+
+	public void setBoardManager(BoardManager boardManager) {
+		this.boardManager = boardManager;
+
+		long interval = this.boardManager.getAdapter().getInterval();
+
+		this.getServer().getScheduler().runTaskTimerAsynchronously(this, this.boardManager, interval, interval);
 	}
 
 }

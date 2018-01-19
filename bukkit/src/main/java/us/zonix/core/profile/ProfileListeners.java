@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
 
 import us.zonix.core.CorePlugin;
+import us.zonix.core.board.Board;
 import us.zonix.core.punishment.Punishment;
 import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
@@ -60,12 +61,28 @@ public class ProfileListeners implements Listener {
 	}
 
 	@EventHandler
+	public void onPlayerJoinEvent(PlayerJoinEvent event) {
+
+		Player player = event.getPlayer();
+
+		if (CorePlugin.getInstance().getBoardManager() != null) {
+			CorePlugin.getInstance().getBoardManager().getPlayerBoards().put(player.getUniqueId(), new Board(player, CorePlugin.getInstance().getBoardManager().getAdapter()));
+		}
+
+	}
+
+	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
+		Player player = event.getPlayer();
 		Profile profile = Profile.getByUuid(event.getPlayer().getUniqueId());
 
 		if (profile != null) {
 			CorePlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(CorePlugin.getInstance(), profile::save);
 			Profile.getProfiles().remove(profile);
+		}
+
+		if (CorePlugin.getInstance().getBoardManager() != null) {
+			CorePlugin.getInstance().getBoardManager().getPlayerBoards().remove(player.getUniqueId());
 		}
 	}
 
