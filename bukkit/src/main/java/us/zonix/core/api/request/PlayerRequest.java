@@ -40,8 +40,8 @@ public abstract class PlayerRequest implements Request {
 
 	public static final class FetchAltsRequest extends PlayerRequest {
 
-		public FetchAltsRequest(String lastIp) {
-			super("fetch_by_ip/" + lastIp);
+		public FetchAltsRequest(UUID uuid) {
+			super("fetch_by_ip/" + uuid.toString());
 		}
 
 	}

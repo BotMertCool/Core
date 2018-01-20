@@ -50,7 +50,6 @@ public class Profile {
 
 		this.loadProfile();
 		this.loadPunishments();
-		this.loadProfileAlts();
 
 		profiles.add(this);
 	}
@@ -173,8 +172,9 @@ public class Profile {
 		this.ip = data.get("ip") instanceof JsonNull ? null : data.get("ip").getAsString();
 	}
 
-	private void loadProfileAlts() {
-		JsonElement response = main.getRequestProcessor().sendRequest(new PlayerRequest.FetchAltsRequest(this.ip));
+	public void loadProfileAlts() {
+
+		JsonElement response = main.getRequestProcessor().sendRequest(new PlayerRequest.FetchAltsRequest(this.uuid));
 
 		if (response.isJsonNull() || response.isJsonPrimitive()) {
 			System.out.println("Error while getting JSON response.");
@@ -182,14 +182,15 @@ public class Profile {
 			return;
 		}
 
-		System.out.println("IP: " + this.ip);
-
 		JsonArray data = response.getAsJsonArray();
-		System.out.println("Data: " + data.toString());
 
 		data.iterator().forEachRemaining((altElement) -> {
 			JsonObject element = altElement.getAsJsonObject();
-			alts.add(UUID.fromString(element.get("uuid").getAsString()));
+			UUID profileUUID = UUID.fromString(element.get("uuid").getAsString());
+
+			if(this.uuid != profileUUID) {
+				alts.add(profileUUID);
+			}
 		});
 	}
 

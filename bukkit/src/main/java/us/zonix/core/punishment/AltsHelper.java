@@ -1,7 +1,5 @@
 package us.zonix.core.punishment;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -9,13 +7,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.zonix.core.CorePlugin;
-import us.zonix.core.api.callback.AbstractBukkitCallback;
-import us.zonix.core.api.request.PunishmentRequest;
 import us.zonix.core.profile.Profile;
 import us.zonix.core.shared.api.callback.Callback;
 import us.zonix.core.util.UUIDType;
 
-import java.util.List;
 import java.util.StringJoiner;
 import java.util.UUID;
 
@@ -67,10 +62,12 @@ public class AltsHelper {
     private void attempt() {
         new BukkitRunnable() {
             public void run() {
+
                 Profile profile = Profile.getByUuid(uuid);
+                profile.loadProfileAlts();
 
                 if(profile.getAlts().size() == 0) {
-                    sender.sendMessage(ChatColor.RED + "This player doesn't have any alts.");
+                    sender.sendMessage(ChatColor.RED + "That player doesn't have any alts.");
                     return;
                 }
 
