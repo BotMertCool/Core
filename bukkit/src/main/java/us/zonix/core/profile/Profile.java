@@ -188,7 +188,7 @@ public class Profile {
 			JsonObject element = altElement.getAsJsonObject();
 			UUID profileUUID = UUID.fromString(element.get("uuid").getAsString());
 
-			if(this.uuid != profileUUID) {
+			if(!this.uuid.toString().equalsIgnoreCase(profileUUID.toString())) {
 				alts.add(profileUUID);
 			}
 		});

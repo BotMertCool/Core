@@ -10,7 +10,7 @@ import java.util.Iterator;
 @RequiredArgsConstructor
 public class ServerHandlerTimeoutTask extends BukkitRunnable {
 
-	private static final long TIME_OUT_DELAY = 30_000L;
+	private static final long TIME_OUT_DELAY = 15_000L;
 	private final CorePlugin plugin;
 
 	@Override

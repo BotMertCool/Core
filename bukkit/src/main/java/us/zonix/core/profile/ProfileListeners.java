@@ -70,7 +70,7 @@ public class ProfileListeners implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerJoinEvent(PlayerJoinEvent event) {
 
 		Player player = event.getPlayer();
@@ -80,7 +80,7 @@ public class ProfileListeners implements Listener {
 		}
 
 		CorePlugin.getInstance().getServer().getScheduler().runTaskLater(CorePlugin.getInstance(), () -> {
-			Profile profile = Profile.getByUuid(player.getUniqueId());
+			Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
 
 			if (profile != null) {
 				profile.updateTabList(profile.getRank());
