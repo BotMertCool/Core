@@ -105,7 +105,7 @@ public class Punishment {
 			Profile profile = Profile.getByUuid(player.getUniqueId());
 
 			if (profile != null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-				Clickable clickable = new Clickable(ChatColor.RED + "STAFF ONLY: " + ChatColor.GREEN + name + " was " + context + " by " + sender + (undo ? "" : " for " + this.reason) + ".", ChatColor.YELLOW + "Duration: " + ChatColor.RED + this.getTimeLeft(), "");
+				Clickable clickable = new Clickable(ChatColor.RED + "(Punishment) " + ChatColor.GREEN + name + " was " + context + " by " + sender + (undo ? "" : " for " + this.reason) + ".", ChatColor.YELLOW + "Duration: " + ChatColor.RED + this.getTimeLeft(), "");
 				clickable.sendToPlayer(player);
 			}
 			else {
@@ -115,7 +115,7 @@ public class Punishment {
 			}
 		}
 
-		Bukkit.getConsoleSender().sendMessage((silent && this.type.name().contains("BAN") && !undo ? ChatColor.RED + "STAFF ONLY: " : "") + ChatColor.GREEN + name + " was " + context + " by " + sender + " for " + reason + ".");
+		Bukkit.getConsoleSender().sendMessage((silent && this.type.name().contains("BAN") && !undo ? ChatColor.RED + "(Punishment) " : "") + ChatColor.GREEN + name + " was " + context + " by " + sender + " for " + reason + ".");
 		Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Duration: " + ChatColor.RED + this.getTimeLeft());
 	}
 

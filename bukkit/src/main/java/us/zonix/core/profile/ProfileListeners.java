@@ -13,6 +13,8 @@ import us.zonix.core.punishment.Punishment;
 import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
 
+import java.util.UUID;
+
 public class ProfileListeners implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -25,7 +27,7 @@ public class ProfileListeners implements Listener {
 		Punishment ban = profile.getBannedPunishment();
 
 		profile.setLastLogin(System.currentTimeMillis());
-		profile.setLastIp(event.getAddress().getHostAddress());
+		profile.setIp(event.getAddress().getHostAddress());
 
 		if (profile.getName() == null) {
 			profile.setName(event.getName());
@@ -46,18 +48,26 @@ public class ProfileListeners implements Listener {
 			return;
 		}
 
-		/*for (UUID uuid : profile.getAlts()) {
+		for (UUID uuid : profile.getAlts()) {
 			if (!uuid.equals(event.getUniqueId())) {
-				Profile alt = Profile.getByUuid(uuid);
+				Profile altProfile = Profile.getByUuid(uuid);
+				Punishment bannedAlt = altProfile.getBannedPunishment();
 
-				if (alt.isBlacklisted()) {
+				if (bannedAlt != null) {
 					event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
-					event.setKickMessage("\n" + ChatColor.RED + "Your account has been blacklisted from the Exlode Network.\n" + ChatColor.RED + "This punishment is in relation to " + (alt.getName() == null ? "another account" : alt.getName()) + ".\n" + ChatColor.RED + "This punishment cannot be appealed.");
-					Profile.getProfiles().remove(profile);
+					event.setKickMessage(bannedAlt.getType().getMessage());
+					Profile.getProfiles().remove(altProfile);
+					return;
+				}
+
+				if (altProfile.isBlacklisted()) {
+					event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
+					event.setKickMessage(PunishmentType.BLACKLIST.getMessage());
+					Profile.getProfiles().remove(altProfile);
 					return;
 				}
 			}
-		}*/
+		}
 	}
 
 	@EventHandler
@@ -96,6 +106,11 @@ public class ProfileListeners implements Listener {
 		if (punishment != null) {
 			event.setCancelled(true);
 			player.sendMessage(PunishmentType.MUTE.getMessage().replace("%DURATION%", punishment.getTimeLeft()));
+		}
+
+		if(CorePlugin.getInstance().getRedisManager().getStaffChat().contains(player.getUniqueId())) {
+			event.setCancelled(true);
+			CorePlugin.getInstance().getRedisManager().writeStaffChat(player.getName(), profile.getRank(), ChatColor.stripColor(event.getMessage()));
 		}
 	}
 

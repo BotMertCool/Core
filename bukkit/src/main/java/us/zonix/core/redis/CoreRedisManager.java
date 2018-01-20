@@ -13,6 +13,7 @@ import us.zonix.core.shared.redis.JedisSubscriber;
 import us.zonix.core.util.Clickable;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -25,6 +26,7 @@ public class CoreRedisManager {
     private final CorePlugin plugin;
 
     @Getter private final Map<String, ServerData> servers;
+    @Getter private final HashSet<UUID> staffChat;
 
     private final JedisSubscriber<JsonObject> messagesSubscriber;
     private final JedisPublisher<JsonObject> messagesPublisher;
@@ -32,6 +34,7 @@ public class CoreRedisManager {
     public CoreRedisManager(CorePlugin plugin) {
         this.plugin = plugin;
         this.servers = new HashMap<>();
+        this.staffChat = new HashSet<>();
         this.messagesSubscriber = new JedisSubscriber<>(this.plugin.getJedisSettings(), "global-messages", JsonObject.class, new GlobalSubscriptionHandler());
         this.messagesPublisher = new JedisPublisher<>(this.plugin.getJedisSettings(), "global-messages");
     }

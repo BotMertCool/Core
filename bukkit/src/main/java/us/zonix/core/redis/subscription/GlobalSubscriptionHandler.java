@@ -12,6 +12,7 @@ import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
 import us.zonix.core.server.ServerData;
 import us.zonix.core.shared.redis.subscription.JedisSubscriptionHandler;
+import us.zonix.core.util.Clickable;
 import us.zonix.core.util.UUIDType;
 
 import java.util.UUID;
@@ -78,6 +79,22 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
 
                 if (player != null) {
                     player.sendMessage(ChatColor.GREEN + "Your rank has been updated to " + rank.getName() + ".");
+                }
+            }
+        }
+
+        else if (type.equalsIgnoreCase("staffchat")) {
+
+            String name = data.get("name").getAsString();
+            Rank rank = Rank.valueOf(data.get("rank").getAsString());
+            String message = data.get("message").getAsString();
+
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
+
+                if (profile != null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+                    String toSend = ChatColor.AQUA + "(Staff Chat) " + rank.getPrefix() + rank.getColor() + ChatColor.ITALIC + rank.getName() + rank.getSuffix() + rank.getColor() + ChatColor.ITALIC + name + ChatColor.WHITE + ": " + message;
+                    player.sendMessage(toSend);
                 }
             }
         }

@@ -20,7 +20,7 @@ public enum Rank {
 	TRIAL_MOD(ChatColor.GRAY.toString() + "[", ChatColor.AQUA.toString(), "Trial-Mod", ChatColor.GRAY.toString() + "]"),
 	MODERATOR(ChatColor.GRAY.toString() + "[", ChatColor.DARK_PURPLE.toString(), "Moderator", ChatColor.GRAY.toString() + "]"),
 	ADMINISTRATOR(ChatColor.GRAY.toString() + "[", ChatColor.RED.toString(), "Administrator", ChatColor.GRAY.toString() + "]"),
-	MANAGER(ChatColor.GRAY.toString() + "[", ChatColor.DARK_RED.toString(), "Head-Admin", ChatColor.GRAY.toString() + "]"),
+	MANAGER(ChatColor.GRAY.toString() + "[", ChatColor.RED.toString(), "Manager", ChatColor.GRAY.toString() + "]"),
 	DEVELOPER(ChatColor.GRAY.toString() + "[", ChatColor.AQUA.toString(), "Developer", ChatColor.GRAY.toString() + "]"),
 	OWNER(ChatColor.GRAY.toString() + "[", ChatColor.DARK_RED.toString(), "Owner", ChatColor.GRAY.toString() + "]");
 

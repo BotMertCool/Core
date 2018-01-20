@@ -17,6 +17,7 @@ import us.zonix.core.CorePlugin;
 import us.zonix.core.api.callback.AbstractBukkitCallback;
 import us.zonix.core.api.request.PlayerRequest;
 import us.zonix.core.api.request.PunishmentRequest;
+import us.zonix.core.punishment.AltsHelper;
 import us.zonix.core.punishment.Punishment;
 import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
@@ -33,22 +34,23 @@ public class Profile {
 	@Setter private String name;
 	@Setter private Long firstLogin;
 	@Setter private Long lastLogin;
-	@Setter private String lastIp;
+	@Setter private String ip;
 	@Setter private Rank rank = Rank.DEFAULT;
 	@Setter private UUID lastMessaged;
 	@Setter private long lastRegister;
 	private List<Punishment> punishments;
-	private Set<UUID> ignored;
+	private Set<UUID> alts;
 	private ProfileOptions options;
 
 	public Profile(UUID uuid) {
 		this.uuid = uuid;
 		this.punishments = new ArrayList<>();
-		this.ignored = new HashSet<>();
+		this.alts = new HashSet<>();
 		this.options = new ProfileOptions();
 
 		this.loadProfile();
 		this.loadPunishments();
+		this.loadProfileAlts();
 
 		profiles.add(this);
 	}
@@ -168,7 +170,27 @@ public class Profile {
 			this.lastLogin = data.get("lastLogin").getAsLong();
 		}
 
-		this.lastIp = data.get("lastIp") instanceof JsonNull ? null : data.get("lastIp").getAsString();
+		this.ip = data.get("ip") instanceof JsonNull ? null : data.get("ip").getAsString();
+	}
+
+	private void loadProfileAlts() {
+		JsonElement response = main.getRequestProcessor().sendRequest(new PlayerRequest.FetchAltsRequest(this.ip));
+
+		if (response.isJsonNull() || response.isJsonPrimitive()) {
+			System.out.println("Error while getting JSON response.");
+			System.out.println("Issue: " + response.toString());
+			return;
+		}
+
+		System.out.println("IP: " + this.ip);
+
+		JsonArray data = response.getAsJsonArray();
+		System.out.println("Data: " + data.toString());
+
+		data.iterator().forEachRemaining((altElement) -> {
+			JsonObject element = altElement.getAsJsonObject();
+			alts.add(UUID.fromString(element.get("uuid").getAsString()));
+		});
 	}
 
 	private void loadPunishments() {
@@ -189,7 +211,7 @@ public class Profile {
 	}
 
 	public void save() {
-		main.getRequestProcessor().sendRequest(new PlayerRequest.SaveRequest(this.uuid, this.name, this.lastLogin, this.lastIp));
+		main.getRequestProcessor().sendRequest(new PlayerRequest.SaveRequest(this.uuid, this.name, this.lastLogin, this.ip));
 	}
 
 	public static void getPlayerInformation(String name, CommandSender sender, Callback callback) {

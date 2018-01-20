@@ -92,6 +92,8 @@ public class CorePlugin extends JavaPlugin {
 		new UnbanCommand();
 		new UnblacklistCommand();
 		new UnmuteCommand();
+		new AltsCommand();
+		new StaffChatCommand();
 		new RankCommand();
 		new SetMaxPlayersCommand();
 		new PingCommand();

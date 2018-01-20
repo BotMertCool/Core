@@ -38,20 +38,28 @@ public abstract class PlayerRequest implements Request {
 
 	}
 
+	public static final class FetchAltsRequest extends PlayerRequest {
+
+		public FetchAltsRequest(String lastIp) {
+			super("fetch_by_ip/" + lastIp);
+		}
+
+	}
+
 	public static final class SaveRequest extends PlayerRequest {
 
 		private final UUID uuid;
 		private final String name;
 		private final Long lastLogin;
-		private final String lastIp;
+		private final String ip;
 
-		public SaveRequest(UUID uuid, String name, Long lastLogin, String lastIp) {
+		public SaveRequest(UUID uuid, String name, Long lastLogin, String ip) {
 			super("save");
 
 			this.uuid = uuid;
 			this.name = name;
 			this.lastLogin = lastLogin;
-			this.lastIp = lastIp;
+			this.ip = ip;
 		}
 
 		@Override
@@ -60,19 +68,11 @@ public abstract class PlayerRequest implements Request {
 			data.addProperty("uuid", this.uuid.toString());
 			data.addProperty("name", this.name);
 			data.addProperty("last_login", this.lastLogin);
-			data.addProperty("last_ip", this.lastIp);
+			data.addProperty("ip", this.ip);
 
 			return MapUtil.of(
 					"data", data
 			);
-		}
-
-	}
-
-	public static final class FetchAltsRequest extends PlayerRequest {
-
-		public FetchAltsRequest(UUID uuid) {
-			super("alts/" + uuid.toString());
 		}
 
 	}
