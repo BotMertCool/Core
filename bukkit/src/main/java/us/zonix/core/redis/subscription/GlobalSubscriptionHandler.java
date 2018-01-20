@@ -80,6 +80,8 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
                 if (player != null) {
                     player.sendMessage(ChatColor.GREEN + "Your rank has been updated to " + rank.getName() + ".");
                 }
+
+                profile.updateTabList(rank);
             }
         }
 
@@ -93,7 +95,7 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
                 Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
 
                 if (profile != null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-                    String toSend = ChatColor.AQUA + "(Staff Chat) " + rank.getPrefix() + rank.getColor() + ChatColor.ITALIC + rank.getName() + rank.getSuffix() + rank.getColor() + ChatColor.ITALIC + name + ChatColor.WHITE + ": " + message;
+                    String toSend = ChatColor.AQUA + "(Staff Chat) " + rank.getPrefix() + rank.getColor() + rank.getName() + rank.getSuffix() + rank.getColor() + name + ChatColor.WHITE + ": " + message;
                     player.sendMessage(toSend);
                 }
             }

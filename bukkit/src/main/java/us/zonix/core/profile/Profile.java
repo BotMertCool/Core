@@ -255,6 +255,14 @@ public class Profile {
 		}
 	}
 
+	public Player getPlayer() {
+		return CorePlugin.getInstance().getServer().getPlayer(this.uuid);
+	}
+
+	public void updateTabList(Rank rank) {
+		this.getPlayer().setPlayerListName(rank.getColor() + this.getPlayer().getName());
+	}
+
 	public static Profile getByUuidIfAvailable(UUID uuid) {
 		for (Profile profile : profiles) {
 			if (profile.getUuid().equals(uuid)) {

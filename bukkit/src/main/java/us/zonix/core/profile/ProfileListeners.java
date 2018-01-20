@@ -79,6 +79,14 @@ public class ProfileListeners implements Listener {
 			CorePlugin.getInstance().getBoardManager().getPlayerBoards().put(player.getUniqueId(), new Board(player, CorePlugin.getInstance().getBoardManager().getAdapter()));
 		}
 
+		CorePlugin.getInstance().getServer().getScheduler().runTaskLater(CorePlugin.getInstance(), () -> {
+			Profile profile = Profile.getByUuid(player.getUniqueId());
+
+			if (profile != null) {
+				profile.updateTabList(profile.getRank());
+			}
+		}, 5L);
+
 	}
 
 	@EventHandler

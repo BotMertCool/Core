@@ -120,12 +120,14 @@ public class CorePlugin extends JavaPlugin {
 		new ServerHandlerTask(this).runTaskTimerAsynchronously(this, 20L, 20L);
 		new ServerHandlerTimeoutTask(this).runTaskTimerAsynchronously(this, 20L, 20L);
 
+		//this.useTabList();
+
 		// clean cached profiles every minute
 		new BukkitRunnable() {
 			public void run() {
 				Profile.getProfiles().removeIf((profile -> Bukkit.getPlayer(profile.getUuid()) == null));
 			}
-		}.runTaskTimer(this, 0L, 20L * 60);
+		}.runTaskTimerAsynchronously(this, 0L, 20L * 60);
 
 	}
 
@@ -141,6 +143,7 @@ public class CorePlugin extends JavaPlugin {
 
 		this.getServer().getScheduler().runTaskTimerAsynchronously(this, this.boardManager, interval, interval);
 	}
+
 
 	private void saveSpawnLocation() {
 
