@@ -28,4 +28,23 @@ public class JedisPublisher<K> {
 		}
 	}
 
+	public void writeDirectly(String message) {
+		Jedis jedis = null;
+
+		try {
+			jedis = this.jedisSettings.getJedisPool().getResource();
+
+			if (this.jedisSettings.hasPassword()) {
+				jedis.auth(this.jedisSettings.getPassword());
+			}
+
+			jedis.publish(this.channel, message);
+		}
+		finally {
+			if (jedis != null) {
+				jedis.close();
+			}
+		}
+	}
+
 }

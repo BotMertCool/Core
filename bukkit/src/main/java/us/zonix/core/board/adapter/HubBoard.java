@@ -16,6 +16,7 @@ import us.zonix.core.CorePlugin;
 import us.zonix.core.board.Board;
 import us.zonix.core.board.BoardAdapter;
 import us.zonix.core.profile.Profile;
+import us.zonix.core.redis.queue.Queue;
 
 public class HubBoard implements BoardAdapter {
 
@@ -46,6 +47,16 @@ public class HubBoard implements BoardAdapter {
 		strings.add(ChatColor.GOLD.toString() + ChatColor.BOLD + "Rank:");
 		strings.add(profile.getRank().getColor() + profile.getRank().getName());
 		strings.add("  ");
+
+		Queue queue = this.plugin.getQueueManager().getQueue(player);
+
+		if(queue != null) {
+			strings.add(ChatColor.GOLD.toString() + ChatColor.BOLD + "Queue:");
+			strings.add(ChatColor.YELLOW.toString() + ChatColor.WHITE + queue.getServerName().replace("_", "-"));
+			strings.add(ChatColor.YELLOW.toString() + ChatColor.WHITE + "Position: #" +  queue.getPosition(player) + " of " + queue.getPlayers().size());
+			strings.add("  ");
+		}
+
 		strings.add(ChatColor.GOLD.toString() + "www.zonix.us");
 		strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
 

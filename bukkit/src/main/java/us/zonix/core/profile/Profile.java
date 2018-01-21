@@ -38,6 +38,7 @@ public class Profile {
 	@Setter private Rank rank = Rank.DEFAULT;
 	@Setter private UUID lastMessaged;
 	@Setter private long lastRegister;
+	@Setter private long chatCooldown;
 	private List<Punishment> punishments;
 	private Set<UUID> alts;
 	private ProfileOptions options;

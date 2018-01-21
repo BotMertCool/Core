@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import us.zonix.core.CorePlugin;
 import us.zonix.core.profile.Profile;
 import us.zonix.core.rank.Rank;
 
@@ -14,22 +15,40 @@ public class RankListeners implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
+
         Profile profile = Profile.getByUuid(player.getUniqueId());
+
+        if(profile == null) {
+            return;
+        }
+
+        if (CorePlugin.getInstance().getRedisManager().isChatSilenced() && !profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+            player.sendMessage(ChatColor.RED + "Chat is currently muted.");
+            event.setCancelled(true);
+            return;
+        }
+
+        if (!profile.getRank().isAboveOrEqual(Rank.SILVER)) {
+            long slowChat = CorePlugin.getInstance().getRedisManager().getChatSlowDownTime();
+            if (System.currentTimeMillis() < profile.getChatCooldown()) {
+                player.sendMessage(slowChat > 0L ? ChatColor.RED + "Chat is currently slowed down." : "Please wait, before typing again.");
+                event.setCancelled(true);
+                return;
+            } else {
+                profile.setChatCooldown(System.currentTimeMillis() + (slowChat > 0L ? slowChat : 3000L));
+            }
+        }
 
         event.setFormat("%1$s: %2$s");
 
         player.setDisplayName(player.getName());
 
-        if (profile != null) {
+        Rank rank = profile.getRank();
 
-            Rank rank = profile.getRank();
+        String userTag = rank.isAboveOrEqual(Rank.BUILDER) ? rank.getPrefix() + rank.getColor() + rank.getName() + rank.getSuffix() + rank.getColor() +  player.getName() + ChatColor.WHITE : rank.getPrefix() + rank.getColor() + rank.getSuffix() + rank.getColor() +  player.getName() + ChatColor.WHITE;
 
-            String userTag = rank.isAboveOrEqual(Rank.BUILDER) ? rank.getPrefix() + rank.getColor() + rank.getName() + rank.getSuffix() + rank.getColor() +  player.getName() + ChatColor.WHITE : rank.getPrefix() + rank.getColor() + rank.getSuffix() + rank.getColor() +  player.getName() + ChatColor.WHITE;
-
-
-            if(!player.getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', userTag))) {
-                player.setDisplayName(ChatColor.translateAlternateColorCodes('&', userTag));
-            }
+        if(!player.getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', userTag))) {
+            player.setDisplayName(ChatColor.translateAlternateColorCodes('&', userTag));
         }
     }
 }

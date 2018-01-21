@@ -122,7 +122,11 @@ public class Punishment {
 	public JsonObject toJson() {
 		JsonObject object = new JsonObject();
 		object.addProperty("id", this.id);
-		object.addProperty("type", this.type.name());
+
+		if(this.type != null) {
+			object.addProperty("type", this.type.name());
+		}
+
 		object.addProperty("uuid", this.uuid.toString());
 		object.addProperty("added_by", this.addedBy == null ? null : this.addedBy.toString());
 		object.addProperty("added_at", this.addedAt);

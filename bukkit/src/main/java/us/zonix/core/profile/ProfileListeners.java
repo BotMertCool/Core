@@ -28,6 +28,7 @@ public class ProfileListeners implements Listener {
 
 		profile.setLastLogin(System.currentTimeMillis());
 		profile.setIp(event.getAddress().getHostAddress());
+		profile.setChatCooldown(0L);
 
 		if (profile.getName() == null) {
 			profile.setName(event.getName());

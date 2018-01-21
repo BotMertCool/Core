@@ -67,6 +67,11 @@ public class RankCommand extends BaseCommand {
                             sender.sendMessage(ChatColor.GREEN + "Updated " + name + "'s rank to " + rank.getName() + ".");
                         }
                     }
+
+                    @Override
+                    public void onError(String message) {
+                        this.callback(null);
+                    }
                 });
             }
         }.runTaskAsynchronously(CorePlugin.getInstance());

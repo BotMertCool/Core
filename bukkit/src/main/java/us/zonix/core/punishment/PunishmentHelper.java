@@ -147,7 +147,11 @@ public class PunishmentHelper {
                 }
                 else {
                     JsonObject object = new JsonObject();
-                    object.addProperty("type", type.name());
+
+                    if(type != null) {
+                        object.addProperty("type", type.name());
+                    }
+
                     object.addProperty("uuid", uuid.toString());
                     object.addProperty("added_by", senderUuid == null ? null : senderUuid.toString());
                     object.addProperty("reason", reason);
@@ -162,6 +166,11 @@ public class PunishmentHelper {
                             }
 
                             main.getRedisManager().writePunishment(Punishment.fromJson(response.getAsJsonObject()), name, senderName, silent);
+                        }
+
+                        @Override
+                        public void onError(String message) {
+                            this.callback(null);
                         }
                     });
                 }

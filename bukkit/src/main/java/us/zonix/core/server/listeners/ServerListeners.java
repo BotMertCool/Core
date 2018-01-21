@@ -80,7 +80,17 @@ public class ServerListeners implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
+
+        Player player = event.getPlayer();
+
         event.setQuitMessage(null);
+
+        if(CorePlugin.getInstance().getQueueManager().getQueue(player) != null) {
+
+            CorePlugin.getInstance().getQueueManager().getQueue(player).removeFromQueue(player);
+            player.sendMessage(ChatColor.RED + "You have been removed from the queue.");
+        }
+
     }
 
     @EventHandler

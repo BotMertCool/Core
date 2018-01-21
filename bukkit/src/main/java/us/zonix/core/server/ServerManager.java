@@ -36,7 +36,8 @@ public class ServerManager {
 			@Override
 			public void onClick(InventoryClickEvent event) {
 				Player player = (Player) event.getWhoClicked();
-				BungeeUtil.sendToServer(player, "practice-us");
+				player.performCommand("joinqueue " + "practice_us");
+				player.closeInventory();
 			}
 		});
 
@@ -44,7 +45,8 @@ public class ServerManager {
 			@Override
 			public void onClick(InventoryClickEvent event) {
 				Player player = (Player) event.getWhoClicked();
-				BungeeUtil.sendToServer(player, "practice-eu");
+				player.performCommand("joinqueue " + "practice_eu");
+				player.closeInventory();
 			}
 		});
 	}

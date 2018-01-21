@@ -18,10 +18,9 @@ import us.zonix.core.punishment.command.*;
 import us.zonix.core.rank.command.RankCommand;
 import us.zonix.core.rank.listeners.RankListeners;
 import us.zonix.core.redis.CoreRedisManager;
+import us.zonix.core.redis.QueueManager;
 import us.zonix.core.server.ServerManager;
-import us.zonix.core.server.commands.PingCommand;
-import us.zonix.core.server.commands.SetMaxPlayersCommand;
-import us.zonix.core.server.commands.SetSpawnCommand;
+import us.zonix.core.server.commands.*;
 import us.zonix.core.server.listeners.ServerListeners;
 import us.zonix.core.server.tasks.ServerHandlerTask;
 import us.zonix.core.server.tasks.ServerHandlerTimeoutTask;
@@ -52,6 +51,7 @@ public class CorePlugin extends JavaPlugin {
 
 	private BoardManager boardManager;
 	private ServerManager serverManager;
+	private QueueManager queueManager;
 
 	private CoreProcessor requestProcessor;
 
@@ -84,7 +84,6 @@ public class CorePlugin extends JavaPlugin {
 
 		this.requestProcessor = new CoreProcessor(this, this.apiUrl, this.apiKey);
 
-
 		new BanCommand();
 		new BlacklistCommand();
 		new MuteCommand();
@@ -93,6 +92,10 @@ public class CorePlugin extends JavaPlugin {
 		new UnblacklistCommand();
 		new UnmuteCommand();
 		new AltsCommand();
+		new FreezeCommand();
+		new SlowChatCommand();
+		new ClearChatCommand();
+		new SilenceChatCommand();
 		new StaffChatCommand();
 		new RankCommand();
 		new SetMaxPlayersCommand();
@@ -109,18 +112,20 @@ public class CorePlugin extends JavaPlugin {
 		if(this.hub) {
 
 			this.serverManager = new ServerManager();
+			this.queueManager = new QueueManager(this);
 
 			pm.registerEvents(new UIListener(), this);
 			pm.registerEvents(new ServerListeners(), this);
 
 			new SetSpawnCommand();
+			new JoinQueueCommand();
+			new LeaveQueueCommand();
+
 			this.setBoardManager(new BoardManager(new HubBoard()));
 		}
 
 		new ServerHandlerTask(this).runTaskTimerAsynchronously(this, 20L, 20L);
 		new ServerHandlerTimeoutTask(this).runTaskTimerAsynchronously(this, 20L, 20L);
-
-		//this.useTabList();
 
 		// clean cached profiles every minute
 		new BukkitRunnable() {

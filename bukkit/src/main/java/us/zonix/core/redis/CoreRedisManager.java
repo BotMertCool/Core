@@ -2,6 +2,7 @@ package us.zonix.core.redis;
 
 import com.google.gson.JsonObject;
 import lombok.Getter;
+import lombok.Setter;
 import net.md_5.bungee.api.chat.BaseComponent;
 import us.zonix.core.CorePlugin;
 import us.zonix.core.punishment.Punishment;
@@ -27,6 +28,8 @@ public class CoreRedisManager {
 
     @Getter private final Map<String, ServerData> servers;
     @Getter private final HashSet<UUID> staffChat;
+    @Getter @Setter private boolean chatSilenced;
+    @Getter @Setter private long chatSlowDownTime;
 
     private final JedisSubscriber<JsonObject> messagesSubscriber;
     private final JedisPublisher<JsonObject> messagesPublisher;
@@ -35,6 +38,9 @@ public class CoreRedisManager {
         this.plugin = plugin;
         this.servers = new HashMap<>();
         this.staffChat = new HashSet<>();
+        this.chatSilenced = false;
+        this.chatSlowDownTime = 0L;
+
         this.messagesSubscriber = new JedisSubscriber<>(this.plugin.getJedisSettings(), "global-messages", JsonObject.class, new GlobalSubscriptionHandler());
         this.messagesPublisher = new JedisPublisher<>(this.plugin.getJedisSettings(), "global-messages");
     }
