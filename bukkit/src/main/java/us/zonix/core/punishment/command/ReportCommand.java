@@ -52,6 +52,7 @@ public class ReportCommand extends BaseCommand {
             public void run() {
                 main.getRedisManager().writeReport(player.getName(), target.getName(), reason);
                 cooldown.put(player.getUniqueId(), System.currentTimeMillis() + 30 * 1000L);
+                player.sendMessage(ChatColor.GREEN + "Your report has been submitted.");
             }
         }.runTaskAsynchronously(CorePlugin.getInstance());
     }

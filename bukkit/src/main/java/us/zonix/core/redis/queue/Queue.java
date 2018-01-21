@@ -78,7 +78,7 @@ public class Queue {
 
     public void addToQueue(Player player) {
 
-        Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
+        Profile profile = Profile.getByUuid(player.getUniqueId());
 
         if(profile == null) {
             return;
@@ -90,7 +90,7 @@ public class Queue {
 
     public void removeFromQueue(Player player) {
 
-        Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
+        Profile profile = Profile.getByUuid(player.getUniqueId());
 
         if(profile == null) {
             return;
@@ -112,10 +112,10 @@ public class Queue {
 
     private int position(Player player) {
 
-        Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
+        Profile profile = Profile.getByUuid(player.getUniqueId());
 
         if(profile == null) {
-            return 0;
+            return 200;
         }
 
         Rank rank = profile.getRank();
@@ -152,7 +152,7 @@ public class Queue {
             return 100;
         }
 
-        return 0;
+        return 200;
     }
 
     private class ServerInfo {

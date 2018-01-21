@@ -29,6 +29,6 @@ public class LeaveQueueCommand extends BaseCommand {
         }
 
         player.sendMessage(ChatColor.RED + "You left the queue for " + queue.getServerName() + ".");
-        queue.removeFromQueue(player);
+        this.main.getServer().getScheduler().runTaskAsynchronously(this.main, () -> queue.removeFromQueue(player));
     }
 }
