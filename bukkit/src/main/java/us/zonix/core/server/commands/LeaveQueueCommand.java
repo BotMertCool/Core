@@ -15,13 +15,7 @@ public class LeaveQueueCommand extends BaseCommand {
     public void onCommand(CommandArgs command) {
 
         Player player = command.getPlayer();
-        String[] args = command.getArgs();
 
-
-        if (args.length < 1) {
-            player.sendMessage(ChatColor.RED + "Usage: /leavequeue (server)");
-            return;
-        }
         if (!CorePlugin.getInstance().getQueueManager().isServerOnline()) {
             player.sendMessage(ChatColor.RED + "Queue Server is currently under maintenance.");
             return;
@@ -34,7 +28,7 @@ public class LeaveQueueCommand extends BaseCommand {
             return;
         }
 
-        player.sendMessage(ChatColor.RED + "You left the queue for " + queue.getServerName().replace("_", "-") + ".");
+        player.sendMessage(ChatColor.RED + "You left the queue for " + queue.getServerName() + ".");
         queue.removeFromQueue(player);
     }
 }

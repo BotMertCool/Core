@@ -40,7 +40,20 @@ public class RankCommand extends BaseCommand {
         Rank rank;
 
         try {
-            rank = Rank.valueOf(args[1].toUpperCase());
+
+            if(args[1].toUpperCase().equalsIgnoreCase("ADMIN")) {
+                rank = Rank.ADMINISTRATOR;
+            } else if(args[1].toUpperCase().equalsIgnoreCase("MOD")) {
+                rank = Rank.MODERATOR;
+            } else if(args[1].toUpperCase().equalsIgnoreCase("TMOD") || args[1].toUpperCase().equalsIgnoreCase("TRIALMOD")) {
+                rank = Rank.TRIAL_MOD;
+            } else if(args[1].toUpperCase().equalsIgnoreCase("DEV")) {
+                rank = Rank.DEVELOPER;
+            } else if(args[1].toUpperCase().equalsIgnoreCase("YOUTUBE") || args[1].toUpperCase().equalsIgnoreCase("YOUTUBER") || args[1].toUpperCase().equalsIgnoreCase("YT")) {
+                rank = Rank.MEDIA;
+            } else {
+                rank = Rank.valueOf(args[1].toUpperCase());
+            }
         }
         catch (Exception e) {
             sender.sendMessage(ChatColor.RED + "Could not parse that rank.");

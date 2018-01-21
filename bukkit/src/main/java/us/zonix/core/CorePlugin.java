@@ -83,6 +83,7 @@ public class CorePlugin extends JavaPlugin {
 		this.redisManager = new CoreRedisManager(this);
 
 		this.requestProcessor = new CoreProcessor(this, this.apiUrl, this.apiKey);
+		this.queueManager = new QueueManager(this);
 
 		new BanCommand();
 		new BlacklistCommand();
@@ -97,6 +98,8 @@ public class CorePlugin extends JavaPlugin {
 		new ClearChatCommand();
 		new SilenceChatCommand();
 		new StaffChatCommand();
+		new RequestCommand();
+		new ReportCommand();
 		new RankCommand();
 		new SetMaxPlayersCommand();
 		new PingCommand();
@@ -112,7 +115,6 @@ public class CorePlugin extends JavaPlugin {
 		if(this.hub) {
 
 			this.serverManager = new ServerManager();
-			this.queueManager = new QueueManager(this);
 
 			pm.registerEvents(new UIListener(), this);
 			pm.registerEvents(new ServerListeners(), this);

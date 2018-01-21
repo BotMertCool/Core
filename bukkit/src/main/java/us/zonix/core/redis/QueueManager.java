@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.*;
 import java.util.concurrent.*;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.Getter;
@@ -24,6 +25,7 @@ import us.zonix.core.util.BungeeUtil;
 public class QueueManager implements Listener {
 
     private final Map<String, Queue> queues;
+    private final Gson gson;
 
     private CorePlugin plugin;
     private final AtomicBoolean serverOnline;
@@ -31,10 +33,11 @@ public class QueueManager implements Listener {
     private final JedisSubscriber<String> managerSubscriber;
     private final JedisPublisher<String> managerPublisher;
 
-    private String[] availableQueues = new String[] {"practice_us", "practice_eu"};
+    private String[] availableQueues = new String[] {"practice-us", "practice-eu"};
     
     public QueueManager(CorePlugin plugin) {
         this.plugin = plugin;
+        this.gson = new Gson();
 
         this.queues = new ConcurrentHashMap<>(10, 0.5f, 4);
         this.serverOnline = new AtomicBoolean();
@@ -46,7 +49,7 @@ public class QueueManager implements Listener {
 
             for(String queue : this.availableQueues) {
                 this.queues.put(queue.toLowerCase(), new Queue(plugin, queue));
-                this.managerPublisher.writeDirectly("addServer`" + queue.toLowerCase());
+                this.managerPublisher.writeDirectly("addServer`" + queue.replace("-", "_").toLowerCase());
                 System.out.println("[Queue] Added " + queue.toLowerCase() + " server.");
             }
         });
@@ -72,7 +75,6 @@ public class QueueManager implements Listener {
         return null;
     }
 
-
     private class QueueManagerSubscriptionHandler implements JedisSubscriptionHandler<String> {
 
         @Override
@@ -82,7 +84,7 @@ public class QueueManager implements Listener {
                 serverOnline.set(true);
 
                 for (final String server : queues.keySet()) {
-                    managerPublisher.writeDirectly("addServer`" + server.toLowerCase());
+                    managerPublisher.writeDirectly("addServer`" + server.toLowerCase().replace("-", "_"));
                 }
             }
             else if (message.equals("goodbye")) {

@@ -36,7 +36,7 @@ public class ServerManager {
 			@Override
 			public void onClick(InventoryClickEvent event) {
 				Player player = (Player) event.getWhoClicked();
-				player.performCommand("joinqueue " + "practice_us");
+				player.performCommand("joinqueue " + "practice-us");
 				player.closeInventory();
 			}
 		});
@@ -45,7 +45,7 @@ public class ServerManager {
 			@Override
 			public void onClick(InventoryClickEvent event) {
 				Player player = (Player) event.getWhoClicked();
-				player.performCommand("joinqueue " + "practice_eu");
+				player.performCommand("joinqueue " + "practice-eu");
 				player.closeInventory();
 			}
 		});

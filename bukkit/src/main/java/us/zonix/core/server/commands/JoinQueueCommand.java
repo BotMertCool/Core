@@ -41,12 +41,12 @@ public class JoinQueueCommand extends BaseCommand {
             return;
         }
 
-        if (name.equalsIgnoreCase(CorePlugin.getInstance().getServerId().replace("-", "_"))) {
+        if (name.equalsIgnoreCase(CorePlugin.getInstance().getServerId())) {
             player.sendMessage(ChatColor.RED + "You are currently in that server.");
             return;
         }
 
-        player.sendMessage(ChatColor.GREEN + "You joined the queue for " + queue.getServerName().replace("_", "-") + ".");
+        player.sendMessage(ChatColor.GREEN + "You joined the queue for " + queue.getServerName() + ".");
         queue.addToQueue(player);
     }
 }
