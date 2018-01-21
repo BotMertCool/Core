@@ -48,9 +48,15 @@ public class QueueManager implements Listener {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
 
             for(String queue : this.availableQueues) {
-                this.queues.put(queue.toLowerCase(), new Queue(plugin, queue));
+                Queue actualQueue = new Queue(plugin, queue);
+                this.queues.put(queue.toLowerCase(), actualQueue);
                 this.managerPublisher.writeDirectly("addServer`" + queue.replace("-", "_").toLowerCase());
                 System.out.println("[Queue] Added " + queue.toLowerCase() + " server.");
+
+                if(queue.toLowerCase().equalsIgnoreCase(this.plugin.getServerId())) {
+                    actualQueue.runServerStatus();
+                    System.out.println("[Queue] Server status detected & now running on " + queue.toLowerCase() + ".");
+                }
             }
         });
 

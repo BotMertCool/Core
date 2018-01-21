@@ -53,7 +53,9 @@ public class Queue {
             }
 
         }, 200L, 200L);
+    }
 
+    public void runServerStatus() {
         plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
 
             final ServerInfo info = new ServerInfo(true, plugin.getServer().hasWhitelist(), plugin.getServer().getOnlinePlayers().size(), plugin.getServer().getMaxPlayers());
@@ -70,8 +72,50 @@ public class Queue {
         this.players.clear();
     }
 
-    public String getPosition(Player player) {
+    public int position(Player player) {
 
+        Profile profile = Profile.getByUuid(player.getUniqueId());
+
+        if(profile == null) {
+            return 10;
+        }
+
+        if(profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+            return 0;
+        }
+        else if(profile.getRank().isAboveOrEqual(Rank.FAMOUS)) {
+            return 2;
+        }
+        else if(profile.getRank().isAboveOrEqual(Rank.MEDIA)) {
+            return 3;
+        }
+        else if(profile.getRank().isAboveOrEqual(Rank.BUILDER)) {
+            return 4;
+        }
+        else if(profile.getRank().isAboveOrEqual(Rank.ZONIX)) {
+            return 5;
+        }
+        else if(profile.getRank().isAboveOrEqual(Rank.EMERALD)) {
+            return 6;
+        }
+        else if(profile.getRank().isAboveOrEqual(Rank.PLATINUM)) {
+            return 7;
+        }
+        else if(profile.getRank().isAboveOrEqual(Rank.GOLD)) {
+            return 8;
+        }
+        else if(profile.getRank().isAboveOrEqual(Rank.SILVER)) {
+            return 9;
+        }
+        else if(profile.getRank().isAboveOrEqual(Rank.DEFAULT)) {
+            return 10;
+        }
+
+        return 10;
+
+    }
+
+    public String getPosition(Player player) {
         final Integer position = this.players.get(player.getUniqueId());
         return (position == null || position == -1) ? "?" : String.valueOf(position);
     }
@@ -85,7 +129,7 @@ public class Queue {
         }
 
         PlayerData data = new PlayerData(player.getUniqueId(), this.position(player), profile.getRank().getName(), this.serverName.replace("-", "_"));
-        this.queuePublisher.writeDirectly("add`" + this.gson.toJson(data) + "`" + this.position(player) + "`" + profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD));
+        this.queuePublisher.writeDirectly("add`" + this.gson.toJson(data) + "`" + this.position(player) + "`" + profile.getRank().isAboveOrEqual(Rank.SILVER));
     }
 
     public void removeFromQueue(Player player) {
@@ -108,51 +152,6 @@ public class Queue {
         }
 
         return serverName;
-    }
-
-    private int position(Player player) {
-
-        Profile profile = Profile.getByUuid(player.getUniqueId());
-
-        if(profile == null) {
-            return 200;
-        }
-
-        Rank rank = profile.getRank();
-
-        if(rank == Rank.OWNER) {
-            return 1;
-        } else if(rank == Rank.DEVELOPER) {
-            return 10;
-        } else if(rank == Rank.MANAGER) {
-            return 15;
-        } else if(rank == Rank.ADMINISTRATOR) {
-            return 20;
-        } else if(rank == Rank.MODERATOR) {
-            return 25;
-        } else if(rank == Rank.TRIAL_MOD) {
-            return 30;
-        } else if(rank == Rank.FAMOUS) {
-            return 35;
-        } else if(rank == Rank.MEDIA) {
-            return 40;
-        } else if(rank == Rank.BUILDER) {
-            return 45;
-        } else if(rank == Rank.ZONIX) {
-            return 50;
-        } else if(rank == Rank.EMERALD) {
-            return 60;
-        } else if(rank == Rank.PLATINUM) {
-            return 70;
-        } else if(rank == Rank.GOLD) {
-            return 80;
-        } else if(rank == Rank.SILVER) {
-            return 90;
-        } else if(rank == Rank.DEFAULT) {
-            return 100;
-        }
-
-        return 200;
     }
 
     private class ServerInfo {
@@ -193,6 +192,7 @@ public class Queue {
             final String command = messageSplit[0];
 
             if (command.equals("info")) {
+
                 final JsonObject info = parser.parse(messageSplit[1]).getAsJsonObject();
 
                 final Map<UUID, Integer> newPositions = new HashMap<UUID, Integer>();

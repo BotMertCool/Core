@@ -3,6 +3,7 @@ package us.zonix.core.redis.subscription;
 import com.google.gson.JsonObject;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.zonix.core.CorePlugin;
@@ -115,6 +116,43 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
                     player.sendMessage(toSend);
                 }
             }
+        }
+
+        else if (type.equalsIgnoreCase("whitelist")) {
+
+            String action = data.get("action").getAsString();
+            String target = data.get("target").getAsString();
+
+            if(action.equalsIgnoreCase("add")) {
+
+                OfflinePlayer player = Bukkit.getOfflinePlayer(target);
+
+                if(player != null) {
+                    CorePlugin.getInstance().getServer().getWhitelistedPlayers().add(player);
+                    CorePlugin.getInstance().getServer().reloadWhitelist();
+                }
+
+            } else if(action.equalsIgnoreCase("remove")) {
+
+                OfflinePlayer player = Bukkit.getOfflinePlayer(target);
+
+                if(player != null) {
+                    CorePlugin.getInstance().getServer().getWhitelistedPlayers().remove(player);
+                    CorePlugin.getInstance().getServer().reloadWhitelist();
+                }
+            } else if(action.equalsIgnoreCase("off")) {
+
+                if(target.equalsIgnoreCase(CorePlugin.getInstance().getServerId())) {
+                    CorePlugin.getInstance().getServer().setWhitelist(false);
+                }
+            } else if(action.equalsIgnoreCase("on")) {
+
+                if(target.equalsIgnoreCase(CorePlugin.getInstance().getServerId())) {
+                    CorePlugin.getInstance().getServer().setWhitelist(true);
+                }
+            }
+
+            CorePlugin.getInstance().getLogger().info("[Whitelist] " + target + " -> " + action + ".");
         }
 
         else if (type.equalsIgnoreCase("request")) {

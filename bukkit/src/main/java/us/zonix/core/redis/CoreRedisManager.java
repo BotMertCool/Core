@@ -104,7 +104,20 @@ public class CoreRedisManager {
         this.write(this.generateMessage("report", object));
     }
 
+    public void writeWhitelist(String action, String target) {
+        JsonObject object = new JsonObject();
+        object.addProperty("action", action);
+        object.addProperty("target", target);
+
+        this.write(this.generateMessage("whitelist", object));
+    }
+
     public ServerData getServerDataByName(String name) {
+
+        if(this.getServers().size() == 0) {
+            return null;
+        }
+
         for (String serverKey : this.getServers().keySet()) {
             if (serverKey.equalsIgnoreCase(name)) {
                 return this.getServers().get(serverKey);
