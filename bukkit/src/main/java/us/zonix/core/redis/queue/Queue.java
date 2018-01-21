@@ -80,17 +80,8 @@ public class Queue {
             return 10;
         }
 
-        if(profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+        if(profile.getRank().isAboveOrEqual(Rank.BUILDER)) {
             return 0;
-        }
-        else if(profile.getRank().isAboveOrEqual(Rank.FAMOUS)) {
-            return 2;
-        }
-        else if(profile.getRank().isAboveOrEqual(Rank.MEDIA)) {
-            return 3;
-        }
-        else if(profile.getRank().isAboveOrEqual(Rank.BUILDER)) {
-            return 4;
         }
         else if(profile.getRank().isAboveOrEqual(Rank.ZONIX)) {
             return 5;
