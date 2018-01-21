@@ -71,6 +71,16 @@ public class ProfileListeners implements Listener {
 		}
 	}
 
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+	public void onPlayerLogin(final PlayerLoginEvent event) {
+
+		Profile profile = Profile.getByUuid(event.getPlayer().getUniqueId());
+
+		if(event.getResult() == PlayerLoginEvent.Result.KICK_FULL && profile != null && profile.getRank().isAboveOrEqual(Rank.SILVER)) {
+			event.allow();
+		}
+	}
+
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerJoinEvent(PlayerJoinEvent event) {
 
