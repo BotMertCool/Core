@@ -51,14 +51,16 @@ public abstract class PlayerRequest implements Request {
 		private final UUID uuid;
 		private final String name;
 		private final Long lastLogin;
+		private final String lastServer;
 		private final String ip;
 
-		public SaveRequest(UUID uuid, String name, Long lastLogin, String ip) {
+		public SaveRequest(UUID uuid, String name, Long lastLogin, String lastServer, String ip) {
 			super("save");
 
 			this.uuid = uuid;
 			this.name = name;
 			this.lastLogin = lastLogin;
+			this.lastServer = lastServer;
 			this.ip = ip;
 		}
 
@@ -68,6 +70,7 @@ public abstract class PlayerRequest implements Request {
 			data.addProperty("uuid", this.uuid.toString());
 			data.addProperty("name", this.name);
 			data.addProperty("last_login", this.lastLogin);
+			data.addProperty("last_server", this.lastServer);
 			data.addProperty("ip", this.ip);
 
 			return MapUtil.of(

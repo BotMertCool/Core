@@ -68,7 +68,7 @@ public class CorePlugin extends JavaPlugin {
 		this.serverId = this.configFile.getString("server.id");
 		this.hub = this.configFile.getBoolean("server.hub");
 
-		if(this.configFile.getConfiguration().contains("server.spawn")) {
+		if (this.configFile.getConfiguration().contains("server.spawn")) {
 			this.spawnLocation = LocationString.fromString(this.configFile.getString("server.spawn"));
 		}
 
@@ -153,16 +153,15 @@ public class CorePlugin extends JavaPlugin {
 
 
 	private void saveSpawnLocation() {
-
-		if(this.spawnLocation == null) {
+		if (this.spawnLocation == null) {
 			return;
 		}
 
 		try {
 			this.configFile.getConfiguration().set("server.spawn", LocationString.toString(this.spawnLocation));
 			this.configFile.getConfiguration().save(this.configFile.getFile());
-		} catch (Exception ex) {
 		}
+		catch (Exception ex) { }
 	}
 
 }

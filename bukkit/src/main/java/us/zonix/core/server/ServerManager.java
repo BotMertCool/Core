@@ -31,7 +31,6 @@ public class ServerManager {
 	}
 
 	private void setupInventories() {
-
 		this.serverSelector.setItem(3, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.DIAMOND_SWORD, ChatColor.YELLOW.toString() + ChatColor.BOLD + "Practice " + ChatColor.GRAY + "|" + ChatColor.GOLD.toString() + ChatColor.BOLD + " US")) {
 			@Override
 			public void onClick(InventoryClickEvent event) {
@@ -54,11 +53,12 @@ public class ServerManager {
 	private void updateInventories() {
 		for (int i = 0; i < 18; i++) {
 			InventoryUI.ClickableItem item = this.serverSelector.getItem(i);
-			if (item != null) {
 
-				if(item.getItemStack().getType() == Material.DIAMOND_SWORD) {
+			if (item != null) {
+				if (item.getItemStack().getType() == Material.DIAMOND_SWORD) {
 					item.setItemStack(this.updateQueueLore(item.getItemStack(), "practice-us"));
-				} else if(item.getItemStack().getType() == Material.GOLD_SWORD) {
+				}
+				else if(item.getItemStack().getType() == Material.GOLD_SWORD) {
 					item.setItemStack(this.updateQueueLore(item.getItemStack(), "practice-eu"));
 				}
 
@@ -74,7 +74,7 @@ public class ServerManager {
 
 		ServerData serverData = this.plugin.getRedisManager().getServerDataByName(server);
 
-		if(serverData == null) {
+		if (serverData == null) {
 			return ItemUtil.reloreItem(itemStack, ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH +  "-----------------", ChatColor.GOLD.toString() + ChatColor.BOLD + "* " + ChatColor.WHITE + "Players: " + ChatColor.GRAY + "(" + 0 + "/" + 0 + ")", ChatColor.GOLD.toString() + ChatColor.BOLD + "* " + ChatColor.WHITE + "Status: " + ChatColor.RED + "Offline", ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH +  "-----------------");
 		}
 

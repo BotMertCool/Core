@@ -213,7 +213,7 @@ public class Profile {
 	}
 
 	public void save() {
-		main.getRequestProcessor().sendRequest(new PlayerRequest.SaveRequest(this.uuid, this.name, this.lastLogin, this.ip));
+		main.getRequestProcessor().sendRequest(new PlayerRequest.SaveRequest(this.uuid, this.name, this.lastLogin, main.getServerId(), this.ip));
 	}
 
 	public static void getPlayerInformation(String name, CommandSender sender, Callback callback) {
