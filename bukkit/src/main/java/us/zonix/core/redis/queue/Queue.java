@@ -72,7 +72,7 @@ public class Queue {
         this.players.clear();
     }
 
-    public int position(Player player) {
+    private int position(Player player) {
 
         Profile profile = Profile.getByUuid(player.getUniqueId());
 
