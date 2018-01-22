@@ -131,7 +131,7 @@ public class ProfileListeners implements Listener {
 			player.sendMessage(PunishmentType.MUTE.getMessage().replace("%DURATION%", punishment.getTimeLeft()));
 		}
 
-		if(CorePlugin.getInstance().getRedisManager().getStaffChat().contains(player.getUniqueId())) {
+		if (CorePlugin.getInstance().getRedisManager().getStaffChat().contains(player.getUniqueId())) {
 			event.setCancelled(true);
 			CorePlugin.getInstance().getRedisManager().writeStaffChat(player.getName(), profile.getRank(), ChatColor.stripColor(event.getMessage()));
 		}

@@ -18,7 +18,7 @@ public class RankListeners implements Listener {
 
         Profile profile = Profile.getByUuid(player.getUniqueId());
 
-        if(profile == null) {
+        if (profile == null) {
             return;
         }
 
@@ -30,11 +30,13 @@ public class RankListeners implements Listener {
 
         if (!profile.getRank().isAboveOrEqual(Rank.SILVER)) {
             long slowChat = CorePlugin.getInstance().getRedisManager().getChatSlowDownTime();
+
             if (System.currentTimeMillis() < profile.getChatCooldown()) {
                 player.sendMessage(slowChat > 0L ? ChatColor.RED + "Chat is currently slowed down." : "Please wait, before typing again.");
                 event.setCancelled(true);
                 return;
-            } else {
+            }
+            else {
                 profile.setChatCooldown(System.currentTimeMillis() + (slowChat > 0L ? slowChat : 3000L));
             }
         }
@@ -47,8 +49,9 @@ public class RankListeners implements Listener {
 
         String userTag = rank.isAboveOrEqual(Rank.BUILDER) ? rank.getPrefix() + rank.getColor() + rank.getName() + rank.getSuffix() + rank.getColor() +  player.getName() + ChatColor.WHITE : rank.getPrefix() + rank.getColor() + rank.getSuffix() + rank.getColor() +  player.getName() + ChatColor.WHITE;
 
-        if(!player.getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', userTag))) {
+        if (!player.getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', userTag))) {
             player.setDisplayName(ChatColor.translateAlternateColorCodes('&', userTag));
         }
     }
+
 }

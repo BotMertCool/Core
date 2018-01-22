@@ -122,6 +122,7 @@ public class FreezeCommand extends BaseCommand implements Listener {
 	@EventHandler
 	public void onCommand(PlayerCommandPreprocessEvent event) {
 		String command = event.getMessage().split(" ")[0];
+
 		if (command.equalsIgnoreCase("msg") || command.equalsIgnoreCase("r")
 				|| command.equalsIgnoreCase("m") || command.equalsIgnoreCase("tell")
 				|| command.equalsIgnoreCase("message")) {
@@ -137,7 +138,7 @@ public class FreezeCommand extends BaseCommand implements Listener {
 	public void onChat(AsyncPlayerChatEvent event) {
 		Profile profile = Profile.getByUuidIfAvailable(event.getPlayer().getUniqueId());
 
-		if(profile == null) {
+		if (profile == null) {
 			return;
 		}
 
@@ -146,14 +147,16 @@ public class FreezeCommand extends BaseCommand implements Listener {
 		if (this.frozenPlayers.containsKey(event.getPlayer().getUniqueId())) {
 			event.setCancelled(true);
 
-			for(Player online : Bukkit.getOnlinePlayers()) {
+			for (Player online : Bukkit.getOnlinePlayers()) {
 				Profile onlineProfile = Profile.getByUuidIfAvailable(online.getUniqueId());
-				if(onlineProfile != null && onlineProfile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-					online.sendMessage(ChatColor.RED + "(Frozen) " + ChatColor.WHITE + event.getPlayer().getName() + ": " + event.getMessage());
+
+				if (onlineProfile != null && onlineProfile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+					online.sendMessage(ChatColor.DARK_RED + "(Frozen) " + ChatColor.WHITE + event.getPlayer().getName() + ": " + event.getMessage());
 				}
 			}
 
 			event.getPlayer().sendMessage(event.getMessage());
+
 			return;
 		}
 

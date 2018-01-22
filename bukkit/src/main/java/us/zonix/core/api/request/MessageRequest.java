@@ -34,22 +34,19 @@ public abstract class MessageRequest implements Request {
 
         private UUID uuid;
         private String message;
-        private long timestamp;
 
         public InsertRequest(UUID uuid, String message) {
             super("insert/");
 
             this.uuid = uuid;
             this.message = message;
-            this.timestamp = System.currentTimeMillis();
         }
 
         @Override
         public Map<String, Object> toMap() {
             return MapUtil.of(
                     "uuid", this.uuid.toString(),
-                    "message", this.message,
-                    "timestamp", this.timestamp
+                    "message", this.message
             );
         }
 

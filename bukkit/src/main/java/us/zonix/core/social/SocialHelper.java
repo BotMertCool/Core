@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import us.zonix.core.CorePlugin;
+import us.zonix.core.api.request.MessageRequest;
 import us.zonix.core.profile.Profile;
 import us.zonix.core.rank.Rank;
 
@@ -12,6 +13,8 @@ public class SocialHelper {
     private static CorePlugin main = CorePlugin.getInstance();
 
     public void sendMessage(Player from, Profile fromProfile, Player to, Profile toProfile, String message) {
+        main.getRequestProcessor().sendRequestAsync(new MessageRequest.InsertRequest(from.getUniqueId(), "(To " + to.getName() + ") -> " + message));
+
         from.sendMessage(main.getConfigFile()
                 .getString("messages.player_send")
                 .replace("%TO%", (toProfile != null ? toProfile.getRank().getColor() : "") + to.getName())
