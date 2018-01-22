@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
 
 import us.zonix.core.CorePlugin;
+import us.zonix.core.api.request.MessageRequest;
 import us.zonix.core.board.Board;
 import us.zonix.core.punishment.Punishment;
 import us.zonix.core.punishment.PunishmentType;
@@ -135,6 +136,11 @@ public class ProfileListeners implements Listener {
 			event.setCancelled(true);
 			CorePlugin.getInstance().getRedisManager().writeStaffChat(player.getName(), profile.getRank(), ChatColor.stripColor(event.getMessage()));
 		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void onAsyncPlayerChatWatch(AsyncPlayerChatEvent event) {
+		CorePlugin.getInstance().getRequestProcessor().sendRequestAsync(new MessageRequest.InsertRequest(event.getPlayer().getUniqueId(), "(Global Chat) " + event.getMessage()));
 	}
 
 }
