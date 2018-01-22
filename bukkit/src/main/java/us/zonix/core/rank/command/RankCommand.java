@@ -27,10 +27,9 @@ public class RankCommand extends BaseCommand {
         String[] args = command.getArgs();
 
         if (args.length < 2) {
-
             Clickable clickable = new Clickable(ChatColor.RED + "Usage: /rank [target] [rank]", ChatColor.YELLOW + "Give a player a rank.", "");
 
-            if(sender instanceof Player) {
+            if (sender instanceof Player) {
                 clickable.sendToPlayer((Player) sender);
             }
 
@@ -40,18 +39,22 @@ public class RankCommand extends BaseCommand {
         Rank rank;
 
         try {
-
-            if(args[1].toUpperCase().equalsIgnoreCase("ADMIN")) {
+            if (args[1].toUpperCase().equalsIgnoreCase("ADMIN")) {
                 rank = Rank.ADMINISTRATOR;
-            } else if(args[1].toUpperCase().equalsIgnoreCase("MOD")) {
+            }
+            else if (args[1].toUpperCase().equalsIgnoreCase("MOD")) {
                 rank = Rank.MODERATOR;
-            } else if(args[1].toUpperCase().equalsIgnoreCase("TMOD") || args[1].toUpperCase().equalsIgnoreCase("TRIALMOD")) {
+            }
+            else if (args[1].toUpperCase().equalsIgnoreCase("TMOD") || args[1].toUpperCase().equalsIgnoreCase("TRIALMOD")) {
                 rank = Rank.TRIAL_MOD;
-            } else if(args[1].toUpperCase().equalsIgnoreCase("DEV")) {
+            }
+            else if (args[1].toUpperCase().equalsIgnoreCase("DEV")) {
                 rank = Rank.DEVELOPER;
-            } else if(args[1].toUpperCase().equalsIgnoreCase("YOUTUBE") || args[1].toUpperCase().equalsIgnoreCase("YOUTUBER") || args[1].toUpperCase().equalsIgnoreCase("YT")) {
+            }
+            else if (args[1].toUpperCase().equalsIgnoreCase("YOUTUBE") || args[1].toUpperCase().equalsIgnoreCase("YOUTUBER") || args[1].toUpperCase().equalsIgnoreCase("YT")) {
                 rank = Rank.MEDIA;
-            } else {
+            }
+            else {
                 rank = Rank.valueOf(args[1].toUpperCase());
             }
         }

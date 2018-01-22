@@ -112,8 +112,7 @@ public class CorePlugin extends JavaPlugin {
 		pm.registerEvents(new ProfileListeners(), this);
 		pm.registerEvents(new RankListeners(), this);
 
-		if(this.hub) {
-
+		if (this.hub) {
 			this.serverManager = new ServerManager();
 
 			pm.registerEvents(new UIListener(), this);
