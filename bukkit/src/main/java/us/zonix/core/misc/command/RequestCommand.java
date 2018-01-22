@@ -1,15 +1,9 @@
-package us.zonix.core.punishment.command;
+package us.zonix.core.misc.command;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.zonix.core.CorePlugin;
-import us.zonix.core.punishment.PunishmentHelper;
-import us.zonix.core.punishment.PunishmentType;
-import us.zonix.core.rank.Rank;
-import us.zonix.core.util.Clickable;
 import us.zonix.core.util.command.BaseCommand;
 import us.zonix.core.util.command.Command;
 import us.zonix.core.util.command.CommandArgs;
@@ -19,7 +13,7 @@ import java.util.UUID;
 
 public class RequestCommand extends BaseCommand {
 
-    private HashMap<UUID, Long> cooldown = new HashMap<>();
+    private static HashMap<UUID, Long> cooldown = new HashMap<>();
 
     @Command(name = "request", aliases = {"suggest", "bug"}, requiresPlayer = true)
     public void onCommand(CommandArgs command) {
@@ -31,15 +25,15 @@ public class RequestCommand extends BaseCommand {
             return;
         }
 
-        if(this.cooldown.containsKey(player.getUniqueId()) && this.cooldown.get(player.getUniqueId()) > System.currentTimeMillis()) {
+        if (cooldown.containsKey(player.getUniqueId()) && cooldown.get(player.getUniqueId()) > System.currentTimeMillis()) {
             player.sendMessage(ChatColor.RED + "Please wait, before sending a request again.");
             return;
         }
 
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < args.length; i++) {
-            sb.append(args[i]).append(" ");
+        for (String arg : args) {
+            sb.append(arg).append(" ");
         }
 
         String reason = sb.toString().trim();

@@ -2,7 +2,6 @@ package us.zonix.core.api.request;
 
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
-import us.zonix.core.punishment.Punishment;
 import us.zonix.core.shared.api.request.Request;
 import us.zonix.core.util.MapUtil;
 

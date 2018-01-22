@@ -1,13 +1,12 @@
 package us.zonix.core.profile;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class ProfileOptions {
 
 	private boolean receivePrivateMessages = true;
 	private boolean playPrivateMessageSound = true;
+	private boolean socialSpy = false;
 
 }

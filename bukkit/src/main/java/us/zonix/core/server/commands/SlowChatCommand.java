@@ -13,21 +13,21 @@ public class SlowChatCommand extends BaseCommand {
 
 	@Command(name = "slowchat", aliases = {"slow"}, rank = Rank.TRIAL_MOD)
 	public void onCommand(CommandArgs command) {
-
 		CommandSender sender = command.getSender();
 		String[] args = command.getArgs();
 
-		if(args.length < 1) {
+		if (args.length < 1) {
 			sender.sendMessage(ChatColor.RED + "Usage: /slowchat [seconds]");
 			return;
 		}
 
-		if(!NumberUtils.isNumber(args[0])) {
+		if (!NumberUtils.isNumber(args[0])) {
 			sender.sendMessage(ChatColor.RED + "Invalid time.");
 			return;
 		}
 
 		int time = Integer.parseInt(args[0]);
+
 		this.main.getRedisManager().setChatSlowDownTime((long) time * 1000L);
 
 		Bukkit.broadcastMessage(ChatColor.RED + (this.main.getRedisManager().getChatSlowDownTime() > 0 ? "Chat has been slowed by " + sender.getName() + " for " + time + "s." : "Slow Chat has been removed by " + sender.getName() + "."));

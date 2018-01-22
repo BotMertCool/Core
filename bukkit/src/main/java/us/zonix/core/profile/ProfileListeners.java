@@ -49,7 +49,7 @@ public class ProfileListeners implements Listener {
 			return;
 		}
 
-		if(profile.getAlts().size() == 0) {
+		if (profile.getAlts().size() == 0) {
 			profile.loadProfileAlts();
 		}
 

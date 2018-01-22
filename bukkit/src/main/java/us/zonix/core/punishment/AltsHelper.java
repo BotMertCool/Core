@@ -16,8 +16,6 @@ import java.util.UUID;
 
 public class AltsHelper {
 
-    private static CorePlugin main = CorePlugin.getInstance();
-
     private CommandSender sender;
 
     private UUID uuid;
@@ -62,28 +60,25 @@ public class AltsHelper {
     private void attempt() {
         new BukkitRunnable() {
             public void run() {
-
                 Profile profile = Profile.getByUuid(uuid);
                 profile.loadProfileAlts();
 
-                if(profile.getAlts().size() == 0) {
+                if (profile.getAlts().size() == 0) {
                     sender.sendMessage(ChatColor.RED + "That player doesn't have any alts.");
                     return;
                 }
 
                 StringJoiner alts = new StringJoiner(", ");
 
-                for(UUID uuid : profile.getAlts()) {
+                for (UUID uuid : profile.getAlts()) {
                     OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 
-                    if(offlinePlayer != null) {
+                    if (offlinePlayer != null) {
                         alts.add(offlinePlayer.getName());
                     }
                 }
 
-
                 sender.sendMessage(ChatColor.RED + name + "'s Alts: " + ChatColor.WHITE + alts.toString());
-
             }
         }.runTaskAsynchronously(CorePlugin.getInstance());
     }

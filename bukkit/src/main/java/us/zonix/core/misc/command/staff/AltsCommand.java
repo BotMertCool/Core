@@ -1,4 +1,4 @@
-package us.zonix.core.punishment.command;
+package us.zonix.core.misc.command.staff;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

@@ -16,16 +16,15 @@ import us.zonix.core.util.command.CommandArgs;
 
 public class MuteCommand extends BaseCommand {
 
-    @Command(name = "mute", rank = Rank.TRIAL_MOD)
+    @Command(name = "mute", aliases = {"silence"}, rank = Rank.TRIAL_MOD)
     public void onCommand(CommandArgs command) {
         CommandSender sender = command.getSender();
         String[] args = command.getArgs();
 
         if (args.length < 3) {
-
             Clickable clickable = new Clickable(ChatColor.RED + "Usage: /mute <target> <time> <reason> [-s]", ChatColor.YELLOW + "Temporarily mute a player from chatting.\nAdd a \"-s\" at the end to silently mute a player.", "");
 
-            if(sender instanceof Player) {
+            if (sender instanceof Player) {
                 clickable.sendToPlayer((Player) sender);
             }
 

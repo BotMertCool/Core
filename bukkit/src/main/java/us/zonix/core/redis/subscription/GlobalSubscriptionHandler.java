@@ -22,7 +22,6 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
 
     @Override
     public void handleMessage(JsonObject object) {
-
         String type = object.get("type").getAsString();
         JsonObject data = object.get("data").getAsJsonObject();
 
@@ -85,7 +84,6 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
                 profile.updateTabList(rank);
             }
         }
-
         else if (type.equalsIgnoreCase("staffchat")) {
 
             String name = data.get("name").getAsString();
@@ -101,46 +99,40 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
                 }
             }
         }
-
         else if (type.equalsIgnoreCase("whitelist")) {
-
             String action = data.get("action").getAsString();
             String target = data.get("target").getAsString();
 
-            if(action.equalsIgnoreCase("add")) {
-
+            if (action.equalsIgnoreCase("add")) {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(target);
 
                 if(player != null) {
                     CorePlugin.getInstance().getServer().getWhitelistedPlayers().add(player);
                     CorePlugin.getInstance().getServer().reloadWhitelist();
                 }
-
-            } else if(action.equalsIgnoreCase("remove")) {
-
+            }
+            else if(action.equalsIgnoreCase("remove")) {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(target);
 
-                if(player != null) {
+                if (player != null) {
                     CorePlugin.getInstance().getServer().getWhitelistedPlayers().remove(player);
                     CorePlugin.getInstance().getServer().reloadWhitelist();
                 }
-            } else if(action.equalsIgnoreCase("off")) {
-
-                if(target.equalsIgnoreCase(CorePlugin.getInstance().getServerId())) {
+            }
+            else if (action.equalsIgnoreCase("off")) {
+                if (target.equalsIgnoreCase(CorePlugin.getInstance().getServerId())) {
                     CorePlugin.getInstance().getServer().setWhitelist(false);
                 }
-            } else if(action.equalsIgnoreCase("on")) {
-
-                if(target.equalsIgnoreCase(CorePlugin.getInstance().getServerId())) {
+            }
+            else if (action.equalsIgnoreCase("on")) {
+                if (target.equalsIgnoreCase(CorePlugin.getInstance().getServerId())) {
                     CorePlugin.getInstance().getServer().setWhitelist(true);
                 }
             }
 
             CorePlugin.getInstance().getLogger().info("[Whitelist] " + target + " -> " + action + ".");
         }
-
         else if (type.equalsIgnoreCase("report")) {
-
             String name = data.get("name").getAsString();
             String server = object.get("server").getAsString();
             String target = data.get("target").getAsString();
@@ -155,10 +147,7 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
                 }
             }
         }
-
-
         else if (type.equalsIgnoreCase("request")) {
-
             String name = data.get("name").getAsString();
             String server = object.get("server").getAsString();
             String message = data.get("message").getAsString();
@@ -172,9 +161,6 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
                 }
             }
         }
-
-
-
         else if (type.equalsIgnoreCase("server-data")) {
             String serverName = data.get("server-name").getAsString();
 

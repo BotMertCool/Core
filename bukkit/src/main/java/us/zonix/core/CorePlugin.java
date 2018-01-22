@@ -12,6 +12,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 import us.zonix.core.api.CoreProcessor;
 import us.zonix.core.board.BoardManager;
 import us.zonix.core.board.adapter.HubBoard;
+import us.zonix.core.misc.command.ReportCommand;
+import us.zonix.core.misc.command.*;
+import us.zonix.core.misc.command.game.*;
+import us.zonix.core.misc.command.staff.AltsCommand;
+import us.zonix.core.misc.command.staff.FreezeCommand;
+import us.zonix.core.misc.command.staff.StaffChatCommand;
+import us.zonix.core.misc.listener.HideStreamListener;
+import us.zonix.core.misc.listener.ServerListener;
 import us.zonix.core.profile.Profile;
 import us.zonix.core.profile.ProfileListeners;
 import us.zonix.core.punishment.command.*;
@@ -24,7 +32,12 @@ import us.zonix.core.server.commands.*;
 import us.zonix.core.server.listeners.ServerListeners;
 import us.zonix.core.server.tasks.ServerHandlerTask;
 import us.zonix.core.server.tasks.ServerHandlerTimeoutTask;
+import us.zonix.core.social.SocialHelper;
 import us.zonix.core.shared.redis.JedisSettings;
+import us.zonix.core.social.command.MessageCommand;
+import us.zonix.core.social.command.ReplyCommand;
+import us.zonix.core.social.command.SocialSpyCommand;
+import us.zonix.core.social.command.ToggleMessagesCommand;
 import us.zonix.core.util.LocationString;
 import us.zonix.core.util.command.CommandFramework;
 import us.zonix.core.util.file.ConfigFile;
@@ -54,6 +67,8 @@ public class CorePlugin extends JavaPlugin {
 	private QueueManager queueManager;
 
 	private CoreProcessor requestProcessor;
+
+	private SocialHelper socialHelper;
 
 	@Override
 	public void onEnable() {
@@ -85,6 +100,9 @@ public class CorePlugin extends JavaPlugin {
 		this.requestProcessor = new CoreProcessor(this, this.apiUrl, this.apiKey);
 		this.queueManager = new QueueManager(this);
 
+		this.socialHelper = new SocialHelper();
+
+		// punishment related
 		new BanCommand();
 		new BlacklistCommand();
 		new MuteCommand();
@@ -92,6 +110,10 @@ public class CorePlugin extends JavaPlugin {
 		new UnbanCommand();
 		new UnblacklistCommand();
 		new UnmuteCommand();
+		new KickCommand();
+
+		// staff related
+		new RankCommand();
 		new AltsCommand();
 		new FreezeCommand();
 		new SlowChatCommand();
@@ -100,10 +122,28 @@ public class CorePlugin extends JavaPlugin {
 		new StaffChatCommand();
 		new RequestCommand();
 		new ReportCommand();
-		new RankCommand();
+
+		// social related
+		new MessageCommand();
+		new ReplyCommand();
+		new SocialSpyCommand();
+		new ToggleMessagesCommand();
+
+		// server related
 		new SetMaxPlayersCommand();
 		new PingCommand();
 		new WhitelistCommand();
+
+		// game related
+		new CraftCommand();
+		new EnchantCommand();
+		new FeedCommand();
+		new GamemodeCommand();
+		new HealCommand();
+		new SpawnerCommand();
+		new TeleportCommand();
+		new TeleportHereCommand();
+		new TopCommand();
 
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			player.kickPlayer(ChatColor.RED + "This server is currently setting up...");
@@ -112,6 +152,10 @@ public class CorePlugin extends JavaPlugin {
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(new ProfileListeners(), this);
 		pm.registerEvents(new RankListeners(), this);
+
+		// misc
+		pm.registerEvents(new HideStreamListener(), this);
+		pm.registerEvents(new ServerListener(), this);
 
 		if (this.hub) {
 			this.serverManager = new ServerManager();
@@ -135,7 +179,6 @@ public class CorePlugin extends JavaPlugin {
 				Profile.getProfiles().removeIf((profile -> Bukkit.getPlayer(profile.getUuid()) == null));
 			}
 		}.runTaskTimerAsynchronously(this, 0L, 20L * 60);
-
 	}
 
 	@Override
@@ -161,7 +204,7 @@ public class CorePlugin extends JavaPlugin {
 			this.configFile.getConfiguration().set("server.spawn", LocationString.toString(this.spawnLocation));
 			this.configFile.getConfiguration().save(this.configFile.getFile());
 		}
-		catch (Exception ex) { }
+		catch (Exception ex) {}
 	}
 
 }

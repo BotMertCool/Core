@@ -38,7 +38,7 @@ public class BukkitCommand extends org.bukkit.command.Command {
             success = executor.onCommand(sender, this, commandLabel, args);
         }
         catch (Throwable ex) {
-            throw new CommandException("Unhandled exception executing command '" + commandLabel + "' in plugin " + owningPlugin.getDescription().getFullName(), ex);
+            throw new CommandException("Unhandled exception executing command '" + commandLabel + "' in main " + owningPlugin.getDescription().getFullName(), ex);
         }
 
         if (!success && usageMessage.length() > 0) {
@@ -75,7 +75,7 @@ public class BukkitCommand extends org.bukkit.command.Command {
                 message.append(arg).append(' ');
             }
 
-            message.deleteCharAt(message.length() - 1).append("' in plugin ").append(owningPlugin.getDescription().getFullName());
+            message.deleteCharAt(message.length() - 1).append("' in main ").append(owningPlugin.getDescription().getFullName());
 
             throw new CommandException(message.toString(), ex);
         }

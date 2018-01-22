@@ -174,7 +174,6 @@ public class Profile {
 	}
 
 	public void loadProfileAlts() {
-
 		JsonElement response = main.getRequestProcessor().sendRequest(new PlayerRequest.FetchAltsRequest(this.uuid));
 
 		if (response.isJsonNull() || response.isJsonPrimitive()) {
@@ -189,7 +188,7 @@ public class Profile {
 			JsonObject element = altElement.getAsJsonObject();
 			UUID profileUUID = UUID.fromString(element.get("uuid").getAsString());
 
-			if(!this.uuid.toString().equalsIgnoreCase(profileUUID.toString())) {
+			if (!this.uuid.toString().equalsIgnoreCase(profileUUID.toString())) {
 				alts.add(profileUUID);
 			}
 		});

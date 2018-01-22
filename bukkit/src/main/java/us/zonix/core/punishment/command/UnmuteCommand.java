@@ -15,16 +15,15 @@ import us.zonix.core.util.command.CommandArgs;
 
 public class UnmuteCommand extends BaseCommand {
 
-    @Command(name = "unmute", rank = Rank.MODERATOR)
+    @Command(name = "unmute", aliases = {"unsilence"}, rank = Rank.MODERATOR)
     public void onCommand(CommandArgs command) {
         CommandSender sender = command.getSender();
         String[] args = command.getArgs();
 
         if (args.length < 2) {
+            Clickable clickable = new Clickable(ChatColor.RED + "Usage: /unmute <target> [reason] [-s]", ChatColor.YELLOW + "Remove a player's mute.\nAdd a \"-s\" at the end to silently unmute a player.", "");
 
-            Clickable clickable = new Clickable(ChatColor.RED + "Usage: /unmute <target> [reason] [-s]", ChatColor.YELLOW + "Remove a player's mute.\nAdd a \"-s\" at the end to silently ban a player.", "");
-
-            if(sender instanceof Player) {
+            if (sender instanceof Player) {
                 clickable.sendToPlayer((Player) sender);
             }
 

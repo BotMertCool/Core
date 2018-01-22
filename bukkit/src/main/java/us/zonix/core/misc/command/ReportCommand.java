@@ -1,4 +1,4 @@
-package us.zonix.core.punishment.command;
+package us.zonix.core.misc.command;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class ReportCommand extends BaseCommand {
 
-    private HashMap<UUID, Long> cooldown = new HashMap<>();
+    private static HashMap<UUID, Long> cooldown = new HashMap<>();
 
     @Command(name = "report", requiresPlayer = true)
     public void onCommand(CommandArgs command) {
@@ -27,18 +27,17 @@ public class ReportCommand extends BaseCommand {
             return;
         }
 
-        if(this.cooldown.containsKey(player.getUniqueId()) && this.cooldown.get(player.getUniqueId()) > System.currentTimeMillis()) {
+        if (cooldown.containsKey(player.getUniqueId()) && cooldown.get(player.getUniqueId()) > System.currentTimeMillis()) {
             player.sendMessage(ChatColor.RED + "Please wait, before sending a report again.");
             return;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
 
-        if(target == null) {
+        if (target == null) {
             player.sendMessage(ChatColor.RED + "That player is not online.");
             return;
         }
-
 
         StringBuilder sb = new StringBuilder();
 
