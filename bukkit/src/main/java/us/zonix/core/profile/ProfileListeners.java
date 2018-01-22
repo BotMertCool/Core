@@ -49,6 +49,10 @@ public class ProfileListeners implements Listener {
 			return;
 		}
 
+		if(profile.getAlts().size() == 0) {
+			profile.loadProfileAlts();
+		}
+
 		for (UUID uuid : profile.getAlts()) {
 			if (!uuid.equals(event.getUniqueId())) {
 				Profile altProfile = Profile.getByUuid(uuid);
@@ -68,6 +72,16 @@ public class ProfileListeners implements Listener {
 					return;
 				}
 			}
+		}
+	}
+
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+	public void onPlayerLogin(final PlayerLoginEvent event) {
+
+		Profile profile = Profile.getByUuid(event.getPlayer().getUniqueId());
+
+		if(event.getResult() == PlayerLoginEvent.Result.KICK_FULL && profile != null && profile.getRank().isAboveOrEqual(Rank.SILVER)) {
+			event.allow();
 		}
 	}
 

@@ -18,6 +18,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import us.zonix.core.CorePlugin;
+import us.zonix.core.redis.queue.Queue;
 import us.zonix.core.util.ItemUtil;
 
 
@@ -82,14 +83,22 @@ public class ServerListeners implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
 
         Player player = event.getPlayer();
-
         event.setQuitMessage(null);
 
-        if(CorePlugin.getInstance().getQueueManager().getQueue(player) != null) {
-
-            CorePlugin.getInstance().getQueueManager().getQueue(player).removeFromQueue(player);
-            player.sendMessage(ChatColor.RED + "You have been removed from the queue.");
+        if (!CorePlugin.getInstance().getQueueManager().isServerOnline()) {
+            player.sendMessage(ChatColor.RED + "Queue Server is currently under maintenance.");
+            return;
         }
+
+        final Queue queue;
+
+        if ((queue = CorePlugin.getInstance().getQueueManager().getQueue(player)) == null) {
+            player.sendMessage(ChatColor.RED + "You are not currently in a queue.");
+            return;
+        }
+
+        player.sendMessage(ChatColor.RED + "You left the queue for " + queue.getServerName() + ".");
+        CorePlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(CorePlugin.getInstance(), () -> queue.removeFromQueue(player));
 
     }
 

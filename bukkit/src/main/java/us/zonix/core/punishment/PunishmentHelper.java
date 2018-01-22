@@ -170,6 +170,7 @@ public class PunishmentHelper {
 
                         @Override
                         public void onError(String message) {
+                            super.onError(message);
                             this.callback(null);
                         }
                     });

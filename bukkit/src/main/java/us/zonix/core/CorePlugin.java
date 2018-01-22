@@ -103,6 +103,7 @@ public class CorePlugin extends JavaPlugin {
 		new RankCommand();
 		new SetMaxPlayersCommand();
 		new PingCommand();
+		new WhitelistCommand();
 
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			player.kickPlayer(ChatColor.RED + "This server is currently setting up...");

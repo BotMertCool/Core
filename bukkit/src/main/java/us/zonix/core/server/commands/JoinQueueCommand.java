@@ -47,6 +47,7 @@ public class JoinQueueCommand extends BaseCommand {
         }
 
         player.sendMessage(ChatColor.GREEN + "You joined the queue for " + queue.getServerName() + ".");
-        queue.addToQueue(player);
+
+        this.main.getServer().getScheduler().runTaskAsynchronously(this.main, () -> queue.addToQueue(player));
     }
 }
