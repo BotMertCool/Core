@@ -87,17 +87,19 @@ public class CoreRedisManager {
         this.write(this.generateMessage("staffchat", object));
     }
 
-    public void writeRequest(String name, String message) {
+    public void writeRequest(String server, String name, String message) {
         JsonObject object = new JsonObject();
         object.addProperty("name", name);
+        object.addProperty("server", server);
         object.addProperty("message", message);
 
         this.write(this.generateMessage("request", object));
     }
 
-    public void writeReport(String name, String target, String message) {
+    public void writeReport(String server, String name, String target, String message) {
         JsonObject object = new JsonObject();
         object.addProperty("name", name);
+        object.addProperty("server", server);
         object.addProperty("target", target);
         object.addProperty("message", message);
 

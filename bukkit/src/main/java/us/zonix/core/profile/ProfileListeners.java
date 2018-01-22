@@ -49,6 +49,10 @@ public class ProfileListeners implements Listener {
 			return;
 		}
 
+		if(profile.getAlts().size() == 0) {
+			profile.loadProfileAlts();
+		}
+
 		for (UUID uuid : profile.getAlts()) {
 			if (!uuid.equals(event.getUniqueId())) {
 				Profile altProfile = Profile.getByUuid(uuid);

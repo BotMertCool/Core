@@ -22,7 +22,7 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
 
     @Override
     public void handleMessage(JsonObject object) {
-        String server = object.get("server").getAsString();
+
         String type = object.get("type").getAsString();
         JsonObject data = object.get("data").getAsJsonObject();
 
@@ -102,22 +102,6 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
             }
         }
 
-        else if (type.equalsIgnoreCase("report")) {
-
-            String name = data.get("name").getAsString();
-            String target = data.get("target").getAsString();
-            String message = data.get("message").getAsString();
-
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
-
-                if (profile != null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-                    String toSend = ChatColor.BLUE + "(Report) " + ChatColor.GRAY + name + ChatColor.WHITE + " reported " + ChatColor.GRAY + target + ChatColor.WHITE + " for " + ChatColor.YELLOW +  message + ".";
-                    player.sendMessage(toSend);
-                }
-            }
-        }
-
         else if (type.equalsIgnoreCase("whitelist")) {
 
             String action = data.get("action").getAsString();
@@ -155,16 +139,35 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
             CorePlugin.getInstance().getLogger().info("[Whitelist] " + target + " -> " + action + ".");
         }
 
-        else if (type.equalsIgnoreCase("request")) {
+        else if (type.equalsIgnoreCase("report")) {
 
             String name = data.get("name").getAsString();
+            String server = object.get("server").getAsString();
+            String target = data.get("target").getAsString();
             String message = data.get("message").getAsString();
 
             for (Player player : Bukkit.getOnlinePlayers()) {
                 Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
 
                 if (profile != null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-                    String toSend = ChatColor.BLUE + "(Request) " + ChatColor.GRAY + name + ChatColor.WHITE + " requested " + ChatColor.YELLOW +  message + ".";
+                    String toSend = ChatColor.BLUE + "(Report) | " + server + ": " +  ChatColor.GRAY + name + ChatColor.WHITE + " reported " + ChatColor.GRAY + target + ChatColor.WHITE + " for " + ChatColor.YELLOW +  message + ".";
+                    player.sendMessage(toSend);
+                }
+            }
+        }
+
+
+        else if (type.equalsIgnoreCase("request")) {
+
+            String name = data.get("name").getAsString();
+            String server = object.get("server").getAsString();
+            String message = data.get("message").getAsString();
+
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
+
+                if (profile != null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+                    String toSend = ChatColor.BLUE + "(Request) | " + server + ": " + ChatColor.GRAY + name + ChatColor.WHITE + " requested " + ChatColor.YELLOW +  message + ".";
                     player.sendMessage(toSend);
                 }
             }
