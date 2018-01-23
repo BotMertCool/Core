@@ -13,7 +13,7 @@ public class SocialHelper {
     private static CorePlugin main = CorePlugin.getInstance();
 
     public void sendMessage(Player from, Profile fromProfile, Player to, Profile toProfile, String message) {
-        main.getRequestProcessor().sendRequestAsync(new MessageRequest.InsertRequest(from.getUniqueId(), "(To " + to.getName() + ") -> " + message));
+        //main.getRequestProcessor().sendRequestAsync(new MessageRequest.InsertRequest(from.getUniqueId(), "(To " + to.getName() + ") -> " + message));
 
         from.sendMessage(main.getConfigFile()
                 .getString("messages.player_send")

@@ -66,7 +66,7 @@ public class FreezeCommand extends BaseCommand implements Listener {
 			for(Player online : Bukkit.getOnlinePlayers()) {
 				Profile profile = Profile.getByUuidIfAvailable(online.getUniqueId());
 				if(profile != null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-					online.sendMessage(ChatColor.RED + "(Punishment) " + ChatColor.GREEN + target.getName() + " was unfrozen banned by " + (sender instanceof ConsoleCommandSender ? "CONSOLE" : sender.getName()) + ".");
+					online.sendMessage(ChatColor.GREEN + target.getName() + " was unfrozen by " + (sender instanceof ConsoleCommandSender ? "CONSOLE" : sender.getName()) + ".");
 				}
 			}
 
@@ -83,7 +83,7 @@ public class FreezeCommand extends BaseCommand implements Listener {
 			for(Player online : Bukkit.getOnlinePlayers()) {
 				Profile profile = Profile.getByUuidIfAvailable(online.getUniqueId());
 				if(profile != null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-					online.sendMessage(ChatColor.RED + "(Punishment) " + ChatColor.GREEN + target.getName() + " was unfrozen banned by " + (sender instanceof ConsoleCommandSender ? "CONSOLE" : sender.getName()) + ".");
+					online.sendMessage(ChatColor.GREEN + target.getName() + " was unfrozen by " + (sender instanceof ConsoleCommandSender ? "CONSOLE" : sender.getName()) + ".");
 				}
 			}
 
@@ -99,7 +99,7 @@ public class FreezeCommand extends BaseCommand implements Listener {
 			for(Player online : Bukkit.getOnlinePlayers()) {
 				Profile profile = Profile.getByUuidIfAvailable(online.getUniqueId());
 				if(profile != null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-					online.sendMessage(ChatColor.RED + "(Punishment) " + ChatColor.GREEN + event.getPlayer().getName() + " logged out while frozen.");
+					online.sendMessage(ChatColor.GREEN + event.getPlayer().getName() + " logged out while frozen.");
 				}
 			}
 		}

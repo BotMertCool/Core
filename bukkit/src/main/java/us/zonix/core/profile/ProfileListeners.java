@@ -79,7 +79,7 @@ public class ProfileListeners implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onPlayerLogin(final PlayerLoginEvent event) {
 
-		Profile profile = Profile.getByUuid(event.getPlayer().getUniqueId());
+		Profile profile = Profile.getByUuidIfAvailable(event.getPlayer().getUniqueId());
 
 		if(event.getResult() == PlayerLoginEvent.Result.KICK_FULL && profile != null && profile.getRank().isAboveOrEqual(Rank.SILVER)) {
 			event.allow();
@@ -136,11 +136,6 @@ public class ProfileListeners implements Listener {
 			event.setCancelled(true);
 			CorePlugin.getInstance().getRedisManager().writeStaffChat(player.getName(), profile.getRank(), ChatColor.stripColor(event.getMessage()));
 		}
-	}
-
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onAsyncPlayerChatWatch(AsyncPlayerChatEvent event) {
-		CorePlugin.getInstance().getRequestProcessor().sendRequestAsync(new MessageRequest.InsertRequest(event.getPlayer().getUniqueId(), "(Global Chat) " + event.getMessage()));
 	}
 
 }

@@ -105,7 +105,7 @@ public class Punishment {
 			Profile profile = Profile.getByUuid(player.getUniqueId());
 
 			if (profile != null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-				Clickable clickable = new Clickable(ChatColor.RED + "(Punishment) " + ChatColor.GREEN + name + " was " + context + " by " + sender + ".", ChatColor.YELLOW + "Reason: " + ChatColor.RED + reason + "\n" + ChatColor.YELLOW + "Duration: " + ChatColor.RED + this.getTimeLeft(), "");
+				Clickable clickable = new Clickable(ChatColor.GREEN + name + " was " + context + " by " + sender + ".", ChatColor.YELLOW + "Reason: " + ChatColor.RED + reason + "\n" + ChatColor.YELLOW + "Duration: " + ChatColor.RED + this.getTimeLeft(), "");
 				clickable.sendToPlayer(player);
 			}
 			else {
