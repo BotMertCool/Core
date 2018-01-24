@@ -10,7 +10,7 @@ import us.zonix.core.util.command.CommandArgs;
 
 public class ToggleMessagesCommand extends BaseCommand {
 
-    @Command(name = "tpm", aliases = {"tdm", "togglemessages", "togglepm"}, rank = Rank.MODERATOR, requiresPlayer = true)
+    @Command(name = "tpm", aliases = {"tdm", "togglemessages", "togglepm"}, rank = Rank.DEFAULT, requiresPlayer = true)
     public void onCommand(CommandArgs command) {
         Player player = command.getPlayer();
         Profile profile = Profile.getByUuid(player.getUniqueId());

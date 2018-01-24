@@ -83,7 +83,7 @@ public class FreezeCommand extends BaseCommand implements Listener {
 			for(Player online : Bukkit.getOnlinePlayers()) {
 				Profile profile = Profile.getByUuidIfAvailable(online.getUniqueId());
 				if(profile != null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-					online.sendMessage(ChatColor.GREEN + target.getName() + " was unfrozen by " + (sender instanceof ConsoleCommandSender ? "CONSOLE" : sender.getName()) + ".");
+					online.sendMessage(ChatColor.GREEN + target.getName() + " was frozen by " + (sender instanceof ConsoleCommandSender ? "CONSOLE" : sender.getName()) + ".");
 				}
 			}
 
