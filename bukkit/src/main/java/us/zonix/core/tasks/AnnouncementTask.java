@@ -13,13 +13,13 @@ public class AnnouncementTask {
         this.plugin = plugin;
         this.count = 0;
         this.announcements = new String[] {
-                "&7[&c*&7] &fCheck out our Twitter for updates and giveaways! &ctwitter.com/ZonixUS",
-                "&7[&c*&7] &fWe are having a 50% OFF Sale in our store. &cstore.zonix.us",
-                "&7[&c*&7] &fPremium Matches? You should get some at &cstore.zonix.us",
-                "&7[&c*&7] &fSee a hacker/cheater? Report them using &c/report",
-                "&7[&c*&7] &fStaff applications are &aopen &fapply at &cwww.zonix.us",
-                "&7[&c*&7] &fWe have a TeamSpeak server. &cts.zonix.us",
-                "&7[&c*&7] &fCheck out our leaderboards and see if you're on the top! &cwww.zonix.us/leaderboards"
+                "&8[&4✪&8] &7Check out our Twitter for updates and giveaways! &ctwitter.com/ZonixUS",
+                "&8[&4✪&8] &7We are having a &c50% OFF &7sale in our store. &cstore.zonix.us",
+                "&8[&4✪&8] &7Purchase premium matches on our store at &cstore.zonix.us",
+                "&8[&4✪&8] &7Report cheating players by using &c/report&7.",
+                "&8[&4✪&8] &7Staff applications are &aopen &7apply at &cwww.zonix.us",
+                "&8[&4✪&8] &7Join our Teamspeak server using: &cts.zonix.us",
+                "&8[&4✪&8] &7Check out the leaderboards on our website &cwww.zonix.us/leaderboards"
         };
 
         this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(this.plugin, () -> plugin.getServer().broadcastMessage(getNextAnnouncerMessage()), 1200L, 1200L);
