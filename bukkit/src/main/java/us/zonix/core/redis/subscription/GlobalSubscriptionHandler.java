@@ -162,17 +162,6 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
             }
         }
 
-        else if (type.equalsIgnoreCase("announcement")) {
-            long lastSent = data.get("time").getAsLong();
-            String message = data.get("message").getAsString();
-
-            if(lastSent > System.currentTimeMillis()) {
-                return;
-            }
-
-            CorePlugin.getInstance().getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&', message));
-        }
-
         else if (type.equalsIgnoreCase("server-data")) {
             String serverName = data.get("server-name").getAsString();
 

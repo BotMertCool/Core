@@ -10,7 +10,7 @@ import us.zonix.core.util.command.CommandArgs;
 
 public class TeleportHereCommand extends BaseCommand {
 
-    @Command(name = "teleporthere", aliases = {"tphere"}, rank = Rank.DEVELOPER, requiresPlayer = true)
+    @Command(name = "teleporthere", aliases = {"tphere"}, rank = Rank.ADMINISTRATOR, requiresPlayer = true)
     public void onCommand(CommandArgs command) {
         Player player = command.getPlayer();
         String[] args = command.getArgs();

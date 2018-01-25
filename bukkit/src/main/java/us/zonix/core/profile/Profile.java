@@ -35,6 +35,7 @@ public class Profile {
 	@Setter private String ip;
 	@Setter private Rank rank = Rank.DEFAULT;
 	@Setter private UUID lastMessaged;
+	@Setter private List<UUID> ignored;
 	@Setter private String emailAddress;
 	@Setter private String confirmationId;
 	@Setter private boolean registered;
@@ -47,6 +48,7 @@ public class Profile {
 	public Profile(UUID uuid) {
 		this.uuid = uuid;
 		this.punishments = new ArrayList<>();
+		this.ignored = new ArrayList<>();
 		this.alts = new HashSet<>();
 		this.options = new ProfileOptions();
 

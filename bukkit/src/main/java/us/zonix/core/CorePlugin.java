@@ -34,10 +34,8 @@ import us.zonix.core.server.tasks.ServerHandlerTask;
 import us.zonix.core.server.tasks.ServerHandlerTimeoutTask;
 import us.zonix.core.social.SocialHelper;
 import us.zonix.core.shared.redis.JedisSettings;
-import us.zonix.core.social.command.MessageCommand;
-import us.zonix.core.social.command.ReplyCommand;
-import us.zonix.core.social.command.SocialSpyCommand;
-import us.zonix.core.social.command.ToggleMessagesCommand;
+import us.zonix.core.social.command.*;
+import us.zonix.core.tasks.AnnouncementTask;
 import us.zonix.core.util.LocationString;
 import us.zonix.core.util.command.CommandFramework;
 import us.zonix.core.util.file.ConfigFile;
@@ -131,6 +129,7 @@ public class CorePlugin extends JavaPlugin {
 		new ReplyCommand();
 		new SocialSpyCommand();
 		new ToggleMessagesCommand();
+		new IgnoreCommand();
 
 		// server related
 		new SetMaxPlayersCommand();
@@ -176,6 +175,7 @@ public class CorePlugin extends JavaPlugin {
 
 		new ServerHandlerTask(this).runTaskTimerAsynchronously(this, 20L, 20L);
 		new ServerHandlerTimeoutTask(this).runTaskTimerAsynchronously(this, 20L, 20L);
+		new AnnouncementTask(this);
 
 		// clean cached profiles every minute
 		new BukkitRunnable() {

@@ -38,21 +38,30 @@ public class MessageCommand extends BaseCommand {
             return;
         }
 
+        if(profile.getIgnored().contains(target.getUniqueId())) {
+            player.sendMessage(ChatColor.RED + "You can't send a message to an ignored player.");
+            return;
+        }
+
         Profile targetProfile = Profile.getByUuid(target.getUniqueId());
 
-        if (targetProfile != null && !targetProfile.getOptions().isReceivePrivateMessages()) {
+        if(targetProfile == null) {
+            return;
+        }
+
+        if (!targetProfile.getOptions().isReceivePrivateMessages()) {
             player.sendMessage(ChatColor.RED + "That player is not receiving private messages.");
+            return;
+        }
+
+        if(targetProfile.getIgnored().contains(player.getUniqueId())) {
+            player.sendMessage(ChatColor.RED + "That player has ignored you.");
             return;
         }
 
         String message = StringUtils.join(args, ' ', 1, args.length);
 
         main.getSocialHelper().sendMessage(player, profile, target, targetProfile, message);
-
-        if(targetProfile != null) {
-            profile.setLastMessaged(target.getUniqueId());
-            targetProfile.setLastMessaged(player.getUniqueId());
-        }
 
     }
 
