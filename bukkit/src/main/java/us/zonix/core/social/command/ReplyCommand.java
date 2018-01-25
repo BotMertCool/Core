@@ -51,6 +51,11 @@ public class ReplyCommand extends BaseCommand {
         String message = StringUtils.join(args, ' ', 0, args.length);
 
         main.getSocialHelper().sendMessage(player, profile, target, targetProfile, message);
+
+        if(targetProfile != null) {
+            profile.setLastMessaged(target.getUniqueId());
+            targetProfile.setLastMessaged(player.getUniqueId());
+        }
     }
 
 }

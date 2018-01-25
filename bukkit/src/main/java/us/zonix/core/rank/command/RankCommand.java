@@ -54,6 +54,9 @@ public class RankCommand extends BaseCommand {
             else if (args[1].toUpperCase().equalsIgnoreCase("YOUTUBE") || args[1].toUpperCase().equalsIgnoreCase("YOUTUBER") || args[1].toUpperCase().equalsIgnoreCase("YT")) {
                 rank = Rank.MEDIA;
             }
+            else if (args[1].toUpperCase().equalsIgnoreCase("MEDIAOWNER")) {
+                rank = Rank.MEDIA_OWNER;
+            }
             else {
                 rank = Rank.valueOf(args[1].toUpperCase());
             }
