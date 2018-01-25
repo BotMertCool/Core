@@ -1,5 +1,6 @@
 package us.zonix.core.tasks;
 
+import org.bukkit.ChatColor;
 import us.zonix.core.CorePlugin;
 
 public class AnnouncementTask {
@@ -25,14 +26,15 @@ public class AnnouncementTask {
     }
 
     private String getNextAnnouncerMessage() {
-
         if (this.count >= this.announcements.length) {
             this.count = 0;
         }
 
         final String message = this.announcements[this.count];
+
         this.count++;
-        return message;
+
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
 }

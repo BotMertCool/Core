@@ -33,6 +33,7 @@ public class RegisterCommand extends BaseCommand {
         Profile profile = Profile.getByUuid(player.getUniqueId());
 
         if (profile == null) {
+            player.sendMessage(ChatColor.RED + "Your profile could not be found.");
             return;
         }
 
@@ -53,7 +54,10 @@ public class RegisterCommand extends BaseCommand {
             long timeLeft = (last - current);
 
             player.sendMessage(ChatColor.RED + "You must wait " + RegisterCommand.readableTime(timeLeft) + " before attempting to register again.");
-        } else {
+        }
+        else {
+            player.sendMessage(ChatColor.GRAY + "(Attempting to register...)");
+
             String confirmationId = RandomStringUtils.randomAlphanumeric(16);
 
             profile.setEmailAddress(command.getArgs()[0]);
@@ -72,11 +76,14 @@ public class RegisterCommand extends BaseCommand {
                         RegisterCommand.this.sendEmail(profile.getEmailAddress(), confirmationId);
 
                         player.sendMessage(ChatColor.YELLOW + "Please check your email at " + ChatColor.GOLD + profile.getEmailAddress() + ChatColor.YELLOW + " to complete your registration.");
-                    } else if (response.equalsIgnoreCase("already-registered")) {
+                    }
+                    else if (response.equalsIgnoreCase("already-registered")) {
                         player.sendMessage(ChatColor.RED + "You have already registered. If you need assistance completing your registration, join our TeamSpeak.");
-                    } else if (response.equalsIgnoreCase("player-not-found")) {
+                    }
+                    else if (response.equalsIgnoreCase("player-not-found")) {
                         player.sendMessage(ChatColor.RED + "Could not process your registration. Try re-logging.");
-                    } else {
+                    }
+                    else {
                         player.sendMessage(ChatColor.RED + "Could not process your registration. Try again in a little bit.");
                     }
                 }

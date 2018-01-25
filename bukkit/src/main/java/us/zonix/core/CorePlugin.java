@@ -180,7 +180,11 @@ public class CorePlugin extends JavaPlugin {
 		// clean cached profiles every minute
 		new BukkitRunnable() {
 			public void run() {
-				for (UUID uuid : Profile.getProfiles().keySet()) {
+				Iterator<UUID> it = Profile.getProfiles().keySet().iterator();
+
+				while (it.hasNext()) {
+					UUID uuid = it.next();
+
 					if (Bukkit.getPlayer(uuid) == null) {
 						Profile.getProfiles().remove(uuid);
 					}
