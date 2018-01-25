@@ -17,18 +17,16 @@ import us.zonix.core.CorePlugin;
 import us.zonix.core.api.callback.AbstractBukkitCallback;
 import us.zonix.core.api.request.PlayerRequest;
 import us.zonix.core.api.request.PunishmentRequest;
-import us.zonix.core.punishment.AltsHelper;
 import us.zonix.core.punishment.Punishment;
 import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
 import us.zonix.core.shared.api.callback.Callback;
-import us.zonix.core.util.UUIDType;
 
 @Getter
 public class Profile {
 
 	private static CorePlugin main = CorePlugin.getInstance();
-	@Getter private static Set<Profile> profiles = new HashSet<>();
+	@Getter private static Map<UUID, Profile> profiles = new HashMap<>();
 
 	private UUID uuid;
 	@Setter private String name;
@@ -52,7 +50,7 @@ public class Profile {
 		this.loadProfile();
 		this.loadPunishments();
 
-		profiles.add(this);
+		profiles.put(this.uuid, this);
 	}
 
 	public boolean isMuted() {
@@ -264,23 +262,18 @@ public class Profile {
 	}
 
 	public static Profile getByUuidIfAvailable(UUID uuid) {
-		for (Profile profile : profiles) {
-			if (profile.getUuid().equals(uuid)) {
-				return profile;
-			}
-		}
-
-		return null;
+		return profiles.get(uuid);
 	}
 
 	public static Profile getByUuid(UUID uuid) {
-        for (Profile profile : profiles) {
-            if (profile.getUuid().equals(uuid)) {
-                return profile;
-            }
-        }
+        Profile profile = profiles.get(uuid);
 
-        return new Profile(uuid);
+        if (profile == null) {
+        	return new Profile(uuid);
+		}
+		else {
+        	return profile;
+		}
 	}
 
 }

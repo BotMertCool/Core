@@ -43,6 +43,9 @@ import us.zonix.core.util.command.CommandFramework;
 import us.zonix.core.util.file.ConfigFile;
 import us.zonix.core.util.inventory.UIListener;
 
+import java.util.Iterator;
+import java.util.UUID;
+
 @Getter
 public class CorePlugin extends JavaPlugin {
 
@@ -176,7 +179,11 @@ public class CorePlugin extends JavaPlugin {
 		// clean cached profiles every minute
 		new BukkitRunnable() {
 			public void run() {
-				Profile.getProfiles().removeIf((profile -> Bukkit.getPlayer(profile.getUuid()) == null));
+				for (UUID uuid : Profile.getProfiles().keySet()) {
+					if (Bukkit.getPlayer(uuid) == null) {
+						Profile.getProfiles().remove(uuid);
+					}
+				}
 			}
 		}.runTaskTimerAsynchronously(this, 0L, 20L * 60);
 	}
