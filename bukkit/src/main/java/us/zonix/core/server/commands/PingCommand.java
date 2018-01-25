@@ -41,7 +41,6 @@ public class PingCommand extends BaseCommand {
         sender.sendMessage(ChatColor.YELLOW + toCheck.getName() + (toCheck.getName().endsWith("s") ? "'" : "'s") + ChatColor.GRAY + " current ping is " + ChatColor.GOLD + getPing(toCheck) + "ms" + ChatColor.GRAY + ".");
     }
 
-
     private int getPing(Player player) {
         int ping = ((CraftPlayer)player).getHandle().ping;
 

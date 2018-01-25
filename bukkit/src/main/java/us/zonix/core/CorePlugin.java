@@ -136,6 +136,7 @@ public class CorePlugin extends JavaPlugin {
 		new SetMaxPlayersCommand();
 		new PingCommand();
 		new WhitelistCommand();
+		new RegisterCommand();
 
 		// game related
 		new CraftCommand();

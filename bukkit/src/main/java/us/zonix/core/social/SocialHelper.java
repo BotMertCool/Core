@@ -25,6 +25,9 @@ public class SocialHelper {
     public void sendMessage(Player from, Profile fromProfile, Player to, Profile toProfile, String message) {
         //main.getRequestProcessor().sendRequestAsync(new MessageRequest.InsertRequest(from.getUniqueId(), "(To " + to.getName() + ") -> " + message));
 
+        toProfile.setLastMessaged(from.getUniqueId());
+        fromProfile.setLastMessaged(to.getUniqueId());
+
         from.sendMessage(main.getConfigFile()
                 .getString("messages.player_send")
                 .replace("%TO%", (toProfile != null ? toProfile.getRank().getColor() : "") + to.getName())

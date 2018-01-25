@@ -35,6 +35,9 @@ public class Profile {
 	@Setter private String ip;
 	@Setter private Rank rank = Rank.DEFAULT;
 	@Setter private UUID lastMessaged;
+	@Setter private String emailAddress;
+	@Setter private String confirmationId;
+	@Setter private boolean registered;
 	@Setter private long lastRegister;
 	@Setter private long chatCooldown;
 	private List<Punishment> punishments;

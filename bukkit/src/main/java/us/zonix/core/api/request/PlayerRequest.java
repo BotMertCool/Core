@@ -80,6 +80,32 @@ public abstract class PlayerRequest implements Request {
 
 	}
 
+	public static final class UpdateRegisterRequest extends PlayerRequest {
+
+		private final UUID uuid;
+		private final String emailAddress;
+		private final String confirmationId;
+		private final boolean registered;
+
+		public UpdateRegisterRequest(UUID uuid, String emailAddress, String confirmationId, boolean registered) {
+			super("update-register");
+
+			this.uuid = uuid;
+			this.emailAddress = emailAddress;
+			this.confirmationId = confirmationId;
+			this.registered = registered;
+		}
+
+		@Override public Map<String, Object> toMap() {
+			return MapUtil.of(
+					"uuid", this.uuid,
+					"emailAddress", this.emailAddress,
+					"confirmationId", this.confirmationId,
+					"registered", this.registered
+			);
+		}
+	}
+
 	public static final class UpdateRankRequest extends PlayerRequest {
 
 		private final UUID uuid;
