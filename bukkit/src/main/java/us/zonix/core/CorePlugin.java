@@ -186,7 +186,7 @@ public class CorePlugin extends JavaPlugin {
 					UUID uuid = it.next();
 
 					if (Bukkit.getPlayer(uuid) == null) {
-						Profile.getProfiles().remove(uuid);
+						it.remove();
 					}
 				}
 			}
