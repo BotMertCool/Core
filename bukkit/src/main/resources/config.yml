@@ -13,5 +13,5 @@ messages:
   player_receive: "&7(From &f%FROM%&7) &7%MESSAGE%"
   social_spy: "&7(&f%FROM% &7-> &f%TO%&7) &7%MESSAGE%"
 email:
-  user: ""
-  password: ""
+  user: "admin@zonix.us"
+  password: "^EyY^f8$5$T98QM_"

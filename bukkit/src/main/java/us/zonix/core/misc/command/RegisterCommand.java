@@ -136,7 +136,6 @@ public class RegisterCommand extends BaseCommand {
                 Session session = Session.getDefaultInstance(props,
                         new javax.mail.Authenticator() {
                             protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-                                // TODO: add config options for user & pass
                                 return new PasswordAuthentication(CorePlugin.getInstance().getConfigFile().getString("email.user"), CorePlugin.getInstance().getConfigFile().getString("email.password"));
                             }
                         }
