@@ -17,7 +17,7 @@ public class AnnouncementTask {
                 "&8[&4✪&8] &7We are having a &c50% OFF &7sale in our store. &cstore.zonix.us",
                 "&8[&4✪&8] &7Purchase premium matches on our store at &cstore.zonix.us",
                 "&8[&4✪&8] &7Report cheating players by using &c/report&7.",
-                "&8[&4✪&8] &7Staff applications are &aopen &7apply at &cwww.zonix.us",
+                //"&8[&4✪&8] &7Staff applications are &aopen &7apply at &cwww.zonix.us",
                 "&8[&4✪&8] &7Join our Teamspeak server using: &cts.zonix.us",
                 "&8[&4✪&8] &7Check out the leaderboards on our website &cwww.zonix.us/leaderboards"
         };

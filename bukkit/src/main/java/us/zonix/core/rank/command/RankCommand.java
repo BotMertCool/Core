@@ -48,7 +48,7 @@ public class RankCommand extends BaseCommand {
             else if (args[1].toUpperCase().equalsIgnoreCase("TMOD") || args[1].toUpperCase().equalsIgnoreCase("TRIALMOD")) {
                 rank = Rank.TRIAL_MOD;
             }
-            else if (args[1].equalsIgnoreCase("SRMOD")) {
+            else if (args[1].toUpperCase().equalsIgnoreCase("SRMOD")) {
                 rank = Rank.SENIOR_MODERATOR;
             }
             else if (args[1].toUpperCase().equalsIgnoreCase("DEV")) {

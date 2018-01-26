@@ -15,7 +15,7 @@ public enum Rank {
 	EMERALD(ChatColor.GREEN + "✵", ChatColor.DARK_GREEN.toString(), "Emerald", ""),
 	ZONIX(ChatColor.GOLD + "❊", ChatColor.DARK_RED.toString() + ChatColor.BOLD.toString(), "Zonix", ""),
 	BUILDER(ChatColor.GRAY.toString() + "[", ChatColor.BLUE.toString(), "Builder", ChatColor.GRAY.toString() + "] "),
-	MEDIA(ChatColor.GRAY.toString() + "[", ChatColor.LIGHT_PURPLE.toString() + ChatColor.ITALIC.toString(), "YouTuber", ChatColor.GRAY.toString() + "] "),
+	MEDIA(ChatColor.GRAY.toString() + "[", ChatColor.LIGHT_PURPLE.toString(), "YouTuber", ChatColor.GRAY.toString() + "] "),
 	FAMOUS(ChatColor.GRAY.toString() + "[", ChatColor.LIGHT_PURPLE.toString() + ChatColor.ITALIC.toString(), "Famous", ChatColor.GRAY.toString() + "] "),
 	PARTNER(ChatColor.GRAY.toString() + "[", ChatColor.LIGHT_PURPLE.toString() + ChatColor.ITALIC.toString(), "Partner", ChatColor.GRAY.toString() + "] "),
 	TRIAL_MOD(ChatColor.GRAY.toString() + "[", ChatColor.YELLOW.toString(), "Trial-Moderator", ChatColor.GRAY.toString() + "] "),
@@ -23,7 +23,7 @@ public enum Rank {
 	SENIOR_MODERATOR(ChatColor.GRAY.toString() + "[", ChatColor.DARK_PURPLE.toString(), "Sr. Moderator", ChatColor.GRAY.toString() + "] "),
 	ADMINISTRATOR(ChatColor.GRAY.toString() + "[", ChatColor.RED.toString(), "Administrator", ChatColor.GRAY.toString() + "] "),
 	MEDIA_OWNER(ChatColor.GRAY.toString() + "[", ChatColor.DARK_RED.toString(), "Owner", ChatColor.GRAY.toString() + "] "),
-	MANAGER(ChatColor.GRAY.toString() + "[", ChatColor.LIGHT_PURPLE.toString() + ChatColor.ITALIC.toString(), "Manager", ChatColor.GRAY.toString() + "] "),
+	MANAGER(ChatColor.GRAY.toString() + "[", ChatColor.RED.toString(), "Manager", ChatColor.GRAY.toString() + "] "),
 	DEVELOPER(ChatColor.GRAY.toString() + "[", ChatColor.AQUA.toString(), "Developer", ChatColor.GRAY.toString() + "] "),
 	OWNER(ChatColor.GRAY.toString() + "[", ChatColor.DARK_RED.toString(), "Owner", ChatColor.GRAY.toString() + "] ");
 
