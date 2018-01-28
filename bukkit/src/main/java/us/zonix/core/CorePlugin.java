@@ -138,6 +138,7 @@ public class CorePlugin extends JavaPlugin {
 		new RegisterCommand();
 
 		// game related
+		new AlertCommand();
 		new CraftCommand();
 		new EnchantCommand();
 		new FeedCommand();
