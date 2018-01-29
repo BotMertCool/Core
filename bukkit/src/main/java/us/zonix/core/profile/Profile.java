@@ -41,6 +41,7 @@ public class Profile {
 	@Setter private boolean registered;
 	@Setter private long lastRegister;
 	@Setter private long chatCooldown;
+	@Setter private boolean chatEnabled;
 	private List<Punishment> punishments;
 	private Set<UUID> alts;
 	private ProfileOptions options;

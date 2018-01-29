@@ -33,7 +33,7 @@ public class IgnoreCommand extends BaseCommand {
             return;
         }
 
-        if (profile.getIgnored().contains(player.getUniqueId())) {
+        if (profile.getIgnored().contains(target.getUniqueId())) {
             profile.getIgnored().remove(target.getUniqueId());
             player.sendMessage(ChatColor.RED + "You have unignored " + target.getName());
             return;

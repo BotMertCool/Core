@@ -74,7 +74,6 @@ public class RegisterCommand extends BaseCommand {
 
                     if (response.equalsIgnoreCase("success")) {
                         RegisterCommand.this.sendEmail(profile.getEmailAddress(), confirmationId);
-
                         player.sendMessage(ChatColor.YELLOW + "Please check your email at " + ChatColor.GOLD + profile.getEmailAddress() + ChatColor.YELLOW + " to complete your registration.");
                     }
                     else if (response.equalsIgnoreCase("already-registered")) {
@@ -134,16 +133,17 @@ public class RegisterCommand extends BaseCommand {
             public void run() {
                 // TODO: add config options for properties
                 Properties props = new Properties();
-                props.put("mail.smtp.host", "smtp.gmail.com");
+                props.put("mail.smtp.host", "mail.privateemail.com");
                 props.put("mail.smtp.auth", "true");
                 props.put("mail.smtp.socketFactory.port", "465");
-                props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+                props.put("mail.smtp.socketFactory.class",
+                        "javax.net.ssl.SSLSocketFactory");
                 props.put("mail.smtp.port", "465");
 
                 Session session = Session.getDefaultInstance(props,
-                        new javax.mail.Authenticator() {
-                            protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-                                return new PasswordAuthentication(CorePlugin.getInstance().getConfigFile().getString("email.user"), CorePlugin.getInstance().getConfigFile().getString("email.password"));
+                        new Authenticator() {
+                            protected PasswordAuthentication getPasswordAuthentication() {
+                                return new PasswordAuthentication("admin@zonix.us", "^EyY^f8$5$T98QM_");
                             }
                         }
                 );
@@ -161,6 +161,7 @@ public class RegisterCommand extends BaseCommand {
                                     + "Zonix Network");
 
                     Transport.send(message);
+
                 } catch (MessagingException | UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }

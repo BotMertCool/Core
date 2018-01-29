@@ -14,6 +14,8 @@ import us.zonix.core.punishment.Punishment;
 import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class ProfileListeners implements Listener {
@@ -30,6 +32,7 @@ public class ProfileListeners implements Listener {
 		profile.setLastLogin(System.currentTimeMillis());
 		profile.setIp(event.getAddress().getHostAddress());
 		profile.setChatCooldown(0L);
+		profile.setChatEnabled(true);
 
 		if (profile.getName() == null) {
 			profile.setName(event.getName());
@@ -135,6 +138,17 @@ public class ProfileListeners implements Listener {
 		if (CorePlugin.getInstance().getRedisManager().getStaffChat().contains(player.getUniqueId())) {
 			event.setCancelled(true);
 			CorePlugin.getInstance().getRedisManager().writeStaffChat(player.getName(), profile.getRank(), ChatColor.stripColor(event.getMessage()));
+		}
+
+		List<Player> recipientList = new ArrayList<>(event.getRecipients());
+		for (Player recipient : recipientList) {
+			Profile profileRecipient = Profile.getByUuid(recipient.getUniqueId());
+			if (profileRecipient != null) {
+
+				if(!profileRecipient.isChatEnabled() || profileRecipient.getIgnored().contains(profile.getUuid())) {
+					event.getRecipients().remove(recipient);
+				}
+			}
 		}
 	}
 

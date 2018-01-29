@@ -9,7 +9,7 @@ import us.zonix.core.util.command.CommandArgs;
 
 public class AlertCommand extends BaseCommand {
 
-    @Command(name = "alertsilent", rank = Rank.MANAGER, requiresPlayer = true)
+    @Command(name = "alertsilent", rank = Rank.MANAGER)
 
     public void onCommand(CommandArgs command) {
 

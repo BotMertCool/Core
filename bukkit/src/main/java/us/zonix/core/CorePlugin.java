@@ -129,6 +129,7 @@ public class CorePlugin extends JavaPlugin {
 		new ReplyCommand();
 		new SocialSpyCommand();
 		new ToggleMessagesCommand();
+		new ToggleChatCommand();
 		new IgnoreCommand();
 
 		// server related
