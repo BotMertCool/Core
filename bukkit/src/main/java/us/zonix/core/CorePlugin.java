@@ -149,6 +149,8 @@ public class CorePlugin extends JavaPlugin {
 		new TeleportCommand();
 		new TeleportHereCommand();
 		new TopCommand();
+		new TeleportPositionCommand();
+		new WorldCommand();
 
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			player.kickPlayer(ChatColor.RED + "This server is currently setting up...");
