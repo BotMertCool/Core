@@ -39,7 +39,7 @@ public class ProfileListeners implements Listener {
 			profile.save();
 		}
 
-		if (ban != null) {
+		if (ban != null && !CorePlugin.getInstance().isHub()) {
 			event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
 			event.setKickMessage(ban.getType().getMessage());
 			Profile.getProfiles().remove(profile);
@@ -62,7 +62,7 @@ public class ProfileListeners implements Listener {
 				Profile altProfile = Profile.getByUuid(uuid);
 				Punishment bannedAlt = altProfile.getBannedPunishment();
 
-				if (bannedAlt != null) {
+				if (bannedAlt != null && !CorePlugin.getInstance().isHub()) {
 					event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
 					event.setKickMessage(bannedAlt.getType().getMessage());
 					Profile.getProfiles().remove(altProfile);

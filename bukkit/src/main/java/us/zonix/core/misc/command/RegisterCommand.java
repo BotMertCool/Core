@@ -143,14 +143,14 @@ public class RegisterCommand extends BaseCommand {
                 Session session = Session.getDefaultInstance(props,
                         new Authenticator() {
                             protected PasswordAuthentication getPasswordAuthentication() {
-                                return new PasswordAuthentication("admin@zonix.us", "^EyY^f8$5$T98QM_");
+                                return new PasswordAuthentication("site@zonix.us", "@EQaFEnApr2b");
                             }
                         }
                 );
 
                 try {
                     MimeMessage message = new MimeMessage(session);
-                    message.setFrom(new InternetAddress("admin@zonix.us", "Zonix Network"));
+                    message.setFrom(new InternetAddress("site@zonix.us", "Zonix Network"));
                     message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
                     message.setSubject("Zonix - Complete Your Registration");
                     message.setText(

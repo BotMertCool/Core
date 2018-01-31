@@ -16,6 +16,7 @@ import us.zonix.core.CorePlugin;
 import us.zonix.core.board.Board;
 import us.zonix.core.board.BoardAdapter;
 import us.zonix.core.profile.Profile;
+import us.zonix.core.punishment.Punishment;
 import us.zonix.core.redis.queue.Queue;
 
 public class HubBoard implements BoardAdapter {
@@ -39,6 +40,17 @@ public class HubBoard implements BoardAdapter {
 		List<String> strings = new LinkedList<>();
 
 		Profile profile = Profile.getByUuid(player.getUniqueId());
+		Punishment ban = profile.getBannedPunishment();
+
+		if(ban != null && CorePlugin.getInstance().isHub()) {
+			strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
+			strings.add(ChatColor.DARK_RED.toString() + ChatColor.BOLD + "BANNED");
+			strings.add(ChatColor.GRAY.toString() + ban.getTimeLeft());
+			strings.add(" ");
+			strings.add(ChatColor.RED.toString() + "Appeal at www.zonix.us");
+			strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
+			return strings;
+		}
 
 		strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
 		strings.add(ChatColor.GOLD.toString() + ChatColor.BOLD + "Online:");
