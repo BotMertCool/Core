@@ -3,6 +3,7 @@ package us.zonix.core.server.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import us.zonix.core.CorePlugin;
+import us.zonix.core.profile.Profile;
 import us.zonix.core.rank.Rank;
 import us.zonix.core.redis.queue.Queue;
 import us.zonix.core.util.command.BaseCommand;
@@ -48,6 +49,6 @@ public class JoinQueueCommand extends BaseCommand {
 
         player.sendMessage(ChatColor.GREEN + "You joined the queue for " + queue.getServerName() + ".");
 
-        this.main.getServer().getScheduler().runTaskAsynchronously(this.main, () -> queue.addToQueue(player));
+        this.main.getServer().getScheduler().runTaskAsynchronously(this.main, () -> queue.addToQueue(player, Profile.getByUuid(player.getUniqueId()).getRank().isAboveOrEqual(Rank.SILVER)));
     }
 }

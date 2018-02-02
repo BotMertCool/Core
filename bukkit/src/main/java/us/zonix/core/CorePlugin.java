@@ -123,6 +123,7 @@ public class CorePlugin extends JavaPlugin {
 		new StaffChatCommand();
 		new RequestCommand();
 		new ReportCommand();
+		new AuthCommand();
 
 		// social related
 		new MessageCommand();

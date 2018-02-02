@@ -77,33 +77,44 @@ public class Queue {
         Profile profile = Profile.getByUuid(player.getUniqueId());
 
         if(profile == null) {
-            return 10;
-        }
-
-        if(profile.getRank().isAboveOrEqual(Rank.BUILDER)) {
             return 0;
         }
-        else if(profile.getRank().isAboveOrEqual(Rank.ZONIX)) {
-            return 5;
+
+        if(profile.getRank().isAboveOrEqual(Rank.DEVELOPER)) {
+            return 30;
         }
-        else if(profile.getRank().isAboveOrEqual(Rank.EMERALD)) {
-            return 6;
+        else if(profile.getRank().isAboveOrEqual(Rank.MEDIA_OWNER)) {
+            return 25;
         }
-        else if(profile.getRank().isAboveOrEqual(Rank.PLATINUM)) {
-            return 7;
+        else if(profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+            return 20;
         }
-        else if(profile.getRank().isAboveOrEqual(Rank.GOLD)) {
-            return 8;
+        else if(profile.getRank().isAboveOrEqual(Rank.MEDIA)) {
+            return 15;
         }
-        else if(profile.getRank().isAboveOrEqual(Rank.SILVER)) {
-            return 9;
-        }
-        else if(profile.getRank().isAboveOrEqual(Rank.DEFAULT)) {
+        else if(profile.getRank().isAboveOrEqual(Rank.BUILDER)) {
             return 10;
         }
+        else if(profile.getRank().isAboveOrEqual(Rank.ZONIX)) {
+            return 9;
+        }
+        else if(profile.getRank().isAboveOrEqual(Rank.EMERALD)) {
+            return 8;
+        }
+        else if(profile.getRank().isAboveOrEqual(Rank.PLATINUM)) {
+            return 6;
+        }
+        else if(profile.getRank().isAboveOrEqual(Rank.GOLD)) {
+            return 7;
+        }
+        else if(profile.getRank().isAboveOrEqual(Rank.SILVER)) {
+            return 5;
+        }
+        else if(profile.getRank().isAboveOrEqual(Rank.DEFAULT)) {
+            return 4;
+        }
 
-        return 10;
-
+        return 0;
     }
 
     public String getPosition(Player player) {
@@ -111,7 +122,7 @@ public class Queue {
         return (position == null || position == -1) ? "?" : String.valueOf(position);
     }
 
-    public void addToQueue(Player player) {
+    public void addToQueue(Player player, boolean bypass) {
 
         Profile profile = Profile.getByUuid(player.getUniqueId());
 
@@ -120,7 +131,7 @@ public class Queue {
         }
 
         PlayerData data = new PlayerData(player.getUniqueId(), this.position(player), profile.getRank().getName(), this.serverName.replace("-", "_"));
-        this.queuePublisher.writeDirectly("add`" + this.gson.toJson(data) + "`" + this.position(player) + "`" + profile.getRank().isAboveOrEqual(Rank.SILVER));
+        this.queuePublisher.writeDirectly("add`" + this.gson.toJson(data) + "`" + this.position(player) + "`" + bypass);
     }
 
     public void removeFromQueue(Player player) {
@@ -193,7 +204,8 @@ public class Queue {
                     newPositions.put(UUID.fromString(object.get("id").getAsString()), object.get("position").getAsInt());
                 });
 
-                players = newPositions;
+                players.clear();
+                players.putAll(newPositions);
             }
 
             else if (command.equals("send")) {

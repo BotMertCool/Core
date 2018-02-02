@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -18,6 +19,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import us.zonix.core.CorePlugin;
+import us.zonix.core.profile.Profile;
 import us.zonix.core.redis.queue.Queue;
 import us.zonix.core.util.ItemUtil;
 
@@ -45,7 +47,7 @@ public class ServerListeners implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
 
         final Player player = event.getPlayer();
@@ -203,7 +205,7 @@ public class ServerListeners implements Listener {
         event.setCancelled(true);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
 
         Player player = event.getPlayer();
@@ -211,7 +213,7 @@ public class ServerListeners implements Listener {
         if (!player.getItemInHand().hasItemMeta()) return;
         if (!player.getItemInHand().getItemMeta().hasDisplayName()) return;
 
-        if (player.getItemInHand().getType() == Material.COMPASS) {
+        if (player.getItemInHand().getType() == Material.COMPASS && Profile.getByUuid(player.getUniqueId()).isAuthenticated()) {
             player.openInventory(CorePlugin.getInstance().getServerManager().getServerSelector().getCurrentPage());
         }
     }

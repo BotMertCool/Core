@@ -7,6 +7,11 @@ import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.*;
 
 import org.bukkit.Bukkit;
@@ -38,6 +43,8 @@ public class Profile {
 	@Setter private List<UUID> ignored;
 	@Setter private String emailAddress;
 	@Setter private String confirmationId;
+	@Setter private String twoFactorAuthentication;
+	@Setter private boolean authenticated;
 	@Setter private boolean registered;
 	@Setter private long lastRegister;
 	@Setter private long chatCooldown;
@@ -173,6 +180,9 @@ public class Profile {
 		if (this.lastLogin == null) {
 			this.lastLogin = data.get("lastLogin").getAsLong();
 		}
+
+		this.twoFactorAuthentication = data.get("twoFactorAuthentication") instanceof JsonNull ? null : data.get("twoFactorAuthentication").getAsString();
+		this.authenticated = data.get("authenticated") instanceof JsonNull || data.get("authenticated").getAsBoolean();
 
 		this.ip = data.get("ip") instanceof JsonNull ? null : data.get("ip").getAsString();
 	}

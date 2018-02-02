@@ -106,6 +106,29 @@ public abstract class PlayerRequest implements Request {
 		}
 	}
 
+	public static final class UpdateAuthenticationRequest extends PlayerRequest {
+
+		private final UUID uuid;
+		private final String twoFactorAuthentication;
+		private final boolean authenticated;
+
+		public UpdateAuthenticationRequest(UUID uuid, String twoFactorAuthentication, boolean authenticated) {
+			super("update-auth");
+
+			this.uuid = uuid;
+			this.twoFactorAuthentication = twoFactorAuthentication;
+			this.authenticated = authenticated;
+		}
+
+		@Override public Map<String, Object> toMap() {
+			return MapUtil.of(
+					"uuid", this.uuid,
+					"twoFactorAuthentication", this.twoFactorAuthentication,
+					"authenticated", this.authenticated
+			);
+		}
+	}
+
 	public static final class UpdateRankRequest extends PlayerRequest {
 
 		private final UUID uuid;
