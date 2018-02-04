@@ -57,14 +57,14 @@ public class ProfileListeners implements Listener {
 		if (ban != null && !CorePlugin.getInstance().isHub()) {
 			event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
 			event.setKickMessage(ban.getType().getMessage());
-			Profile.getProfiles().remove(profile);
+			Profile.getProfiles().remove(profile.getUuid());
 			return;
 		}
 
 		if (profile.isBlacklisted()) {
 			event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
 			event.setKickMessage(PunishmentType.BLACKLIST.getMessage());
-			Profile.getProfiles().remove(profile);
+			Profile.getProfiles().remove(profile.getUuid());
 			return;
 		}
 
@@ -80,14 +80,14 @@ public class ProfileListeners implements Listener {
 				if (bannedAlt != null && !CorePlugin.getInstance().isHub()) {
 					event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
 					event.setKickMessage(bannedAlt.getType().getMessage());
-					Profile.getProfiles().remove(altProfile);
+					Profile.getProfiles().remove(altProfile.getUuid());
 					return;
 				}
 
 				if (altProfile.isBlacklisted()) {
 					event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
 					event.setKickMessage(PunishmentType.BLACKLIST.getMessage());
-					Profile.getProfiles().remove(altProfile);
+					Profile.getProfiles().remove(altProfile.getUuid());
 					return;
 				}
 			}
