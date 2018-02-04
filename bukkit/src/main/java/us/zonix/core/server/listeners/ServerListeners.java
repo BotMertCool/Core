@@ -213,8 +213,6 @@ public class ServerListeners implements Listener {
         if (!player.getItemInHand().hasItemMeta()) return;
         if (!player.getItemInHand().getItemMeta().hasDisplayName()) return;
 
-        if (player.getItemInHand().getType() == Material.COMPASS && Profile.getByUuid(player.getUniqueId()).isAuthenticated()) {
-            player.openInventory(CorePlugin.getInstance().getServerManager().getServerSelector().getCurrentPage());
-        }
+        player.openInventory(CorePlugin.getInstance().getServerManager().getServerSelector().getCurrentPage());
     }
 }

@@ -41,15 +41,6 @@ public class HubBoard implements BoardAdapter {
 
 		Profile profile = Profile.getByUuid(player.getUniqueId());
 
-		if(profile != null && profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated()) {
-			strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
-			strings.add(ChatColor.DARK_RED.toString() + ChatColor.BOLD + "AUTHENTICATE");
-			strings.add(ChatColor.GRAY.toString() + "Usage: /auth <token>");
-			strings.add("   ");
-			strings.add(ChatColor.RED.toString() + "Issues? Contact a Manager");
-			strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
-			return strings;
-		}
 		Punishment ban = profile.getBannedPunishment();
 
 		if(ban != null && CorePlugin.getInstance().isHub()) {

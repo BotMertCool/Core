@@ -32,19 +32,11 @@ public class ProfileListeners implements Listener {
 
 		Profile profile = new Profile(event.getUniqueId());
 
-		if(CorePlugin.getInstance().isHub() && profile.getTwoFactorAuthentication() != null && !profile.getIp().equalsIgnoreCase(event.getAddress().getHostAddress())) {
-			profile.setAuthenticated(false);
-		} else {
-			profile.setAuthenticated(true);
-		}
-
 		Punishment ban = profile.getBannedPunishment();
 
 		profile.setLastLogin(System.currentTimeMillis());
 
-		if(profile.isAuthenticated()) {
-			profile.setIp(event.getAddress().getHostAddress());
-		}
+		profile.setIp(event.getAddress().getHostAddress());
 
 		profile.setChatCooldown(0L);
 		profile.setChatEnabled(true);
@@ -108,33 +100,14 @@ public class ProfileListeners implements Listener {
 	public void onPlayerJoinEvent(PlayerJoinEvent event) {
 
 		Player player = event.getPlayer();
-		Profile profile = Profile.getByUuid(event.getPlayer().getUniqueId());
-
-		if(profile != null && profile.getTwoFactorAuthentication() == null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-			String token = PasswordGenerator.generateKey();
-			String url = AuthenticationUtil.getTokenByKey(token);
-			player.sendMessage("§8§m----------------------------------------------------");
-			player.sendMessage(ChatColor.RED + "Download Authentication App - Google Auth, 1Password, Authy");
-			player.sendMessage(ChatColor.RED + "Use Online App - https://gauth.apps.gbraad.nl/");
-			player.sendMessage(ChatColor.RED + "QR code (Scan): " + url);
-			player.sendMessage(ChatColor.RED + "or input the code in app: " + token);
-			player.sendMessage(ChatColor.RED + "Finally, use /auth <token>");
-			player.sendMessage("§8§m----------------------------------------------------");
-			profile.setTwoFactorAuthentication(token);
-			profile.setAuthenticated(false);
-			CorePlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(CorePlugin.getInstance(), profile::save);
-		}
-
-		if(profile != null && profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-			player.sendMessage(ChatColor.DARK_RED.toString() + ChatColor.BOLD + "AUTHENTICATE YOURSELF!");
-			player.sendMessage(ChatColor.GRAY + "Usage: /auth <token>");
-		}
 
 		if (CorePlugin.getInstance().getBoardManager() != null) {
 			CorePlugin.getInstance().getBoardManager().getPlayerBoards().put(player.getUniqueId(), new Board(player, CorePlugin.getInstance().getBoardManager().getAdapter()));
 		}
 
 		CorePlugin.getInstance().getServer().getScheduler().runTaskLater(CorePlugin.getInstance(), () -> {
+
+			Profile profile = Profile.getByUuidIfAvailable(event.getPlayer().getUniqueId());
 
 			if (profile != null) {
 				profile.updateTabList(profile.getRank());
@@ -157,31 +130,11 @@ public class ProfileListeners implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-	public void onCommandEvent(PlayerCommandPreprocessEvent event) {
-		Player player = event.getPlayer();
-		Profile profile = Profile.getByUuid(player.getUniqueId());
-
-		if (event.getMessage().toLowerCase().startsWith("/auth")) {
-			return;
-		}
-
-		if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-			player.sendMessage(ChatColor.DARK_RED.toString() + ChatColor.BOLD + "AUTHENTICATE YOURSELF!");
-			player.sendMessage(ChatColor.GRAY + "Usage: /auth <token>");
-			event.setCancelled(true);
-		}
-	}
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
 		Profile profile = Profile.getByUuid(player.getUniqueId());
-
-		if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-			event.setCancelled(true);
-			return;
-		}
 
 		Punishment punishment = profile.getMutedPunishment();
 
