@@ -75,7 +75,7 @@ public class HistoryHelper {
                 int count = 1;
 
                 sender.sendMessage(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "----------------------------------------------------");
-                sender.sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + name + " PUNISHMENTS");
+                sender.sendMessage(ChatColor.RED.toString() + ChatColor.BOLD + (profile.getName() == null ? name : profile.getName()) + " PUNISHMENTS");
                 sender.sendMessage(" ");
 
                 sender.sendMessage(ChatColor.DARK_RED.toString() + ChatColor.BOLD + "BLACKLISTS");
