@@ -62,13 +62,28 @@ public class HistoryHelper {
             public void run() {
                 Profile profile = Profile.getByUuid(uuid);
 
-                if (profile.getPunishments().size() == 0) {
-                    sender.sendMessage(ChatColor.RED + "That player doesn't have any punishments.");
-                    return;
-                }
-
                 if (profile.getAlts().size() == 0) {
                     profile.loadProfileAlts();
+                }
+
+                if (profile.getPunishments().size() == 0) {
+                    sender.sendMessage(ChatColor.RED + "That player doesn't have any punishments.");
+
+                    if(profile.getAlts().size() > 0) {
+
+                        StringJoiner alts = new StringJoiner(", ");
+
+                        for (UUID uuid : profile.getAlts()) {
+                            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+
+                            if (offlinePlayer != null && offlinePlayer.getName() != null) {
+                                alts.add(offlinePlayer.getName());
+                            }
+                        }
+
+                        sender.sendMessage(ChatColor.RED + "Maybe check with his alts? " + ChatColor.WHITE + alts.toString());
+                    }
+                    return;
                 }
 
                 StringJoiner messageJoiner = new StringJoiner("\n");
@@ -163,21 +178,23 @@ public class HistoryHelper {
                 for (UUID altUUID : profile.getAlts()) {
                     if (!altUUID.equals(uuid)) {
                         Profile altProfile = Profile.getByUuid(altUUID);
-                        String altName = Bukkit.getOfflinePlayer(altUUID) == null ? "Unknown" : Bukkit.getOfflinePlayer(altUUID).getName();
+                        String altName = Bukkit.getOfflinePlayer(altUUID) != null && Bukkit.getOfflinePlayer(altUUID).getName() != null ? "Unknown" : Bukkit.getOfflinePlayer(altUUID).getName();
 
                         if(altProfile.isBlacklisted()) {
                             messageJoiner.add(ChatColor.GRAY + "[" + count + "] " + altName + " is blacklisted. [More details? /history " + altName + "]");
+                            count++;
                         }
 
                         if(altProfile.isBanned()) {
                             messageJoiner.add(ChatColor.GRAY + "[" + count + "] " + altName + " is banned. [More details? /history " + altName + "]");
+                            count++;
                         }
 
                         if(altProfile.isMuted()) {
                             messageJoiner.add(ChatColor.GRAY + "[" + count + "] " + altName + " is muted. [More details? /history " + altName + "]");
+                            count++;
                         }
 
-                        count++;
                     }
                 }
 

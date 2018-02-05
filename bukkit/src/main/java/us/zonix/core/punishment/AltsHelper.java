@@ -73,7 +73,7 @@ public class AltsHelper {
                 for (UUID uuid : profile.getAlts()) {
                     OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 
-                    if (offlinePlayer != null) {
+                    if (offlinePlayer != null && offlinePlayer.getName() != null) {
                         alts.add(offlinePlayer.getName());
                     }
                 }
