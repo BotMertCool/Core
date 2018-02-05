@@ -17,6 +17,7 @@ import us.zonix.core.misc.command.*;
 import us.zonix.core.misc.command.game.*;
 import us.zonix.core.misc.command.staff.AltsCommand;
 import us.zonix.core.misc.command.staff.FreezeCommand;
+import us.zonix.core.misc.command.staff.HistoryCommand;
 import us.zonix.core.misc.command.staff.StaffChatCommand;
 import us.zonix.core.misc.listener.HideStreamListener;
 import us.zonix.core.misc.listener.ServerListener;
@@ -116,6 +117,7 @@ public class CorePlugin extends JavaPlugin {
 		// staff related
 		new RankCommand();
 		new AltsCommand();
+		new HistoryCommand();
 		new FreezeCommand();
 		new SlowChatCommand();
 		new ClearChatCommand();
