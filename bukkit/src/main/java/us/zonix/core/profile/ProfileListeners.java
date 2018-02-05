@@ -1,6 +1,5 @@
 package us.zonix.core.profile;
 
-import com.google.gson.JsonObject;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,14 +8,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
 
 import us.zonix.core.CorePlugin;
-import us.zonix.core.api.request.MessageRequest;
-import us.zonix.core.api.request.PlayerRequest;
 import us.zonix.core.board.Board;
 import us.zonix.core.punishment.Punishment;
 import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
-import us.zonix.core.util.auth.AuthenticationUtil;
-import us.zonix.core.util.auth.PasswordGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +26,8 @@ public class ProfileListeners implements Listener {
 		}
 
 		Profile profile = new Profile(event.getUniqueId());
-
-		Punishment ban = profile.getBannedPunishment();
-
 		profile.setLastLogin(System.currentTimeMillis());
-
 		profile.setIp(event.getAddress().getHostAddress());
-
 		profile.setChatCooldown(0L);
 		profile.setChatEnabled(true);
 
@@ -45,6 +35,8 @@ public class ProfileListeners implements Listener {
 			profile.setName(event.getName());
 			profile.save();
 		}
+
+		Punishment ban = profile.getBannedPunishment();
 
 		if (ban != null && !CorePlugin.getInstance().isHub()) {
 			event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
@@ -98,7 +90,6 @@ public class ProfileListeners implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerJoinEvent(PlayerJoinEvent event) {
-
 		Player player = event.getPlayer();
 
 		if (CorePlugin.getInstance().getBoardManager() != null) {
@@ -106,7 +97,6 @@ public class ProfileListeners implements Listener {
 		}
 
 		CorePlugin.getInstance().getServer().getScheduler().runTaskLater(CorePlugin.getInstance(), () -> {
-
 			Profile profile = Profile.getByUuidIfAvailable(event.getPlayer().getUniqueId());
 
 			if (profile != null) {
@@ -130,12 +120,10 @@ public class ProfileListeners implements Listener {
 		}
 	}
 
-
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
 		Profile profile = Profile.getByUuid(player.getUniqueId());
-
 		Punishment punishment = profile.getMutedPunishment();
 
 		if (punishment != null) {
@@ -149,11 +137,12 @@ public class ProfileListeners implements Listener {
 		}
 
 		List<Player> recipientList = new ArrayList<>(event.getRecipients());
+
 		for (Player recipient : recipientList) {
 			Profile profileRecipient = Profile.getByUuid(recipient.getUniqueId());
-			if (profileRecipient != null) {
 
-				if(!profileRecipient.isChatEnabled() || profileRecipient.getIgnored().contains(profile.getUuid())) {
+			if (profileRecipient != null) {
+				if (!profileRecipient.isChatEnabled() || profileRecipient.getIgnored().contains(profile.getUuid())) {
 					event.getRecipients().remove(recipient);
 				}
 			}
