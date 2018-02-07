@@ -18,7 +18,8 @@ public class AnnouncementTask {
                 "&8[&4✪&8] &7Purchase premium matches on our store at &cstore.zonix.us",
                 "&8[&4✪&8] &7Report cheating players by using &c/report&7.",
                 "&8[&4✪&8] &7Website is now up and running! &cwww.zonix.us",
-                "&8[&4✪&8] &7All donor ranks can now host events! &c/host",
+                "&8[&4✪&8] &7(Gold to Zonix) ranks can now host events! &c/host",
+                "&8[&4✪&8] &7Change the symbol in your display name! &c/symbols",
                 //"&8[&4✪&8] &7Staff applications are &aopen &7apply at &cwww.zonix.us",
                 "&8[&4✪&8] &7Join our Teamspeak server using: &cts.zonix.us",
                 "&8[&4✪&8] &7Check out the leaderboards on our website &cwww.zonix.us/leaderboards"

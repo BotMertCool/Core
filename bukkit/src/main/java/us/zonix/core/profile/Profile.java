@@ -26,6 +26,7 @@ import us.zonix.core.punishment.Punishment;
 import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
 import us.zonix.core.shared.api.callback.Callback;
+import us.zonix.core.symbols.Symbol;
 
 @Getter
 public class Profile {
@@ -39,6 +40,7 @@ public class Profile {
 	@Setter private Long lastLogin;
 	@Setter private String ip;
 	@Setter private Rank rank = Rank.DEFAULT;
+	@Setter private Symbol symbol;
 	@Setter private UUID lastMessaged;
 	@Setter private List<UUID> ignored;
 	@Setter private String emailAddress;
@@ -173,6 +175,7 @@ public class Profile {
 		JsonObject data = response.getAsJsonObject();
 
 		this.rank = data.get("rank") instanceof JsonNull ? Rank.DEFAULT : Rank.getRankOrDefault(data.get("rank").getAsString());
+		this.symbol = data.get("symbol") instanceof JsonNull ? null : Symbol.getSymbolOrDefault(data.get("symbol").getAsString());
 		this.firstLogin = data.get("firstLogin").getAsLong();
 
 		if (this.lastLogin == null) {

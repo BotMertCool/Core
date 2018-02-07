@@ -10,6 +10,9 @@ import us.zonix.core.CorePlugin;
 import us.zonix.core.profile.Profile;
 import us.zonix.core.rank.Rank;
 
+import java.text.Collator;
+import java.util.Locale;
+
 public class RankListeners implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -42,16 +45,16 @@ public class RankListeners implements Listener {
         }
 
         event.setFormat("%1$s: %2$s");
-
         player.setDisplayName(player.getName());
-
         Rank rank = profile.getRank();
 
-        String userTag = rank.isAboveOrEqual(Rank.BUILDER) ? rank.getPrefix() + rank.getColor() + rank.getName() + rank.getSuffix() + rank.getColor() +  player.getName() + ChatColor.WHITE : rank.getPrefix() + rank.getColor() + rank.getSuffix() + rank.getColor() +  player.getName() + ChatColor.WHITE;
+        String prefix = rank.isAboveOrEqual(Rank.SILVER) && !rank.isAboveOrEqual(Rank.BUILDER) && profile.getSymbol() != null ? profile.getSymbol().getPrefix() : rank.getPrefix();
+        String userTag = rank.isAboveOrEqual(Rank.BUILDER) ?  prefix + rank.getColor() + rank.getName() + rank.getSuffix() + rank.getColor() +  player.getName() + ChatColor.WHITE : prefix + rank.getColor() + rank.getSuffix() + rank.getColor() +  player.getName() + ChatColor.WHITE;
 
         if (!player.getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', userTag))) {
             player.setDisplayName(ChatColor.translateAlternateColorCodes('&', userTag));
         }
+
     }
 
 }

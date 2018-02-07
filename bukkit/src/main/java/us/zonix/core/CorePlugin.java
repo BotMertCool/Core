@@ -36,6 +36,7 @@ import us.zonix.core.server.tasks.ServerHandlerTimeoutTask;
 import us.zonix.core.social.SocialHelper;
 import us.zonix.core.shared.redis.JedisSettings;
 import us.zonix.core.social.command.*;
+import us.zonix.core.symbols.commands.SymbolCommand;
 import us.zonix.core.tasks.AnnouncementTask;
 import us.zonix.core.util.LocationString;
 import us.zonix.core.util.command.CommandFramework;
@@ -133,6 +134,7 @@ public class CorePlugin extends JavaPlugin {
 		new ToggleMessagesCommand();
 		new ToggleChatCommand();
 		new IgnoreCommand();
+		new SymbolCommand();
 
 		// server related
 		new SetMaxPlayersCommand();
@@ -165,11 +167,11 @@ public class CorePlugin extends JavaPlugin {
 		// misc
 		pm.registerEvents(new HideStreamListener(), this);
 		pm.registerEvents(new ServerListener(), this);
+		pm.registerEvents(new UIListener(), this);
 
 		if (this.hub) {
 			this.serverManager = new ServerManager();
 
-			pm.registerEvents(new UIListener(), this);
 			pm.registerEvents(new ServerListeners(), this);
 
 			new SetSpawnCommand();

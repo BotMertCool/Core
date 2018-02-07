@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import us.zonix.core.rank.Rank;
 import us.zonix.core.shared.api.request.Request;
+import us.zonix.core.symbols.Symbol;
 import us.zonix.core.util.MapUtil;
 
 @RequiredArgsConstructor
@@ -123,6 +124,27 @@ public abstract class PlayerRequest implements Request {
 			return MapUtil.of(
 					"uuid", this.uuid.toString(),
 					"rank", this.rank.name()
+			);
+		}
+	}
+
+	public static final class UpdateSymbolRequest extends PlayerRequest {
+
+		private final UUID uuid;
+		private final Symbol symbol;
+
+		public UpdateSymbolRequest(UUID uuid, Symbol symbol) {
+			super("update-symbol");
+
+			this.uuid = uuid;
+			this.symbol = symbol;
+		}
+
+		@Override
+		public Map<String, Object> toMap() {
+			return MapUtil.of(
+					"uuid", this.uuid.toString(),
+					"symbol", this.symbol.name()
 			);
 		}
 	}
