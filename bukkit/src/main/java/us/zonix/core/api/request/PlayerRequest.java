@@ -149,4 +149,25 @@ public abstract class PlayerRequest implements Request {
 		}
 	}
 
+	public static final class UpdateBoughtSymbolsRequest extends PlayerRequest {
+
+		private final UUID uuid;
+		private final boolean boughtSymbols;
+
+		public UpdateBoughtSymbolsRequest(UUID uuid, boolean boughtSymbols) {
+			super("update-bought-symbols");
+
+			this.uuid = uuid;
+			this.boughtSymbols = boughtSymbols;
+		}
+
+		@Override
+		public Map<String, Object> toMap() {
+			return MapUtil.of(
+					"uuid", this.uuid.toString(),
+					"boughtSymbols", this.boughtSymbols
+			);
+		}
+	}
+
 }

@@ -34,6 +34,7 @@ import us.zonix.core.server.tasks.ServerHandlerTimeoutTask;
 import us.zonix.core.social.SocialHelper;
 import us.zonix.core.shared.redis.JedisSettings;
 import us.zonix.core.social.command.*;
+import us.zonix.core.symbols.commands.PurchaseSymbolsCommand;
 import us.zonix.core.symbols.commands.SymbolCommand;
 import us.zonix.core.tasks.AnnouncementTask;
 import us.zonix.core.util.LocationString;
@@ -140,6 +141,7 @@ public class CorePlugin extends JavaPlugin {
 		new PingCommand();
 		new WhitelistCommand();
 		new RegisterCommand();
+		new PurchaseSymbolsCommand();
 
 		// game related
 		new AlertCommand();
