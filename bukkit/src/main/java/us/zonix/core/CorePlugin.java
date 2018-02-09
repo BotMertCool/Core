@@ -127,6 +127,7 @@ public class CorePlugin extends JavaPlugin {
 		new RequestCommand();
 		new ReportCommand();
 		new AuthCommand();
+		new BuilderCommand();
 
 		// social related
 		new MessageCommand();

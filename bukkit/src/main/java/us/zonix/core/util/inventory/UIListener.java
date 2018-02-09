@@ -3,6 +3,7 @@ package us.zonix.core.util.inventory;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 
 public class UIListener implements Listener {
 
@@ -33,5 +34,4 @@ public class UIListener implements Listener {
 		}
 		item.onClick(event);
 	}
-
 }

@@ -40,7 +40,9 @@ public class ProfileListeners implements Listener {
 		profile.setChatCooldown(0L);
 		profile.setChatEnabled(true);
 
-		if(profile.getTwoFactorAuthentication() != null && !profile.getIp().equalsIgnoreCase(event.getAddress().getHostAddress())) {
+		if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated()) {
+			profile.setAuthenticated(false);
+		} else if(profile.getTwoFactorAuthentication() != null && !profile.getIp().equalsIgnoreCase(event.getAddress().getHostAddress())) {
 			profile.setAuthenticated(false);
 		} else {
 			profile.setAuthenticated(true);
@@ -135,6 +137,15 @@ public class ProfileListeners implements Listener {
 					player.closeInventory();
 				}
 			});
+
+			// Send the message just in case the retards close the UI.
+			player.sendMessage("§8§m----------------------------------------------------");
+			player.sendMessage(ChatColor.RED + "Download Authentication App - Google Auth, 1Password, Authy");
+			player.sendMessage(ChatColor.RED + "Use Online App - https://gauth.apps.gbraad.nl/");
+			player.sendMessage(ChatColor.RED + "QR code (Scan): " + url);
+			player.sendMessage(ChatColor.RED + "or input the code in app: " + token);
+			player.sendMessage(ChatColor.RED + "Finally, use /auth <token>");
+			player.sendMessage("§8§m----------------------------------------------------");
 
 			profile.setTwoFactorAuthentication(token);
 			profile.setAuthenticated(false);
