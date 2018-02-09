@@ -31,6 +31,14 @@ public abstract class PunishmentRequest implements Request {
 
     }
 
+    public static final class FetchByStaffUuidRequest extends PunishmentRequest {
+
+        public FetchByStaffUuidRequest(UUID uuid) {
+            super("fetch_by_staff_uuid/" + uuid.toString());
+        }
+
+    }
+
     public static final class InsertRequest extends PunishmentRequest {
 
         private JsonObject data;

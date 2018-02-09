@@ -15,15 +15,13 @@ import us.zonix.core.board.adapter.HubBoard;
 import us.zonix.core.misc.command.ReportCommand;
 import us.zonix.core.misc.command.*;
 import us.zonix.core.misc.command.game.*;
-import us.zonix.core.misc.command.staff.AltsCommand;
-import us.zonix.core.misc.command.staff.FreezeCommand;
-import us.zonix.core.misc.command.staff.HistoryCommand;
-import us.zonix.core.misc.command.staff.StaffChatCommand;
+import us.zonix.core.misc.command.staff.*;
 import us.zonix.core.misc.listener.HideStreamListener;
 import us.zonix.core.misc.listener.ServerListener;
 import us.zonix.core.profile.Profile;
 import us.zonix.core.profile.ProfileListeners;
 import us.zonix.core.punishment.command.*;
+import us.zonix.core.punishment.helpers.StaffAuditHelper;
 import us.zonix.core.rank.command.RankCommand;
 import us.zonix.core.rank.listeners.RankListeners;
 import us.zonix.core.redis.CoreRedisManager;
@@ -119,6 +117,7 @@ public class CorePlugin extends JavaPlugin {
 		new RankCommand();
 		new AltsCommand();
 		new HistoryCommand();
+		new StaffAuditCommand();
 		new FreezeCommand();
 		new SlowChatCommand();
 		new ClearChatCommand();
@@ -134,7 +133,7 @@ public class CorePlugin extends JavaPlugin {
 		new ToggleMessagesCommand();
 		new ToggleChatCommand();
 		new IgnoreCommand();
-		new SymbolCommand();
+		//new SymbolCommand();
 
 		// server related
 		new SetMaxPlayersCommand();

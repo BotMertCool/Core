@@ -1,5 +1,6 @@
 package us.zonix.core.punishment;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -96,6 +97,20 @@ public class Punishment {
 		to.setTime(new Date(this.addedAt + this.duration));
 
 		return DateUtil.formatDateDiff(from, to);
+	}
+
+	public String getAddedAtFormatted() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date(this.addedAt));
+
+		return calendar.getTime().toString();
+	}
+
+	public String getRemovedAtFormatted() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date(this.removedAt));
+
+		return calendar.getTime().toString();
 	}
 
 	public void announce(String name, String sender, boolean silent, boolean undo) {

@@ -26,7 +26,7 @@ public class SymbolCommand extends BaseCommand {
         this.setupSymbolInventory();
     }
 
-    @Command(name = "symbol", aliases ={ "symbols", "icons", "prefix" }, requiresPlayer = true)
+    @Command(name = "symbol", aliases ={ "symbols", "icons", "prefix" }, requiresPlayer = true, rank = Rank.DEFAULT)
     public void onCommand(CommandArgs command) {
 
         Player player = command.getPlayer();
@@ -39,6 +39,11 @@ public class SymbolCommand extends BaseCommand {
         int count = 0;
 
         for(Symbol symbol : Symbol.values()) {
+
+            if(symbol.isOrigin()) {
+                continue;
+            }
+
             this.symbolSelector.setItem(count, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.NAME_TAG, symbol.getPrefix() + ChatColor.GRAY + " | " + ChatColor.DARK_GRAY + "(" + symbol.getRank().getColor() + symbol.getRank().getName() + "+" + ChatColor.DARK_GRAY + ")")) {
                 @Override
                 public void onClick(InventoryClickEvent event) {
@@ -66,5 +71,24 @@ public class SymbolCommand extends BaseCommand {
 
             count++;
         }
+
+        this.symbolSelector.setItem(17, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.FIREWORK_CHARGE, ChatColor.RED + "Reset Symbol")) {
+            @Override
+            public void onClick(InventoryClickEvent event) {
+                Player player = (Player) event.getWhoClicked();
+                Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
+
+                if(profile == null) {
+                    player.closeInventory();
+                    return;
+                }
+
+                player.closeInventory();
+                Symbol symbol = Symbol.getDefaultSymbolByRank(profile.getRank());
+                profile.setSymbol(symbol);
+                main.getRequestProcessor().sendRequestAsync(new PlayerRequest.UpdateSymbolRequest(player.getUniqueId(), symbol));
+                player.sendMessage(ChatColor.GREEN + "Your symbol has been updated to " + symbol.getPrefix() + ChatColor.GREEN + ".");
+            }
+        });
     }
 }

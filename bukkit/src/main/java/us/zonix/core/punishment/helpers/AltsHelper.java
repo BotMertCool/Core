@@ -1,4 +1,4 @@
-package us.zonix.core.punishment;
+package us.zonix.core.punishment.helpers;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -175,7 +175,7 @@ public class Profile {
 		JsonObject data = response.getAsJsonObject();
 
 		this.rank = data.get("rank") instanceof JsonNull ? Rank.DEFAULT : Rank.getRankOrDefault(data.get("rank").getAsString());
-		this.symbol = data.get("symbol") instanceof JsonNull ? null : Symbol.getSymbolOrDefault(data.get("symbol").getAsString());
+		//this.symbol = data.get("symbol") instanceof JsonNull ? null : Symbol.getSymbolOrDefault(data.get("symbol").getAsString());
 		this.firstLogin = data.get("firstLogin").getAsLong();
 
 		if (this.lastLogin == null) {

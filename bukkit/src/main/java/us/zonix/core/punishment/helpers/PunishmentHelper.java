@@ -1,4 +1,4 @@
-package us.zonix.core.punishment;
+package us.zonix.core.punishment.helpers;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -11,6 +11,8 @@ import us.zonix.core.CorePlugin;
 import us.zonix.core.api.callback.AbstractBukkitCallback;
 import us.zonix.core.api.request.PunishmentRequest;
 import us.zonix.core.profile.Profile;
+import us.zonix.core.punishment.Punishment;
+import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.shared.api.callback.Callback;
 import us.zonix.core.util.UUIDType;
 

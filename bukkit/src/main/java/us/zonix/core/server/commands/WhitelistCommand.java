@@ -2,13 +2,9 @@ package us.zonix.core.server.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.zonix.core.CorePlugin;
-import us.zonix.core.punishment.PunishmentHelper;
-import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
-import us.zonix.core.util.Clickable;
 import us.zonix.core.util.command.BaseCommand;
 import us.zonix.core.util.command.Command;
 import us.zonix.core.util.command.CommandArgs;

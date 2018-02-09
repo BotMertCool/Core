@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.zonix.core.CorePlugin;
-import us.zonix.core.punishment.PunishmentHelper;
+import us.zonix.core.punishment.helpers.PunishmentHelper;
 import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
 import us.zonix.core.util.Clickable;
@@ -15,7 +15,7 @@ import us.zonix.core.util.command.CommandArgs;
 
 public class UnbanCommand extends BaseCommand {
 
-    @Command(name = "unban", rank = Rank.ADMINISTRATOR)
+    @Command(name = "unban", rank = Rank.SENIOR_MODERATOR)
     public void onCommand(CommandArgs command) {
         CommandSender sender = command.getSender();
         String[] args = command.getArgs();
