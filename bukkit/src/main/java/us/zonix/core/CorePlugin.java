@@ -126,6 +126,7 @@ public class CorePlugin extends JavaPlugin {
 		new StaffChatCommand();
 		new RequestCommand();
 		new ReportCommand();
+		new AuthCommand();
 
 		// social related
 		new MessageCommand();
@@ -135,13 +136,13 @@ public class CorePlugin extends JavaPlugin {
 		new ToggleChatCommand();
 		new IgnoreCommand();
 		//new SymbolCommand();
+		//new PurchaseSymbolsCommand();
 
 		// server related
 		new SetMaxPlayersCommand();
 		new PingCommand();
 		new WhitelistCommand();
 		new RegisterCommand();
-		new PurchaseSymbolsCommand();
 
 		// game related
 		new AlertCommand();

@@ -41,6 +41,7 @@ public class Profile {
 	@Setter private String ip;
 	@Setter private Rank rank = Rank.DEFAULT;
 	@Setter private Symbol symbol;
+	@Setter private boolean boughtSymbols;
 	@Setter private UUID lastMessaged;
 	@Setter private List<UUID> ignored;
 	@Setter private String emailAddress;
@@ -49,6 +50,8 @@ public class Profile {
 	@Setter private long lastRegister;
 	@Setter private long chatCooldown;
 	@Setter private boolean chatEnabled;
+	@Setter private String twoFactorAuthentication;
+ 	@Setter private boolean authenticated;
 	private List<Punishment> punishments;
 	private Set<UUID> alts;
 	private ProfileOptions options;
@@ -175,7 +178,13 @@ public class Profile {
 		JsonObject data = response.getAsJsonObject();
 
 		this.rank = data.get("rank") instanceof JsonNull ? Rank.DEFAULT : Rank.getRankOrDefault(data.get("rank").getAsString());
-		//this.symbol = data.get("symbol") instanceof JsonNull ? null : Symbol.getSymbolOrDefault(data.get("symbol").getAsString());
+
+		this.symbol = data.get("symbol") instanceof JsonNull ? null : Symbol.getSymbolOrDefault(data.get("symbol").getAsString());
+		this.boughtSymbols = !(data.get("boughtSymbols") instanceof JsonNull) && data.get("boughtSymbols").getAsBoolean();
+
+		this.twoFactorAuthentication = data.get("twoFactorAuthentication") instanceof JsonNull ? null : data.get("twoFactorAuthentication").getAsString();
+		this.authenticated = data.get("authenticated") instanceof JsonNull || data.get("authenticated").getAsBoolean();
+
 		this.firstLogin = data.get("firstLogin").getAsLong();
 
 		if (this.lastLogin == null) {

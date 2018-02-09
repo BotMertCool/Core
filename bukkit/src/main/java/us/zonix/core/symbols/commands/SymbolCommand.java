@@ -55,7 +55,7 @@ public class SymbolCommand extends BaseCommand {
                         return;
                     }
 
-                    if(!profile.getRank().isAboveOrEqual(symbol.getRank())) {
+                    if(profile.isBoughtSymbols() || !profile.getRank().isAboveOrEqual(symbol.getRank())) {
                         player.sendMessage(ChatColor.RED + "You don't have permission to use this symbol.");
                         player.sendMessage(ChatColor.RED + "Purchase access @ store.zonix.us");
                         player.closeInventory();

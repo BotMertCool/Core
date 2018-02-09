@@ -1,18 +1,27 @@
 package us.zonix.core.profile;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 
+import org.bukkit.inventory.ItemStack;
 import us.zonix.core.CorePlugin;
+import us.zonix.core.api.request.PlayerRequest;
 import us.zonix.core.board.Board;
 import us.zonix.core.punishment.Punishment;
 import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
+import us.zonix.core.util.ItemUtil;
+import us.zonix.core.util.auth.TimeBasedOneTimePasswordUtil;
+import us.zonix.core.util.inventory.InventoryUI;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -27,9 +36,19 @@ public class ProfileListeners implements Listener {
 
 		Profile profile = new Profile(event.getUniqueId());
 		profile.setLastLogin(System.currentTimeMillis());
-		profile.setIp(event.getAddress().getHostAddress());
+		//profile.setIp(event.getAddress().getHostAddress());
 		profile.setChatCooldown(0L);
 		profile.setChatEnabled(true);
+
+		if(profile.getTwoFactorAuthentication() != null && !profile.getIp().equalsIgnoreCase(event.getAddress().getHostAddress())) {
+			profile.setAuthenticated(false);
+		} else {
+			profile.setAuthenticated(true);
+		}
+
+		if(profile.isAuthenticated()) {
+			profile.setIp(event.getAddress().getHostAddress());
+		}
 
 		if (profile.getName() == null) {
 			profile.setName(event.getName());
@@ -89,20 +108,56 @@ public class ProfileListeners implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onPlayerJoinEvent(PlayerJoinEvent event) {
+	public void onPlayerJoinEvent(PlayerJoinEvent event) throws IOException {
 		Player player = event.getPlayer();
+
+		Profile profile = Profile.getByUuid(event.getPlayer().getUniqueId());
+
+		if(profile != null && profile.getTwoFactorAuthentication() == null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+
+			String token = TimeBasedOneTimePasswordUtil.generateBase32Secret();
+			String url = TimeBasedOneTimePasswordUtil.qrImageUrl(player.getName() + "@zonix.us", token);
+
+			InventoryUI inventoryUI = new InventoryUI("Authentication", 1);
+
+			ItemStack item = ItemUtil.createItem(Material.PAPER, ChatColor.RED.toString() + ChatColor.BOLD + "Authentication Information");
+			ItemUtil.reloreItem(item, ChatColor.DARK_RED + "Download Authentication App - Google Auth, 1Password, Authy", ChatColor.RED + "Use Online App - https://gauth.apps.gbraad.nl/", ChatColor.RED + "QR code (Scan): " + url, ChatColor.RED + "or input the code in app: " + token, ChatColor.RED + "Finally, use /auth <token>", "", ChatColor.WHITE.toString() + ChatColor.BOLD + "CLICK TO SHOW IN CHAT");
+			inventoryUI.setItem(4, new InventoryUI.AbstractClickableItem(item) {
+				@Override
+				public void onClick(InventoryClickEvent event) {
+					player.sendMessage("§8§m----------------------------------------------------");
+					player.sendMessage(ChatColor.RED + "Download Authentication App - Google Auth, 1Password, Authy");
+					player.sendMessage(ChatColor.RED + "Use Online App - https://gauth.apps.gbraad.nl/");
+					player.sendMessage(ChatColor.RED + "QR code (Scan): " + url);
+					player.sendMessage(ChatColor.RED + "or input the code in app: " + token);
+					player.sendMessage(ChatColor.RED + "Finally, use /auth <token>");
+					player.sendMessage("§8§m----------------------------------------------------");
+					player.closeInventory();
+				}
+			});
+
+			profile.setTwoFactorAuthentication(token);
+			profile.setAuthenticated(false);
+			PlayerRequest.UpdateAuthenticationRequest request = new PlayerRequest.UpdateAuthenticationRequest(player.getUniqueId(), profile.getTwoFactorAuthentication(), profile.isAuthenticated());
+			CorePlugin.getInstance().getRequestProcessor().sendRequestAsync(request);
+			Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(CorePlugin.getInstance(), () -> player.openInventory(inventoryUI.getCurrentPage()), 10L);
+		}
+
+		if(profile != null && profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+			player.sendMessage(ChatColor.DARK_RED.toString() + ChatColor.BOLD + "AUTHENTICATE YOURSELF!");
+			player.sendMessage(ChatColor.GRAY + "Usage: /auth <token>");
+		}
 
 		if (CorePlugin.getInstance().getBoardManager() != null) {
 			CorePlugin.getInstance().getBoardManager().getPlayerBoards().put(player.getUniqueId(), new Board(player, CorePlugin.getInstance().getBoardManager().getAdapter()));
 		}
 
 		CorePlugin.getInstance().getServer().getScheduler().runTaskLater(CorePlugin.getInstance(), () -> {
-			Profile profile = Profile.getByUuidIfAvailable(event.getPlayer().getUniqueId());
 
 			if (profile != null) {
 				profile.updateTabList(profile.getRank());
 			}
-		}, 5L);
+		}, 10L);
 	}
 
 	@EventHandler
@@ -121,9 +176,32 @@ public class ProfileListeners implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+ 	public void onCommandEvent(PlayerCommandPreprocessEvent event) {
+		Player player = event.getPlayer();
+		Profile profile = Profile.getByUuid(player.getUniqueId());
+
+		if (event.getMessage().toLowerCase().startsWith("/auth")) {
+			return;
+		}
+
+		if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+			player.sendMessage(ChatColor.DARK_RED.toString() + ChatColor.BOLD + "AUTHENTICATE YOURSELF!");
+			player.sendMessage(ChatColor.GRAY + "Usage: /auth <token>");
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
 		Profile profile = Profile.getByUuid(player.getUniqueId());
+
+
+		if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+			event.setCancelled(true);
+			return;
+		}
+
 		Punishment punishment = profile.getMutedPunishment();
 
 		if (punishment != null) {
