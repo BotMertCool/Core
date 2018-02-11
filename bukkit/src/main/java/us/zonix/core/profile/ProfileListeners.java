@@ -40,9 +40,9 @@ public class ProfileListeners implements Listener {
 		profile.setChatCooldown(0L);
 		profile.setChatEnabled(true);
 
-		if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated()) {
+		if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
 			profile.setAuthenticated(false);
-		} else if(profile.getTwoFactorAuthentication() != null && !profile.getIp().equalsIgnoreCase(event.getAddress().getHostAddress())) {
+		} else if(profile.getTwoFactorAuthentication() != null && !profile.getIp().equalsIgnoreCase(event.getAddress().getHostAddress()) && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
 			profile.setAuthenticated(false);
 		} else {
 			profile.setAuthenticated(true);

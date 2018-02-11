@@ -183,7 +183,7 @@ public class Profile {
 		this.boughtSymbols = !(data.get("boughtSymbols") instanceof JsonNull) && data.get("boughtSymbols").getAsBoolean();
 
 		this.twoFactorAuthentication = data.get("twoFactorAuthentication") instanceof JsonNull ? null : data.get("twoFactorAuthentication").getAsString();
-		this.authenticated = data.get("authenticated") instanceof JsonNull || data.get("authenticated").getAsBoolean();
+		this.authenticated = !(data.get("authenticated") instanceof JsonNull) && data.get("authenticated").getAsBoolean();
 
 		this.firstLogin = data.get("firstLogin").getAsLong();
 
