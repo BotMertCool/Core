@@ -8,6 +8,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 import us.zonix.core.CorePlugin;
+import us.zonix.core.profile.Profile;
+import us.zonix.core.rank.Rank;
+import us.zonix.core.tasks.ShutdownTask;
 import us.zonix.core.util.event.PreShutdownEvent;
 
 public class ServerListener implements Listener {
@@ -23,6 +26,9 @@ public class ServerListener implements Listener {
 		}
 
 		if (command.split(" ")[0].equalsIgnoreCase("stop")) {
+
+			event.setCancelled(true);
+
 			PreShutdownEvent shutdownEvent = new PreShutdownEvent();
 
 			this.main.getServer().getPluginManager().callEvent(shutdownEvent);
@@ -31,14 +37,26 @@ public class ServerListener implements Listener {
 				return;
 			}
 
-			this.handleShutdown();
+			if (CorePlugin.getInstance().getShutdownTask() == null) {
+				CorePlugin.getInstance().setShutdownTask(new ShutdownTask(CorePlugin.getInstance(), 60));
+				CorePlugin.getInstance().getShutdownTask().runTaskTimer(CorePlugin.getInstance(), 20L, 20L);
+			} else {
+				CorePlugin.getInstance().getShutdownTask().setSecondsUntilShutdown(10);
+			}
 		}
 	}
 
 	@EventHandler
 	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
-		if (event.getPlayer().hasPermission("bukkit.command.stop")) {
+
+		Profile profile = Profile.getByUuid(event.getPlayer().getUniqueId());
+
+		if (profile.getRank() == Rank.OWNER) {
+
 			if (event.getMessage().replace("/", "").split(" ")[0].equalsIgnoreCase("stop")) {
+
+				event.setCancelled(true);
+
 				PreShutdownEvent shutdownEvent = new PreShutdownEvent();
 
 				this.main.getServer().getPluginManager().callEvent(shutdownEvent);
@@ -47,7 +65,12 @@ public class ServerListener implements Listener {
 					return;
 				}
 
-				this.handleShutdown();
+				if (CorePlugin.getInstance().getShutdownTask() == null) {
+					CorePlugin.getInstance().setShutdownTask(new ShutdownTask(CorePlugin.getInstance(), 60));
+					CorePlugin.getInstance().getShutdownTask().runTaskTimer(CorePlugin.getInstance(), 20L, 20L);
+				} else {
+					CorePlugin.getInstance().getShutdownTask().setSecondsUntilShutdown(10);
+				}
 			}
 		}
 	}

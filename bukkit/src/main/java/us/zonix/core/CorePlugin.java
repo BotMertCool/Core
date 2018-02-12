@@ -2,6 +2,7 @@ package us.zonix.core;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -36,14 +37,28 @@ import us.zonix.core.shared.redis.JedisSettings;
 import us.zonix.core.social.command.*;
 import us.zonix.core.symbols.commands.PurchaseSymbolsCommand;
 import us.zonix.core.symbols.commands.SymbolCommand;
+import us.zonix.core.tab.TabList;
+import us.zonix.core.tab.TabListManager;
 import us.zonix.core.tasks.AnnouncementTask;
+import us.zonix.core.tasks.AutomaticShutdownTask;
+import us.zonix.core.tasks.ShutdownTask;
 import us.zonix.core.util.LocationString;
 import us.zonix.core.util.command.CommandFramework;
 import us.zonix.core.util.file.ConfigFile;
 import us.zonix.core.util.inventory.UIListener;
 
-import java.util.Iterator;
-import java.util.UUID;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.jar.JarFile;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 @Getter
 public class CorePlugin extends JavaPlugin {
@@ -67,10 +82,13 @@ public class CorePlugin extends JavaPlugin {
 	private BoardManager boardManager;
 	private ServerManager serverManager;
 	private QueueManager queueManager;
+	private TabListManager tabListManager;
 
 	private CoreProcessor requestProcessor;
 
 	private SocialHelper socialHelper;
+
+	@Setter private ShutdownTask shutdownTask = null;
 
 	@Override
 	public void onEnable() {
@@ -159,10 +177,6 @@ public class CorePlugin extends JavaPlugin {
 		new TeleportPositionCommand();
 		new WorldCommand();
 
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			player.kickPlayer(ChatColor.RED + "This server is currently setting up...");
-		}
-
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(new ProfileListeners(), this);
 		pm.registerEvents(new RankListeners(), this);
@@ -202,11 +216,20 @@ public class CorePlugin extends JavaPlugin {
 				}
 			}
 		}.runTaskTimerAsynchronously(this, 0L, 20L * 60);
+
+
+		this.registerRestartTimer();
+
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			player.kickPlayer(ChatColor.RED + "This server is currently setting up...");
+		}
+
 	}
 
 	@Override
 	public void onDisable() {
 		this.saveSpawnLocation();
+		doRestartFileCheck();
 	}
 
 	public void setBoardManager(BoardManager boardManager) {
@@ -215,6 +238,15 @@ public class CorePlugin extends JavaPlugin {
 		long interval = this.boardManager.getAdapter().getInterval();
 
 		this.getServer().getScheduler().runTaskTimerAsynchronously(this, this.boardManager, interval, interval);
+	}
+
+	public void useTabList() {
+		if (this.tabListManager == null) {
+			this.tabListManager = new TabListManager();
+			this.tabListManager.setTabList(new TabList(this, this.tabListManager));
+		} else {
+			this.getLogger().warning("A plugin has already set the core to use the custom TabList");
+		}
 	}
 
 
@@ -229,5 +261,54 @@ public class CorePlugin extends JavaPlugin {
 		}
 		catch (Exception ex) {}
 	}
+
+	private void doRestartFileCheck() {
+
+
+		File uploadsFolder = new File(isHub() ? "../../uploads/hub" : "../uploads/practice").getAbsoluteFile();
+		File pluginFolder = new File("./plugins").getAbsoluteFile();
+
+		if(!uploadsFolder.exists() || !pluginFolder.exists()) {
+			System.out.println("[Restart] Nothing to change, folder doesn't exist.");
+			return;
+		}
+
+		if(uploadsFolder.isDirectory() && uploadsFolder.list().length == 0) {
+			System.out.println("[Restart] There's no files to transfer.");
+			return;
+		}
+
+		for(File file : uploadsFolder.listFiles()) {
+			try {
+				FileUtils.copyFileToDirectory(file, pluginFolder);
+				System.out.println("[Restart] Copying " + file.getName() + " to plugin folder.");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void registerRestartTimer() {
+
+		Calendar today = Calendar.getInstance();
+		today.set(Calendar.HOUR_OF_DAY, 1);
+		today.set(Calendar.MINUTE, 0);
+		today.set(Calendar.SECOND, 0);
+		today.set(Calendar.MILLISECOND, 0);
+		today.set(Calendar.AM_PM, Calendar.AM);
+
+		Long currentTime = new Date().getTime();
+
+		if (today.getTime().getTime() < currentTime) {
+			today.add(Calendar.DATE, 1);
+		}
+
+		long startScheduler = today.getTime().getTime() - currentTime;
+
+		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+		scheduler.schedule(new AutomaticShutdownTask(), startScheduler, MILLISECONDS);
+
+	}
+
 
 }

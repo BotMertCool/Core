@@ -184,6 +184,10 @@ public class ProfileListeners implements Listener {
 		if (CorePlugin.getInstance().getBoardManager() != null) {
 			CorePlugin.getInstance().getBoardManager().getPlayerBoards().remove(player.getUniqueId());
 		}
+
+		if (CorePlugin.getInstance().getTabListManager() != null) {
+			CorePlugin.getInstance().getTabListManager().removePlayer(player.getUniqueId());
+		}
 	}
 
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)

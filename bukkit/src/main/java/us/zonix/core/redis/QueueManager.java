@@ -28,7 +28,7 @@ public class QueueManager implements Listener {
     private final Gson gson;
 
     private CorePlugin plugin;
-    private final AtomicBoolean serverOnline;
+    private final boolean serverOnline;
 
     private final JedisSubscriber<String> managerSubscriber;
     private final JedisPublisher<String> managerPublisher;
@@ -40,7 +40,7 @@ public class QueueManager implements Listener {
         this.gson = new Gson();
 
         this.queues = new ConcurrentHashMap<>(10, 0.5f, 4);
-        this.serverOnline = new AtomicBoolean();
+        this.serverOnline = true;
 
         this.managerSubscriber = new JedisSubscriber<>(this.plugin.getJedisSettings(), "queuemanager" , String.class, new QueueManagerSubscriptionHandler());
         this.managerPublisher = new JedisPublisher<>(this.plugin.getJedisSettings(), "queuemanager");
@@ -68,7 +68,7 @@ public class QueueManager implements Listener {
 
     
     public boolean isServerOnline() {
-        return this.serverOnline.get();
+        return this.serverOnline;
     }
 
     
@@ -87,14 +87,13 @@ public class QueueManager implements Listener {
         public void handleMessage(String message) {
 
             if (message.equals("hello")) {
-                serverOnline.set(true);
 
                 for (final String server : queues.keySet()) {
                     managerPublisher.writeDirectly("addServer`" + server.toLowerCase().replace("-", "_"));
                 }
             }
             else if (message.equals("goodbye")) {
-                serverOnline.set(false);
+
                 for (final Queue queue : queues.values()) {
                     queue.clear();
                 }
