@@ -151,6 +151,12 @@ public class Queue {
             return "Practice US";
         } else if(serverName.toLowerCase().equalsIgnoreCase("practice-eu")) {
             return "Practice EU";
+        } else if(serverName.toLowerCase().equalsIgnoreCase("practice-sa")) {
+            return "Practice SA";
+        } else if(serverName.toLowerCase().equalsIgnoreCase("practice-au")) {
+            return "Practice AU";
+        } else if(serverName.toLowerCase().equalsIgnoreCase("practice-as")) {
+            return "Practice AS";
         }
 
         return serverName;

@@ -56,6 +56,7 @@ import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BooleanSupplier;
 import java.util.jar.JarFile;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -89,6 +90,20 @@ public class CorePlugin extends JavaPlugin {
 	private SocialHelper socialHelper;
 
 	@Setter private ShutdownTask shutdownTask = null;
+
+	@Setter private boolean joinable = false;
+	@Setter private boolean setupMode = false;
+
+	@Setter
+	private BooleanSupplier setupSupplier = new BooleanSupplier() {
+		private int attempts;
+
+		@Override
+		public boolean getAsBoolean() {
+			return this.attempts++ >= 5;
+		}
+	};
+
 
 	@Override
 	public void onEnable() {
@@ -218,11 +233,8 @@ public class CorePlugin extends JavaPlugin {
 		}.runTaskTimerAsynchronously(this, 0L, 20L * 60);
 
 
+		this.runSetupTimer();
 		this.registerRestartTimer();
-
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			player.kickPlayer(ChatColor.RED + "This server is currently setting up...");
-		}
 
 	}
 
@@ -286,6 +298,21 @@ public class CorePlugin extends JavaPlugin {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private void runSetupTimer() {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if (setupSupplier.getAsBoolean()) {
+					CorePlugin.getInstance().setSetupMode(true);
+					getLogger().info("The server is now setup and ready.");
+					this.cancel();
+				} else {
+					getLogger().info("The server is currently setting up.");
+				}
+			}
+		}.runTaskTimerAsynchronously(this, 0L, 20L);
 	}
 
 	private void registerRestartTimer() {

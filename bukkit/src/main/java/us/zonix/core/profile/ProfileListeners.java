@@ -30,6 +30,12 @@ public class ProfileListeners implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onAysncPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
+
+		if (!CorePlugin.getInstance().isSetupMode()) {
+			event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, ChatColor.RED + "Server is setting up!");
+			return;
+		}
+
 		if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) {
 			return;
 		}
@@ -40,7 +46,9 @@ public class ProfileListeners implements Listener {
 		profile.setChatCooldown(0L);
 		profile.setChatEnabled(true);
 
-		if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+		if(profile.getRank() == Rank.MEDIA_ADMIN || profile.getRank() == Rank.MEDIA_OWNER) {
+			profile.setAuthenticated(true);
+		} else if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
 			profile.setAuthenticated(false);
 		} else if(profile.getTwoFactorAuthentication() != null && !profile.getIp().equalsIgnoreCase(event.getAddress().getHostAddress()) && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
 			profile.setAuthenticated(false);
@@ -102,7 +110,7 @@ public class ProfileListeners implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onPlayerLogin(final PlayerLoginEvent event) {
 
-		Profile profile = Profile.getByUuidIfAvailable(event.getPlayer().getUniqueId());
+		Profile profile = Profile.getByUuid(event.getPlayer().getUniqueId());
 
 		if(event.getResult() == PlayerLoginEvent.Result.KICK_FULL && profile != null && profile.getRank().isAboveOrEqual(Rank.SILVER)) {
 			event.allow();
@@ -115,7 +123,7 @@ public class ProfileListeners implements Listener {
 
 		Profile profile = Profile.getByUuid(event.getPlayer().getUniqueId());
 
-		if(profile != null && profile.getTwoFactorAuthentication() == null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+		if(profile != null && profile.getTwoFactorAuthentication() == null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD) && (profile.getRank() != Rank.MEDIA_OWNER || profile.getRank() != Rank.MEDIA_ADMIN)) {
 
 			String token = TimeBasedOneTimePasswordUtil.generateBase32Secret();
 			String url = TimeBasedOneTimePasswordUtil.qrImageUrl(player.getName() + "@zonix.us", token);
@@ -199,7 +207,7 @@ public class ProfileListeners implements Listener {
 			return;
 		}
 
-		if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+		if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD) && (profile.getRank() != Rank.MEDIA_OWNER || profile.getRank() != Rank.MEDIA_ADMIN)) {
 			player.sendMessage(ChatColor.DARK_RED.toString() + ChatColor.BOLD + "AUTHENTICATE YOURSELF!");
 			player.sendMessage(ChatColor.GRAY + "Usage: /auth <token>");
 			event.setCancelled(true);
@@ -212,7 +220,7 @@ public class ProfileListeners implements Listener {
 		Profile profile = Profile.getByUuid(player.getUniqueId());
 
 
-		if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+		if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD) && (profile.getRank() != Rank.MEDIA_OWNER || profile.getRank() != Rank.MEDIA_ADMIN)) {
 			event.setCancelled(true);
 			return;
 		}
