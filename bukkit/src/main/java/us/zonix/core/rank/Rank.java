@@ -15,6 +15,7 @@ public enum Rank {
 	EMERALD(ChatColor.GREEN + "✵", ChatColor.DARK_GREEN.toString(), "Emerald", ""),
 	ZONIX(ChatColor.GOLD + "❊", ChatColor.DARK_RED.toString() + ChatColor.BOLD.toString(), "Zonix", ""),
 	BUILDER(ChatColor.GRAY.toString() + "[", ChatColor.BLUE.toString(), "Builder", ChatColor.GRAY.toString() + "] "),
+	E_GIRL(ChatColor.GRAY.toString() + "[", ChatColor.LIGHT_PURPLE.toString(), "E-Girl", ChatColor.GRAY + "] "),
 	MEDIA(ChatColor.GRAY.toString() + "[", ChatColor.LIGHT_PURPLE.toString(), "YouTuber", ChatColor.GRAY.toString() + "] "),
 	FAMOUS(ChatColor.GRAY.toString() + "[", ChatColor.LIGHT_PURPLE.toString() + ChatColor.ITALIC.toString(), "Famous", ChatColor.GRAY.toString() + "] "),
 	PARTNER(ChatColor.GRAY.toString() + "[", ChatColor.LIGHT_PURPLE.toString() + ChatColor.ITALIC.toString(), "Partner", ChatColor.GRAY.toString() + "] "),
