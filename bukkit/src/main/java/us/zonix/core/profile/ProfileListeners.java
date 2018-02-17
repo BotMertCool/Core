@@ -41,76 +41,81 @@ public class ProfileListeners implements Listener {
 		}
 
 		Profile profile = new Profile(event.getUniqueId());
-		profile.setLastLogin(System.currentTimeMillis());
-		//profile.setIp(event.getAddress().getHostAddress());
-		profile.setChatCooldown(0L);
-		profile.setChatEnabled(true);
 
-		if(profile.getRank() == Rank.MEDIA_ADMIN || profile.getRank() == Rank.MEDIA_OWNER) {
-			profile.setAuthenticated(true);
-		} else if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-			profile.setAuthenticated(false);
-		} else if(profile.getTwoFactorAuthentication() != null && !profile.getIp().equalsIgnoreCase(event.getAddress().getHostAddress()) && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-			profile.setAuthenticated(false);
-		} else {
-			profile.setAuthenticated(true);
-		}
+		Bukkit.getScheduler().runTaskLaterAsynchronously(CorePlugin.getInstance(), () -> {
 
-		if(profile.isAuthenticated()) {
-			profile.setIp(event.getAddress().getHostAddress());
-		}
+            profile.setLastLogin(System.currentTimeMillis());
+            //profile.setIp(event.getAddress().getHostAddress());
+            profile.setChatCooldown(0L);
+            profile.setChatEnabled(true);
 
-		if (profile.getName() == null) {
-			profile.setName(event.getName());
-			profile.save();
-		}
+            if(profile.getRank() == Rank.MEDIA_ADMIN || profile.getRank() == Rank.MEDIA_OWNER) {
+                profile.setAuthenticated(true);
+            } else if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+                profile.setAuthenticated(false);
+            } else if(profile.getTwoFactorAuthentication() != null && !profile.getIp().equalsIgnoreCase(event.getAddress().getHostAddress()) && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+                profile.setAuthenticated(false);
+            } else {
+                profile.setAuthenticated(true);
+            }
 
-		Punishment ban = profile.getBannedPunishment();
+            if(profile.isAuthenticated()) {
+                profile.setIp(event.getAddress().getHostAddress());
+            }
 
-		if (ban != null && !CorePlugin.getInstance().isHub()) {
-			event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
-			event.setKickMessage(ban.getType().getMessage());
-			Profile.getProfiles().remove(profile.getUuid());
-			return;
-		}
+            if (profile.getName() == null) {
+                profile.setName(event.getName());
+                profile.save();
+            }
 
-		if (profile.isBlacklisted()) {
-			event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
-			event.setKickMessage(PunishmentType.BLACKLIST.getMessage());
-			Profile.getProfiles().remove(profile.getUuid());
-			return;
-		}
+            Punishment ban = profile.getBannedPunishment();
 
-		if (profile.getAlts().size() == 0) {
-			profile.loadProfileAlts();
-		}
+            if (ban != null && !CorePlugin.getInstance().isHub()) {
+                event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
+                event.setKickMessage(ban.getType().getMessage());
+                Profile.getProfiles().remove(profile.getUuid());
+                return;
+            }
 
-		for (UUID uuid : profile.getAlts()) {
-			if (!uuid.equals(event.getUniqueId())) {
-				Profile altProfile = Profile.getByUuid(uuid);
-				Punishment bannedAlt = altProfile.getBannedPunishment();
+            if (profile.isBlacklisted()) {
+                event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
+                event.setKickMessage(PunishmentType.BLACKLIST.getMessage());
+                Profile.getProfiles().remove(profile.getUuid());
+                return;
+            }
 
-				if (bannedAlt != null && !CorePlugin.getInstance().isHub()) {
-					event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
-					event.setKickMessage(bannedAlt.getType().getMessage());
-					Profile.getProfiles().remove(altProfile.getUuid());
-					return;
-				}
+            if (profile.getAlts().size() == 0) {
+                profile.loadProfileAlts();
+            }
 
-				if (altProfile.isBlacklisted()) {
-					event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
-					event.setKickMessage(PunishmentType.BLACKLIST.getMessage());
-					Profile.getProfiles().remove(altProfile.getUuid());
-					return;
-				}
-			}
-		}
+            for (UUID uuid : profile.getAlts()) {
+                if (!uuid.equals(event.getUniqueId())) {
+                    Profile altProfile = Profile.getByUuid(uuid);
+                    Punishment bannedAlt = altProfile.getBannedPunishment();
+
+                    if (bannedAlt != null && !CorePlugin.getInstance().isHub()) {
+                        event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
+                        event.setKickMessage(bannedAlt.getType().getMessage());
+                        Profile.getProfiles().remove(altProfile.getUuid());
+                        return;
+                    }
+
+                    if (altProfile.isBlacklisted()) {
+                        event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
+                        event.setKickMessage(PunishmentType.BLACKLIST.getMessage());
+                        Profile.getProfiles().remove(altProfile.getUuid());
+                        return;
+                    }
+                }
+            }
+        }, 20L);
+
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void onPlayerLogin(final PlayerLoginEvent event) {
 
-		Profile profile = Profile.getByUuid(event.getPlayer().getUniqueId());
+		Profile profile = Profile.getByUuidIfAvailable(event.getPlayer().getUniqueId());
 
 		if(event.getResult() == PlayerLoginEvent.Result.KICK_FULL && profile != null && profile.getRank().isAboveOrEqual(Rank.SILVER)) {
 			event.allow();
@@ -121,7 +126,7 @@ public class ProfileListeners implements Listener {
 	public void onPlayerJoinEvent(PlayerJoinEvent event) throws IOException {
 		Player player = event.getPlayer();
 
-		Profile profile = Profile.getByUuid(event.getPlayer().getUniqueId());
+		Profile profile = Profile.getByUuidIfAvailable(event.getPlayer().getUniqueId());
 
 		if(profile != null && profile.getTwoFactorAuthentication() == null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD) && (profile.getRank() != Rank.MEDIA_OWNER || profile.getRank() != Rank.MEDIA_ADMIN)) {
 
@@ -173,16 +178,16 @@ public class ProfileListeners implements Listener {
 
 		CorePlugin.getInstance().getServer().getScheduler().runTaskLater(CorePlugin.getInstance(), () -> {
 
-			if (profile != null) {
-				profile.updateTabList(profile.getRank());
+			if (profile != null && profile.getRank() != null) {
+				Profile.updateTabList(player, profile.getRank());
 			}
-		}, 10L);
+		}, 20L);
 	}
 
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
-		Profile profile = Profile.getByUuid(event.getPlayer().getUniqueId());
+		Profile profile = Profile.getByUuidIfAvailable(event.getPlayer().getUniqueId());
 
 		if (profile != null) {
 			CorePlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(CorePlugin.getInstance(), profile::save);

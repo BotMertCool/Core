@@ -280,6 +280,10 @@ public class Profile {
 		return CorePlugin.getInstance().getServer().getPlayer(this.uuid);
 	}
 
+	public static void updateTabList(Player player, Rank rank) {
+		player.setPlayerListName(rank.getColor() + player.getName());
+	}
+
 	public void updateTabList(Rank rank) {
 		this.getPlayer().setPlayerListName(rank.getColor() + this.getPlayer().getName());
 	}

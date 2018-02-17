@@ -32,6 +32,7 @@ public class JoinQueueCommand extends BaseCommand {
         final String name = args[0];
         final Queue queue;
 
+
         if ((queue = CorePlugin.getInstance().getQueueManager().getQueue(name.toLowerCase())) == null) {
             player.sendMessage(ChatColor.RED + "The specified queue doesn't exist.");
             return;

@@ -7,9 +7,12 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerPreLoginEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.zonix.core.CorePlugin;
 import us.zonix.core.profile.Profile;
+import us.zonix.core.punishment.Punishment;
+import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
 import us.zonix.core.redis.QueueManager;
 import us.zonix.core.shared.redis.JedisPublisher;
@@ -124,10 +127,45 @@ public class Queue {
 
     public void addToQueue(Player player, boolean bypass) {
 
-        Profile profile = Profile.getByUuid(player.getUniqueId());
+        Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
 
         if(profile == null) {
             return;
+        }
+
+        Punishment ban = profile.getBannedPunishment();
+
+        if (ban != null) {
+            player.sendMessage(ban.getType().getMessage());
+            return;
+        }
+
+        if (profile.isBlacklisted()) {
+            player.sendMessage(PunishmentType.BLACKLIST.getMessage());
+            return;
+        }
+
+        if (profile.getAlts().size() == 0) {
+            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, profile::loadProfileAlts);
+        }
+
+        for (UUID uuid : profile.getAlts()) {
+            if (!uuid.equals(player.getUniqueId())) {
+
+                Profile altProfile = Profile.getByUuid(uuid);
+                Punishment bannedAlt = altProfile.getBannedPunishment();
+
+                if (bannedAlt != null) {
+                    player.sendMessage(bannedAlt.getType().getMessage());
+                    return;
+                }
+
+                if (altProfile.isBlacklisted()) {
+                    player.sendMessage(PunishmentType.BLACKLIST.getMessage());
+                    return;
+                }
+
+            }
         }
 
         PlayerData data = new PlayerData(player.getUniqueId(), this.position(player), profile.getRank().getName(), this.serverName.replace("-", "_"));

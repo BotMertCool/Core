@@ -16,6 +16,9 @@ import redis.clients.jedis.*;
 import org.bukkit.event.*;
 import org.bukkit.entity.*;
 import us.zonix.core.CorePlugin;
+import us.zonix.core.profile.Profile;
+import us.zonix.core.punishment.Punishment;
+import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.redis.queue.Queue;
 import us.zonix.core.shared.redis.JedisPublisher;
 import us.zonix.core.shared.redis.JedisSubscriber;
@@ -33,7 +36,7 @@ public class QueueManager implements Listener {
     private final JedisSubscriber<String> managerSubscriber;
     private final JedisPublisher<String> managerPublisher;
 
-    private String[] availableQueues = new String[] {"practice-us", "practice-eu", "practice-au", "practice-sa"};
+    private String[] availableQueues = new String[] {"practice-us", "practice-eu", "practice-as", "practice-sa"};
     
     public QueueManager(CorePlugin plugin) {
         this.plugin = plugin;

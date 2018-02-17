@@ -27,7 +27,7 @@ public class ServerManager {
 
 	public ServerManager() {
 		this.setupUSEUInventories();
-		this.setupAUSAInventories();
+		this.setupASSAInventories();
 		this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, this::updateInventories, 20L, 20L);
 	}
 
@@ -62,20 +62,20 @@ public class ServerManager {
 				}
 			});
 
-			this.serverSelector.setItem(7, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.WOOD_SWORD, ChatColor.YELLOW.toString() + ChatColor.BOLD + "Practice " + ChatColor.GRAY + "|" + ChatColor.GOLD.toString() + ChatColor.BOLD + " AU")) {
+			this.serverSelector.setItem(7, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.WOOD_SWORD, ChatColor.YELLOW.toString() + ChatColor.BOLD + "Practice " + ChatColor.GRAY + "|" + ChatColor.GOLD.toString() + ChatColor.BOLD + " AS")) {
 				@Override
 				public void onClick(InventoryClickEvent event) {
 					Player player = (Player) event.getWhoClicked();
-					player.performCommand("joinqueue " + "practice-au");
+					player.performCommand("joinqueue " + "practice-as");
 					player.closeInventory();
 				}
 			});
 		}
 	}
 
-	private void setupAUSAInventories() {
+	private void setupASSAInventories() {
 
-		if(this.plugin.getServerId().toUpperCase().contains("AU") || this.plugin.getServerId().toUpperCase().contains("SA")) {
+		if(this.plugin.getServerId().toUpperCase().contains("AS") || this.plugin.getServerId().toUpperCase().contains("SA")) {
 
 			this.serverSelector.setItem(1, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.DIAMOND_SWORD, ChatColor.YELLOW.toString() + ChatColor.BOLD + "Practice " + ChatColor.GRAY + "|" + ChatColor.GOLD.toString() + ChatColor.BOLD + " US")) {
 				@Override
@@ -109,15 +109,15 @@ public class ServerManager {
 				}
 			});
 
-			this.serverSelector.setItem(7, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.WOOD_SWORD, ChatColor.YELLOW.toString() + ChatColor.BOLD + "Practice " + ChatColor.GRAY + "|" + ChatColor.GOLD.toString() + ChatColor.BOLD + " AU")) {
+			this.serverSelector.setItem(7, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.WOOD_SWORD, ChatColor.YELLOW.toString() + ChatColor.BOLD + "Practice " + ChatColor.GRAY + "|" + ChatColor.GOLD.toString() + ChatColor.BOLD + " AS")) {
 				@Override
 				public void onClick(InventoryClickEvent event) {
 					Player player = (Player) event.getWhoClicked();
 
-					if(plugin.getServerId().toUpperCase().contains("AU")) {
-						player.performCommand("joinqueue " + "practice-au");
+					if(plugin.getServerId().toUpperCase().contains("AS")) {
+						player.performCommand("joinqueue " + "practice-as");
 					} else {
-						player.sendMessage(ChatColor.RED + "Join using 'au.zonix.us' to connect to this server.");
+						player.sendMessage(ChatColor.RED + "Join using 'as.zonix.us' to connect to this server.");
 					}
 
 					player.closeInventory();
@@ -138,7 +138,7 @@ public class ServerManager {
 				} else if(item.getItemStack().getType() == Material.STONE_SWORD) {
 					item.setItemStack(this.updateQueueLore(item.getItemStack(), "practice-sa"));
 				} else if(item.getItemStack().getType() == Material.WOOD_SWORD) {
-					item.setItemStack(this.updateQueueLore(item.getItemStack(), "practice-au"));
+					item.setItemStack(this.updateQueueLore(item.getItemStack(), "practice-as"));
 				}
 
 				this.serverSelector.setItem(i, item);
