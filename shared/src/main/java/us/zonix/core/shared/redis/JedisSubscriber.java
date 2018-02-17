@@ -23,8 +23,8 @@ public class JedisSubscriber<K> {
 
 	protected final String channel;
 	private final Class<K> typeParameter;
-	private final JedisSettings jedisSettings;
-	private final Jedis jedis;
+	@Getter private final JedisSettings jedisSettings;
+	@Getter private final Jedis jedis;
 	@Getter private JedisPubSub pubSub;
 
 	private JedisSubscriptionHandler<K> jedisSubscriptionHandler;

@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.material.MaterialData;
+import us.zonix.core.rank.Rank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +107,45 @@ public class ItemBuilder implements Listener {
     }
 
     public ItemBuilder color(Color color) {
+        if (is.getType() == Material.LEATHER_BOOTS || is.getType() == Material.LEATHER_CHESTPLATE || is.getType() == Material.LEATHER_HELMET
+                || is.getType() == Material.LEATHER_LEGGINGS) {
+            LeatherArmorMeta meta = (LeatherArmorMeta) is.getItemMeta();
+            meta.setColor(color);
+            is.setItemMeta(meta);
+            return this;
+        } else {
+            throw new IllegalArgumentException("color() only applicable for leather armor!");
+        }
+    }
+
+    public ItemBuilder color(Rank rank) {
+
+        Color color = Color.WHITE;
+
+        if(rank == Rank.SILVER) {
+            color = Color.SILVER;
+        } else if(rank == Rank.GOLD) {
+            color = Color.ORANGE;
+        } else if(rank == Rank.PLATINUM) {
+            color = Color.TEAL;
+        } else if(rank == Rank.EMERALD) {
+            color = Color.GREEN;
+        } else if(rank == Rank.ZONIX) {
+            color = Color.RED;
+        } else if(rank == Rank.BUILDER) {
+            color = Color.BLUE;
+        } else if(rank == Rank.E_GIRL || rank == Rank.PARTNER || rank == Rank.MEDIA) {
+            color = Color.FUCHSIA;
+        } else if(rank == Rank.TRIAL_MOD || rank == Rank.MODERATOR || rank == Rank.SENIOR_MODERATOR) {
+            color = Color.PURPLE;
+        } else if(rank == Rank.ADMINISTRATOR || rank == Rank.MANAGER || rank == Rank.MEDIA_ADMIN) {
+            color = Color.RED;
+        } else if(rank == Rank.DEVELOPER) {
+            color = Color.AQUA;
+        } else if(rank == Rank.OWNER || rank == Rank.MEDIA_OWNER) {
+            color = Color.MAROON;
+        }
+
         if (is.getType() == Material.LEATHER_BOOTS || is.getType() == Material.LEATHER_CHESTPLATE || is.getType() == Material.LEATHER_HELMET
                 || is.getType() == Material.LEATHER_LEGGINGS) {
             LeatherArmorMeta meta = (LeatherArmorMeta) is.getItemMeta();

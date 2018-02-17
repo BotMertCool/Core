@@ -20,6 +20,7 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import us.zonix.core.CorePlugin;
 import us.zonix.core.profile.Profile;
+import us.zonix.core.rank.Rank;
 import us.zonix.core.redis.queue.Queue;
 import us.zonix.core.util.ItemUtil;
 
@@ -67,17 +68,23 @@ public class ServerListeners implements Listener {
 
         String[] message = new String[] {
                 "§8§m----------------------------------------------------",
-                "§7Welcome to the §c§lZonix Network",
+                "§7Welcome to the §4§lZonix Network",
                 " ",
-                "§8§l* §6§lWebsite: §7www.zonix.us",
-                "§8§l* §6§lTwitter: §7twitter.com/ZonixUS",
-                "§8§l* §6§lTeamspeak: §7ts.zonix.us",
-                "§8§l* §6§lStore: §7store.zonix.us",
+                "§8§l* §c§lWebsite: §7www.zonix.us",
+                "§8§l* §c§lTwitter: §7twitter.com/ZonixUS",
+                "§8§l* §c§lTeamspeak: §7ts.zonix.us",
+                "§8§l* §c§lStore: §7store.zonix.us",
                 " ",
                 "§8§m----------------------------------------------------"
         };
 
         player.sendMessage(message);
+
+        Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
+
+        if(profile != null && profile.getRank().isAboveOrEqual(Rank.SILVER)) {
+            profile.setDonatorArmor();
+        }
     }
 
 

@@ -27,7 +27,7 @@ public class HubBoard implements BoardAdapter {
 
 	@Override
 	public String getTitle(Player player) {
-		return ChatColor.RED.toString() + ChatColor.BOLD + "Zonix Network";
+		return ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Zonix Network";
 	}
 
 	@Override
@@ -65,23 +65,23 @@ public class HubBoard implements BoardAdapter {
 		}
 
 		strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
-		strings.add(ChatColor.GOLD.toString() + ChatColor.BOLD + "Online:");
+		strings.add(ChatColor.RED.toString() + ChatColor.BOLD + "Online" + ChatColor.GRAY + ":");
 		strings.add(ChatColor.WHITE.toString() + this.online);
 		strings.add(" ");
-		strings.add(ChatColor.GOLD.toString() + ChatColor.BOLD + "Rank:");
+		strings.add(ChatColor.RED.toString() + ChatColor.BOLD + "Rank" + ChatColor.GRAY + ":");
 		strings.add(profile.getRank().getColor() + profile.getRank().getName());
 		strings.add("  ");
 
 		Queue queue = this.plugin.getQueueManager().getQueue(player);
 
 		if(queue != null) {
-			strings.add(ChatColor.GOLD.toString() + ChatColor.BOLD + "Queue:");
-			strings.add(ChatColor.YELLOW.toString() + ChatColor.WHITE + queue.getServerName().replace("_", "-"));
-			strings.add(ChatColor.YELLOW.toString() + ChatColor.WHITE + "Position: #" +  queue.getPosition(player) + " of " + queue.getPlayers().size());
+			strings.add(ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Queue" + ChatColor.GRAY + ":");
+			strings.add(ChatColor.RED.toString() + ChatColor.WHITE + queue.getServerName().replace("_", "-"));
+			strings.add(ChatColor.RED.toString() + ChatColor.WHITE + "Position: #" +  queue.getPosition(player) + " of " + queue.getPlayers().size());
 			strings.add("  ");
 		}
 
-		strings.add(ChatColor.GOLD.toString() + "www.zonix.us");
+		strings.add(ChatColor.RED.toString() + "www.zonix.us");
 		strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
 
 		return strings;

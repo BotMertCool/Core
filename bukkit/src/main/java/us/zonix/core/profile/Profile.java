@@ -16,8 +16,10 @@ import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import us.zonix.core.CorePlugin;
 import us.zonix.core.api.callback.AbstractBukkitCallback;
 import us.zonix.core.api.request.PlayerRequest;
@@ -27,6 +29,8 @@ import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
 import us.zonix.core.shared.api.callback.Callback;
 import us.zonix.core.symbols.Symbol;
+import us.zonix.core.util.ItemBuilder;
+import us.zonix.core.util.ItemUtil;
 
 @Getter
 public class Profile {
@@ -286,6 +290,22 @@ public class Profile {
 
 	public void updateTabList(Rank rank) {
 		this.getPlayer().setPlayerListName(rank.getColor() + this.getPlayer().getName());
+	}
+
+	public void setDonatorArmor() {
+
+		Player player = this.getPlayer();
+		ItemStack helmet = new ItemBuilder(Material.LEATHER_HELMET).color(this.rank).build();
+		ItemStack chestplate = new ItemBuilder(Material.LEATHER_CHESTPLATE).color(this.rank).build();
+		ItemStack leggings = new ItemBuilder(Material.LEATHER_LEGGINGS).color(this.rank).build();
+		ItemStack boots = new ItemBuilder(Material.LEATHER_BOOTS).color(this.rank).build();
+
+		if(player != null) {
+			player.getInventory().setHelmet(helmet);
+			player.getInventory().setChestplate(chestplate);
+			player.getInventory().setLeggings(leggings);
+			player.getInventory().setBoots(boots);
+		}
 	}
 
 	public static Profile getByUuidIfAvailable(UUID uuid) {

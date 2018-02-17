@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.chat.BaseComponent;
+import redis.clients.jedis.Jedis;
 import us.zonix.core.CorePlugin;
 import us.zonix.core.punishment.Punishment;
 import us.zonix.core.rank.Rank;
@@ -13,10 +14,7 @@ import us.zonix.core.shared.redis.JedisPublisher;
 import us.zonix.core.shared.redis.JedisSubscriber;
 import us.zonix.core.util.Clickable;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,10 +24,16 @@ public class CoreRedisManager {
 
     private final CorePlugin plugin;
 
-    @Getter private final Map<String, ServerData> servers;
-    @Getter private final HashSet<UUID> staffChat;
-    @Getter @Setter private boolean chatSilenced;
-    @Getter @Setter private long chatSlowDownTime;
+    @Getter
+    private final Map<String, ServerData> servers;
+    @Getter
+    private final HashSet<UUID> staffChat;
+    @Getter
+    @Setter
+    private boolean chatSilenced;
+    @Getter
+    @Setter
+    private long chatSlowDownTime;
 
     private final JedisSubscriber<JsonObject> messagesSubscriber;
     private final JedisPublisher<JsonObject> messagesPublisher;
@@ -116,7 +120,7 @@ public class CoreRedisManager {
 
     public ServerData getServerDataByName(String name) {
 
-        if(this.getServers().size() == 0) {
+        if (this.getServers().size() == 0) {
             return null;
         }
 
@@ -140,6 +144,33 @@ public class CoreRedisManager {
         for (String serverKey : this.getServers().keySet()) {
             if (this.getServers().containsKey(serverKey)) {
                 count += this.getServers().get(serverKey).getOnlinePlayers();
+            }
+        }
+
+        count += getAsiaPlayerCount();
+
+        return count;
+    }
+
+    public int getAsiaPlayerCount() {
+
+        int count = 0;
+
+        Jedis jedis = null;
+        try {
+            jedis = new Jedis(this.messagesSubscriber.getJedisSettings().getAddress(), this.messagesSubscriber.getJedisSettings().getPort());
+
+            if (this.messagesSubscriber.getJedisSettings().hasPassword()) {
+                jedis.auth(this.messagesSubscriber.getJedisSettings().getPassword());
+
+            }
+
+            Set<String> users = jedis.smembers("proxy:" + "zonix-as2" + ":usersOnline");
+            count += users.size();
+        }
+        finally {
+            if (jedis != null) {
+                jedis.close();
             }
         }
 
