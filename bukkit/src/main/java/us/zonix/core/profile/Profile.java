@@ -295,16 +295,12 @@ public class Profile {
 	public void setDonatorArmor() {
 
 		Player player = this.getPlayer();
-		ItemStack helmet = new ItemBuilder(Material.LEATHER_HELMET).color(this.rank).build();
-		ItemStack chestplate = new ItemBuilder(Material.LEATHER_CHESTPLATE).color(this.rank).build();
-		ItemStack leggings = new ItemBuilder(Material.LEATHER_LEGGINGS).color(this.rank).build();
-		ItemStack boots = new ItemBuilder(Material.LEATHER_BOOTS).color(this.rank).build();
-
+		
 		if(player != null) {
-			player.getInventory().setHelmet(helmet);
-			player.getInventory().setChestplate(chestplate);
-			player.getInventory().setLeggings(leggings);
-			player.getInventory().setBoots(boots);
+			player.getInventory().setHelmet(new ItemBuilder(Material.LEATHER_HELMET).color(this.rank).build());
+			player.getInventory().setChestplate(new ItemBuilder(Material.LEATHER_CHESTPLATE).color(this.rank).build());
+			player.getInventory().setLeggings(new ItemBuilder(Material.LEATHER_LEGGINGS).color(this.rank).build());
+			player.getInventory().setBoots(new ItemBuilder(Material.LEATHER_BOOTS).color(this.rank).build());
 		}
 	}
 

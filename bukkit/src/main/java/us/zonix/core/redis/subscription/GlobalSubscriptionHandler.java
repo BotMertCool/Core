@@ -81,6 +81,10 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
                 if (player != null) {
                     player.sendMessage(ChatColor.GREEN + "Your rank has been updated to " + rank.getName() + ".");
                     profile.updateTabList(rank);
+
+                    if(CorePlugin.getInstance().isHub()) {
+                        profile.setDonatorArmor();
+                    }
                 }
             }
         }

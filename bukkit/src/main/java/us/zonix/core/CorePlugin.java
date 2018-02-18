@@ -1,5 +1,6 @@
 package us.zonix.core;
 
+import club.minemen.spigot.ClubSpigot;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.io.FileUtils;
@@ -29,6 +30,7 @@ import us.zonix.core.redis.CoreRedisManager;
 import us.zonix.core.redis.QueueManager;
 import us.zonix.core.server.ServerManager;
 import us.zonix.core.server.commands.*;
+import us.zonix.core.server.handler.CustomMovementHandler;
 import us.zonix.core.server.listeners.ServerListeners;
 import us.zonix.core.server.tasks.ServerHandlerTask;
 import us.zonix.core.server.tasks.ServerHandlerTimeoutTask;
@@ -205,6 +207,7 @@ public class CorePlugin extends JavaPlugin {
 			this.serverManager = new ServerManager();
 
 			pm.registerEvents(new ServerListeners(), this);
+			ClubSpigot.INSTANCE.addMovementHandler(new CustomMovementHandler());
 
 			new SetSpawnCommand();
 			new JoinQueueCommand();

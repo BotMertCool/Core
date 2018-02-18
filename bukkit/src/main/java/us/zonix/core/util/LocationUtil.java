@@ -6,6 +6,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 public class LocationUtil {
 
@@ -43,5 +44,14 @@ public class LocationUtil {
             return true;
         }
         return false;
+    }
+
+    public static void multiplyVelocity(Player player, Vector vector, double multiply, double addY) {
+        vector.normalize();
+        vector.multiply(multiply);
+        vector.setY(vector.getY() + addY);
+        player.setFallDistance(0.0F);
+
+        player.setVelocity(vector);
     }
 }
