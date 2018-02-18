@@ -164,7 +164,7 @@ public class ServerListeners implements Listener {
 
     @EventHandler
     public void onInventoryClickEvent(InventoryClickEvent event) {
-        if(event.getSlotType() == InventoryType.SlotType.ARMOR && CorePlugin.getInstance().isHub()) {
+        if((event.getSlotType() == InventoryType.SlotType.ARMOR || event.getSlotType() == InventoryType.SlotType.QUICKBAR) && CorePlugin.getInstance().isHub()) {
             event.setCancelled(true);
         }
     }
