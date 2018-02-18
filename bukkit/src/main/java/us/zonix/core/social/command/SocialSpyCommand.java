@@ -10,7 +10,7 @@ import us.zonix.core.util.command.CommandArgs;
 
 public class SocialSpyCommand extends BaseCommand {
 
-    @Command(name = "socialspy", aliases = {"ss", "spy", "sspy"}, rank = Rank.MODERATOR, requiresPlayer = true)
+    @Command(name = "socialspy", aliases = {"spy", "sspy"}, rank = Rank.MANAGER, requiresPlayer = true)
     public void onCommand(CommandArgs command) {
         Player player = command.getPlayer();
         Profile profile = Profile.getByUuid(player.getUniqueId());
