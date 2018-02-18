@@ -51,8 +51,8 @@ public class ServerListeners implements Listener {
         final Player player = event.getPlayer();
 
         event.setJoinMessage(null);
-        
 
+        player.getInventory().setArmorContents(null);
         player.getInventory().clear();
         player.getInventory().setContents(this.items);
         player.setHealth(20F);

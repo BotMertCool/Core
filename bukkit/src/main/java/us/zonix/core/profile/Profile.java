@@ -18,6 +18,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import us.zonix.core.CorePlugin;
@@ -295,12 +296,11 @@ public class Profile {
 	public void setDonatorArmor() {
 
 		Player player = this.getPlayer();
-		
+
 		if(player != null) {
-			player.getInventory().setHelmet(new ItemBuilder(Material.LEATHER_HELMET).color(this.rank).build());
-			player.getInventory().setChestplate(new ItemBuilder(Material.LEATHER_CHESTPLATE).color(this.rank).build());
-			player.getInventory().setLeggings(new ItemBuilder(Material.LEATHER_LEGGINGS).color(this.rank).build());
-			player.getInventory().setBoots(new ItemBuilder(Material.LEATHER_BOOTS).color(this.rank).build());
+			player.getInventory().setChestplate(new ItemBuilder(Material.LEATHER_CHESTPLATE).color(this.rank).enchantment(Enchantment.DURABILITY).build());
+			player.getInventory().setLeggings(new ItemBuilder(Material.LEATHER_LEGGINGS).color(this.rank).enchantment(Enchantment.DURABILITY).build());
+			player.getInventory().setBoots(new ItemBuilder(Material.LEATHER_BOOTS).color(this.rank).enchantment(Enchantment.DURABILITY).build());
 		}
 	}
 
