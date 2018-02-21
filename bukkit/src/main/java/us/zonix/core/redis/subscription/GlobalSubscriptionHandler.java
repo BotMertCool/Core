@@ -14,6 +14,7 @@ import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
 import us.zonix.core.server.ServerData;
 import us.zonix.core.shared.redis.subscription.JedisSubscriptionHandler;
+import us.zonix.core.symbols.Symbol;
 import us.zonix.core.util.Clickable;
 import us.zonix.core.util.UUIDType;
 
@@ -81,6 +82,10 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
                 if (player != null) {
                     player.sendMessage(ChatColor.GREEN + "Your rank has been updated to " + rank.getName() + ".");
                     profile.updateTabList(rank);
+
+                    Symbol symbol = Symbol.getDefaultSymbolByRank(profile.getRank());
+                    profile.setSymbol(symbol);
+                    CorePlugin.getInstance().getRequestProcessor().sendRequestAsync(new PlayerRequest.UpdateSymbolRequest(player.getUniqueId(), symbol));
 
                     if(CorePlugin.getInstance().isHub()) {
                         profile.setDonatorArmor();

@@ -20,7 +20,7 @@ import us.zonix.core.util.inventory.InventoryUI;
 public class SymbolCommand extends BaseCommand {
 
     @Getter
-    private InventoryUI symbolSelector = new InventoryUI("Select a Symbol", true, 2);
+    private InventoryUI symbolSelector = new InventoryUI("Select a Symbol", true, 3);
 
     public SymbolCommand() {
         this.setupSymbolInventory();
@@ -28,8 +28,14 @@ public class SymbolCommand extends BaseCommand {
 
     @Command(name = "symbol", aliases ={ "symbols", "icons", "prefix" }, requiresPlayer = true, rank = Rank.DEFAULT)
     public void onCommand(CommandArgs command) {
-
         Player player = command.getPlayer();
+        Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
+
+        if( (profile.getRank() == Rank.DEFAULT && !profile.isBoughtSymbols()) || profile.getRank().isAboveOrEqual(Rank.BUILDER)) {
+            player.sendMessage(ChatColor.RED + "You don't have permission to use symbols.");
+            return;
+        }
+
         player.openInventory(this.symbolSelector.getCurrentPage());
 
     }
@@ -40,7 +46,7 @@ public class SymbolCommand extends BaseCommand {
 
         for(Symbol symbol : Symbol.values()) {
 
-            if(symbol.isOrigin()) {
+            if(symbol == Symbol.SYMBOL_0) {
                 continue;
             }
 
@@ -55,7 +61,7 @@ public class SymbolCommand extends BaseCommand {
                         return;
                     }
 
-                    if(profile.isBoughtSymbols() || !profile.getRank().isAboveOrEqual(symbol.getRank())) {
+                    if(!profile.isBoughtSymbols() && !profile.getRank().isAboveOrEqual(symbol.getRank())) {
                         player.sendMessage(ChatColor.RED + "You don't have permission to use this symbol.");
                         player.sendMessage(ChatColor.RED + "Purchase access @ store.zonix.us");
                         player.closeInventory();
@@ -72,7 +78,25 @@ public class SymbolCommand extends BaseCommand {
             count++;
         }
 
-        this.symbolSelector.setItem(17, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.FIREWORK_CHARGE, ChatColor.RED + "Reset Symbol")) {
+        this.symbolSelector.setItem(25, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.FIREBALL, ChatColor.RED + "Clear Symbol")) {
+            @Override
+            public void onClick(InventoryClickEvent event) {
+                Player player = (Player) event.getWhoClicked();
+                Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
+
+                if(profile == null) {
+                    player.closeInventory();
+                    return;
+                }
+
+                player.closeInventory();
+                profile.setSymbol(Symbol.SYMBOL_0);
+                main.getRequestProcessor().sendRequestAsync(new PlayerRequest.UpdateSymbolRequest(player.getUniqueId(), Symbol.SYMBOL_0));
+                player.sendMessage(ChatColor.GREEN + "Your symbol has been updated to " + "Clear Symbol" + ChatColor.GREEN + ".");
+            }
+        });
+
+        this.symbolSelector.setItem(26, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.FIREWORK_CHARGE, ChatColor.RED + "Reset Symbol")) {
             @Override
             public void onClick(InventoryClickEvent event) {
                 Player player = (Player) event.getWhoClicked();

@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import us.zonix.core.CorePlugin;
 import us.zonix.core.api.request.PlayerRequest;
+import us.zonix.core.profile.Profile;
 import us.zonix.core.rank.Rank;
 import us.zonix.core.util.command.BaseCommand;
 import us.zonix.core.util.command.Command;
@@ -37,5 +38,7 @@ public class PurchaseSymbolsCommand extends BaseCommand {
         if(value) {
             target.sendMessage(ChatColor.GREEN + "You now have access to all of the symbols.");
         }
+
+        Profile.getByUuidIfAvailable(target.getUniqueId()).setBoughtSymbols(value);
     }
 }

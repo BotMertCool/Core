@@ -48,7 +48,7 @@ public class ServerListeners implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
 
-        final Player player = event.getPlayer();
+        Player player = event.getPlayer();
 
         event.setJoinMessage(null);
 
@@ -81,6 +81,11 @@ public class ServerListeners implements Listener {
 
         if(profile != null && profile.getRank().isAboveOrEqual(Rank.SILVER)) {
             profile.setDonatorArmor();
+        }
+
+        for(Player online : Bukkit.getOnlinePlayers()) {
+            online.showPlayer(player);
+            player.showPlayer(online);
         }
     }
 
@@ -208,7 +213,7 @@ public class ServerListeners implements Listener {
         if (!player.getItemInHand().getItemMeta().hasDisplayName()) return;
 
         if (player.getItemInHand().getType() == Material.COMPASS && Profile.getByUuid(player.getUniqueId()).isAuthenticated()) {
-            player.openInventory(CorePlugin.getInstance().getServerManager().getServerSelector().getCurrentPage());
+            player.openInventory(CorePlugin.getInstance().getServerManager().getPracticeSelector().getCurrentPage());
         }
     }
 

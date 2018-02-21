@@ -48,8 +48,8 @@ public class RankListeners implements Listener {
         player.setDisplayName(player.getName());
         Rank rank = profile.getRank();
 
-        String prefix = rank.isAboveOrEqual(Rank.SILVER) && !rank.isAboveOrEqual(Rank.BUILDER) && profile.getSymbol() != null ? profile.getSymbol().getPrefix() : rank.getPrefix();
-        String userTag = rank.isAboveOrEqual(Rank.BUILDER) ?  prefix + rank.getColor() + rank.getName() + rank.getSuffix() + rank.getColor() +  player.getName() + ChatColor.WHITE : prefix + rank.getColor() + rank.getSuffix() + rank.getColor() +  player.getName() + ChatColor.WHITE;
+        String prefix = rank.isAboveOrEqual(Rank.SILVER) && !rank.isAboveOrEqual(Rank.BUILDER) && profile.getSymbol() != null ? profile.getSymbol().getPrefix() : rank == Rank.DEFAULT && profile.isBoughtSymbols() && profile.getSymbol() != null ? profile.getSymbol() + rank.getPrefix() : rank.getPrefix();
+        String userTag = rank.isAboveOrEqual(Rank.BUILDER) && rank != Rank.INCOGNITO ?  prefix + rank.getColor() + rank.getName() + rank.getSuffix() + rank.getColor() +  player.getName() + ChatColor.WHITE : prefix + rank.getColor() + rank.getSuffix() + rank.getColor() +  player.getName() + ChatColor.WHITE;
 
         if (!player.getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', userTag))) {
             player.setDisplayName(ChatColor.translateAlternateColorCodes('&', userTag));
