@@ -171,8 +171,8 @@ public class CorePlugin extends JavaPlugin {
 		new ToggleMessagesCommand();
 		new ToggleChatCommand();
 		new IgnoreCommand();
-		new SymbolCommand();
-		new PurchaseSymbolsCommand();
+		//new SymbolCommand();
+		//new PurchaseSymbolsCommand();
 
 		// server related
 		new SetMaxPlayersCommand();
