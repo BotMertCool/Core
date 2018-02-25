@@ -96,7 +96,7 @@ public class ServerManager {
 			public void onClick(InventoryClickEvent event) {
 				Player player = (Player) event.getWhoClicked();
 				player.closeInventory();
-				//player.openInventory(kitMapSelector.getCurrentPage());
+				player.openInventory(kitMapSelector.getCurrentPage());
 			}
 		});
 
@@ -242,7 +242,7 @@ public class ServerManager {
 			public void onClick(InventoryClickEvent event) {
 				Player player = (Player) event.getWhoClicked();
 				player.closeInventory();
-				//player.openInventory(hcfSelector.getCurrentPage());
+				player.openInventory(practiceSelector.getCurrentPage());
 			}
 		});
 
@@ -251,7 +251,7 @@ public class ServerManager {
 			public void onClick(InventoryClickEvent event) {
 				Player player = (Player) event.getWhoClicked();
 				player.closeInventory();
-				//player.openInventory(kitMapSelector.getCurrentPage());
+				//player.openInventory(hcfSelector.getCurrentPage());
 			}
 		});
 

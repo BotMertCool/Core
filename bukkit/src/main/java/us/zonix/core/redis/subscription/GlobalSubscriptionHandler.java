@@ -74,7 +74,7 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
 
             Profile profile = Profile.getByUuidIfAvailable(uuid);
 
-            if (profile != null) {
+            if (profile != null && profile.getRank() != rank) {
                 profile.setRank(rank);
 
                 Player player = Bukkit.getPlayer(profile.getUuid());
