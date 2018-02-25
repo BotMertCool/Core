@@ -10,6 +10,7 @@ public enum Rank {
 
 	DEFAULT("", ChatColor.GREEN.toString(), "Default", ""),
 	E_GIRL(ChatColor.RED + "❤", ChatColor.GREEN.toString(), "E-Girl", ""),
+	LEAN(ChatColor.GRAY + "[#" + ChatColor.DARK_PURPLE + "LEAN" + ChatColor.GRAY + "]", ChatColor.DARK_PURPLE.toString(), "LEAN", ""),
 	SILVER(ChatColor.WHITE + "❖", ChatColor.GRAY.toString(), "Silver", ""),
 	GOLD(ChatColor.YELLOW + "✯", ChatColor.GOLD.toString(), "Gold", ""),
 	PLATINUM(ChatColor.AQUA + "❇", ChatColor.DARK_AQUA.toString(), "Platinum", ""),
