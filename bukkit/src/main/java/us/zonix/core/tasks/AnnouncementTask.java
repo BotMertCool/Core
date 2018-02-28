@@ -22,6 +22,7 @@ public class AnnouncementTask {
                 "&8[&4✪&8] &7Change the symbol in your display name! &c/symbols",
                 //"&8[&4✪&8] &7Staff applications are &aopen &7apply at &cwww.zonix.us",
                 "&8[&4✪&8] &7Join our Teamspeak server using: &cts.zonix.us",
+                "&8[&4✪&8] &7Zonix Rank will have ALPHA access to the Zonix Client.",
                 "&8[&4✪&8] &7Check out the leaderboards on our website &cwww.zonix.us/leaderboards"
         };
 

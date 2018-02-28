@@ -238,7 +238,7 @@ public class Profile {
 	}
 
 	public void save() {
-		main.getRequestProcessor().sendRequest(new PlayerRequest.SaveRequest(this.uuid, this.name, this.lastLogin, main.getServerId(), this.ip));
+		main.getRequestProcessor().sendRequest(new PlayerRequest.SaveRequest(this.uuid, this.name, this.lastLogin, main.getServerId(), this.ip, this.rank == null ? Rank.DEFAULT : this.rank, this.symbol == null ? Symbol.SYMBOL_0 : this.symbol, this.boughtSymbols, this.twoFactorAuthentication, this.authenticated));
 	}
 
 	public static void getPlayerInformation(String name, CommandSender sender, Callback callback) {

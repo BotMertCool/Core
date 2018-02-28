@@ -2,6 +2,7 @@ package us.zonix.core.symbols.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import us.zonix.core.CorePlugin;
 import us.zonix.core.api.request.PlayerRequest;
@@ -16,7 +17,7 @@ public class PurchaseSymbolsCommand extends BaseCommand {
     @Command(name = "purchasesymbol", aliases ={ "purchasesymbols"}, rank = Rank.MANAGER)
     public void onCommand(CommandArgs command) {
 
-        Player player = command.getPlayer();
+        CommandSender player = command.getSender();
         String[] args = command.getArgs();
 
         if (args.length < 2) {

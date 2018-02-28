@@ -75,18 +75,20 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
             Profile profile = Profile.getByUuidIfAvailable(uuid);
 
             if (profile != null && profile.getRank() != rank) {
+
                 profile.setRank(rank);
+
+                Symbol symbol = Symbol.getDefaultSymbolByRank(profile.getRank());
+                profile.setSymbol(symbol);
+                CorePlugin.getInstance().getRequestProcessor().sendRequestAsync(new PlayerRequest.UpdateSymbolRequest(profile.getUuid(), symbol));
+
 
                 Player player = Bukkit.getPlayer(profile.getUuid());
 
                 if (player != null) {
+
                     player.sendMessage(ChatColor.GREEN + "Your rank has been updated to " + rank.getName() + ".");
                     profile.updateTabList(rank);
-
-                    Symbol symbol = Symbol.getDefaultSymbolByRank(profile.getRank());
-                    profile.setSymbol(symbol);
-                    CorePlugin.getInstance().getRequestProcessor().sendRequestAsync(new PlayerRequest.UpdateSymbolRequest(player.getUniqueId(), symbol));
-
                     if(CorePlugin.getInstance().isHub()) {
                         profile.setDonatorArmor();
                     }

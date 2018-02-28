@@ -3,6 +3,7 @@ package us.zonix.core.api.request;
 import java.util.Map;
 import java.util.UUID;
 
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import us.zonix.core.rank.Rank;
@@ -54,8 +55,13 @@ public abstract class PlayerRequest implements Request {
 		private final Long lastLogin;
 		private final String lastServer;
 		private final String ip;
+		private final Rank rank;
+		private final Symbol symbol;
+		private final String twoFactorAuthentication;
+		private final boolean boughtSymbols;
+		private final boolean authenticated;
 
-		public SaveRequest(UUID uuid, String name, Long lastLogin, String lastServer, String ip) {
+		public SaveRequest(UUID uuid, String name, Long lastLogin, String lastServer, String ip, Rank rank, Symbol symbol, boolean boughtSymbols, String twoFactorAuthentication, boolean authenticated) {
 			super("save");
 
 			this.uuid = uuid;
@@ -63,6 +69,11 @@ public abstract class PlayerRequest implements Request {
 			this.lastLogin = lastLogin;
 			this.lastServer = lastServer;
 			this.ip = ip;
+			this.rank = rank;
+			this.symbol = symbol;
+			this.boughtSymbols = boughtSymbols;
+			this.twoFactorAuthentication = twoFactorAuthentication;
+			this.authenticated = authenticated;
 		}
 
 		@Override
@@ -73,6 +84,11 @@ public abstract class PlayerRequest implements Request {
 			data.addProperty("last_login", this.lastLogin);
 			data.addProperty("last_server", this.lastServer);
 			data.addProperty("ip", this.ip);
+			data.addProperty("rank", this.rank.name());
+			data.addProperty("symbol", this.symbol.name());
+			data.addProperty("bought_symbols", this.boughtSymbols);
+			data.addProperty("authenticated", this.authenticated);
+			data.addProperty("two_factor_authentication", this.twoFactorAuthentication);
 
 			return MapUtil.of(
 					"data", data
