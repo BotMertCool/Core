@@ -82,7 +82,6 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
                 profile.setSymbol(symbol);
                 CorePlugin.getInstance().getRequestProcessor().sendRequestAsync(new PlayerRequest.UpdateSymbolRequest(profile.getUuid(), symbol));
 
-
                 Player player = Bukkit.getPlayer(profile.getUuid());
 
                 if (player != null) {

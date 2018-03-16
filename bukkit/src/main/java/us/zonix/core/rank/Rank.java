@@ -27,6 +27,7 @@ public enum Rank {
 	MEDIA_OWNER(ChatColor.GRAY.toString() + "[", ChatColor.DARK_RED.toString(), "Owner", ChatColor.GRAY.toString() + "] "),
 	MANAGER(ChatColor.GRAY.toString() + "[", ChatColor.RED.toString(), "Manager", ChatColor.GRAY.toString() + "] "),
 	DEVELOPER(ChatColor.GRAY.toString() + "[", ChatColor.AQUA.toString(), "Developer", ChatColor.GRAY.toString() + "] "),
+	COOWNER(ChatColor.GRAY.toString() + "[", ChatColor.DARK_RED.toString(), "Co-Owner", ChatColor.GRAY.toString() + "] "),
 	OWNER(ChatColor.GRAY.toString() + "[", ChatColor.DARK_RED.toString(), "Owner", ChatColor.GRAY.toString() + "] "),
 	INCOGNITO("", ChatColor.GREEN.toString(), "Incognito", "");
 

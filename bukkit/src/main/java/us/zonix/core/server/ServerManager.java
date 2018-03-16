@@ -87,7 +87,7 @@ public class ServerManager {
 			public void onClick(InventoryClickEvent event) {
 				Player player = (Player) event.getWhoClicked();
 				player.closeInventory();
-				//player.openInventory(hcfSelector.getCurrentPage());
+				player.openInventory(hcfSelector.getCurrentPage());
 			}
 		});
 
@@ -133,11 +133,10 @@ public class ServerManager {
 			}
 		});
 
-		this.hcfSelector.setItem(12, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.DIAMOND_SWORD, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "HCF " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " EU")) {
+		this.hcfSelector.setItem(12, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.STAINED_GLASS_PANE, " ", 1, (short) 14)) {
 			@Override
 			public void onClick(InventoryClickEvent event) {
 				Player player = (Player) event.getWhoClicked();
-				player.performCommand("joinqueue " + "hcf-eu");
 				player.closeInventory();
 			}
 		});
@@ -165,7 +164,7 @@ public class ServerManager {
 			public void onClick(InventoryClickEvent event) {
 				Player player = (Player) event.getWhoClicked();
 				player.closeInventory();
-				//player.openInventory(hcfSelector.getCurrentPage());
+				player.openInventory(practiceSelector.getCurrentPage());
 			}
 		});
 
@@ -174,7 +173,7 @@ public class ServerManager {
 			public void onClick(InventoryClickEvent event) {
 				Player player = (Player) event.getWhoClicked();
 				player.closeInventory();
-				//player.openInventory(kitMapSelector.getCurrentPage());
+				player.openInventory(kitMapSelector.getCurrentPage());
 			}
 		});
 

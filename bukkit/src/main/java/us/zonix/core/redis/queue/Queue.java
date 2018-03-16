@@ -197,6 +197,8 @@ public class Queue {
             return "Practice AS";
         } else if(serverName.toLowerCase().equalsIgnoreCase("kitmap-us")) {
             return "KitMap US";
+        } else if(serverName.toLowerCase().equalsIgnoreCase("hcf-us")) {
+            return "HCF US";
         }
 
         return serverName;

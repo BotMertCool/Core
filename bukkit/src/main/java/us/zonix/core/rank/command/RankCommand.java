@@ -78,6 +78,13 @@ public class RankCommand extends BaseCommand {
             return;
         }
 
+        if(sender instanceof Player && Profile.getByUuid(((Player) sender).getUniqueId()).getRank() == Rank.MANAGER) {
+            if(rank.isAboveOrEqual(Rank.MANAGER) || rank == Rank.MEDIA_OWNER) {
+                sender.sendMessage(ChatColor.RED + "You are not allowed to set up ranks above Admin.");
+                return;
+            }
+        }
+
         new BukkitRunnable() {
             public void run() {
                 Profile.getPlayerInformation(args[0], sender, new AbstractBukkitCallback() {

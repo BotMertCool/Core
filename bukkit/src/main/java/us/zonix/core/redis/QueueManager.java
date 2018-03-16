@@ -36,7 +36,7 @@ public class QueueManager implements Listener {
     private final JedisSubscriber<String> managerSubscriber;
     private final JedisPublisher<String> managerPublisher;
 
-    private String[] availableQueues = new String[] {"practice-us", "practice-eu", "practice-as", "practice-sa", "kitmap-us"};
+    private String[] availableQueues = new String[] {"practice-us", "practice-eu", "practice-as", "practice-sa", "kitmap-us", "hcf-us"};
     
     public QueueManager(CorePlugin plugin) {
         this.plugin = plugin;

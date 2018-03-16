@@ -50,14 +50,14 @@ public class KickCommand extends BaseCommand {
             Profile profile = Profile.getByUuid(player.getUniqueId());
 
             if (silent && profile != null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-                player.sendMessage(ChatColor.GREEN + target.getName() + " has been kicked by " + sender.getName() + " for " + (reason != null && reason.length() == 0 ? "Kicked" : reason) + ".");
+                player.sendMessage(ChatColor.GREEN + target.getName() + " has been kicked by " + sender.getName() + " for " + (reason == null ? "Kicked" : reason) + ".");
             }
             else {
                 player.sendMessage(ChatColor.GREEN + target.getName() + " has been kicked by " + sender.getName() + ".");
             }
         }
 
-        target.kickPlayer(ChatColor.RED + "You have been manually kicked by a staff member.\n\n" + ChatColor.RED + "Reason: " + (reason != null && reason.length() == 0 ? "Kicked" : reason));
+        target.kickPlayer(ChatColor.RED + "You have been kicked by " + sender.getName() + ".\n\n" + ChatColor.RED + "Reason: " + (reason == null ? "Kicked" : reason));
     }
 
 }

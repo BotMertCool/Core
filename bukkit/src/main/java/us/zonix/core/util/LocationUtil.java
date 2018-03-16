@@ -1,21 +1,36 @@
 package us.zonix.core.util;
 
 import com.google.common.base.Preconditions;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class LocationUtil {
+
+    public static String parseLocation(Location location) {
+        return location.getWorld().getName() + ":" + location.getX() + ":" + location.getY() + ":" + location.getZ() + ":" + location.getYaw() + ":" + location.getPitch();
+    }
+
+    public static Location convertLocation(String string) {
+        String[] build = string.split(":");
+        World world = Bukkit.getWorld(build[0]);
+        double x = Double.parseDouble(build[1]);
+        double y = Double.parseDouble(build[2]);
+        double z = Double.parseDouble(build[3]);
+        float yaw = Float.parseFloat(build[4]);
+        float pitch = Float.parseFloat(build[5]);
+        return new Location(world, x, y, z, yaw, pitch);
+    }
 
     public static Location getHighestLocation(final Location origin) {
         return getHighestLocation(origin, null);
     }
 
     public static Location getHighestLocation(final Location origin, final Location def) {
-        Preconditions.checkNotNull((Object)origin, (Object)"The location cannot be null");
+        Preconditions.checkNotNull((Object) origin, (Object) "The location cannot be null");
         final Location cloned = origin.clone();
         final World world = cloned.getWorld();
         final int x = cloned.getBlockX();
@@ -33,19 +48,6 @@ public class LocationUtil {
         return def;
     }
 
-    public static boolean isStuck(Player player) {
-        Block block1 = player.getLocation().clone().getBlock();
-        Block block2 = player.getLocation().clone().add(0.0D, 1.0D, 0.0D).getBlock();
-        if(block1.getType().isSolid() && block2.getType().isSolid()) {
-            return true;
-        }
-        if(block1.getRelative(BlockFace.DOWN).getType().isSolid() || block1.getLocation().getBlock().getRelative(BlockFace.UP).getType().isSolid()
-                && block2.getRelative(BlockFace.DOWN).getType().isSolid() || block2.getLocation().getBlock().getRelative(BlockFace.UP).getType().isSolid()) {
-            return true;
-        }
-        return false;
-    }
-
     public static void multiplyVelocity(Player player, Vector vector, double multiply, double addY) {
         vector.normalize();
         vector.multiply(multiply);
@@ -54,4 +56,5 @@ public class LocationUtil {
 
         player.setVelocity(vector);
     }
+
 }

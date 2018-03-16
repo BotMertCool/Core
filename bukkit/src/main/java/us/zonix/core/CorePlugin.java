@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -23,7 +21,6 @@ import us.zonix.core.misc.listener.ServerListener;
 import us.zonix.core.profile.Profile;
 import us.zonix.core.profile.ProfileListeners;
 import us.zonix.core.punishment.command.*;
-import us.zonix.core.punishment.helpers.StaffAuditHelper;
 import us.zonix.core.rank.command.RankCommand;
 import us.zonix.core.rank.listeners.RankListeners;
 import us.zonix.core.redis.CoreRedisManager;
@@ -44,22 +41,17 @@ import us.zonix.core.tab.TabListManager;
 import us.zonix.core.tasks.AnnouncementTask;
 import us.zonix.core.tasks.AutomaticShutdownTask;
 import us.zonix.core.tasks.ShutdownTask;
-import us.zonix.core.util.LocationString;
+import us.zonix.core.util.LocationUtil;
 import us.zonix.core.util.command.CommandFramework;
 import us.zonix.core.util.file.ConfigFile;
 import us.zonix.core.util.inventory.UIListener;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.function.BooleanSupplier;
-import java.util.jar.JarFile;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -121,7 +113,7 @@ public class CorePlugin extends JavaPlugin {
 		this.hub = this.configFile.getBoolean("server.hub");
 
 		if (this.configFile.getConfiguration().contains("server.spawn")) {
-			this.spawnLocation = LocationString.fromString(this.configFile.getString("server.spawn"));
+			this.spawnLocation = LocationUtil.convertLocation(this.configFile.getString("server.spawn"));
 		}
 
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -271,7 +263,7 @@ public class CorePlugin extends JavaPlugin {
 		}
 
 		try {
-			this.configFile.getConfiguration().set("server.spawn", LocationString.toString(this.spawnLocation));
+			this.configFile.getConfiguration().set("server.spawn", LocationUtil.parseLocation(this.spawnLocation));
 			this.configFile.getConfiguration().save(this.configFile.getFile());
 		}
 		catch (Exception ex) {}
