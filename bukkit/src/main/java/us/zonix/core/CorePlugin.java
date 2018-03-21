@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -18,6 +19,7 @@ import us.zonix.core.misc.command.game.*;
 import us.zonix.core.misc.command.staff.*;
 import us.zonix.core.misc.listener.HideStreamListener;
 import us.zonix.core.misc.listener.ServerListener;
+import us.zonix.core.misc.listener.StaffModeListener;
 import us.zonix.core.profile.Profile;
 import us.zonix.core.profile.ProfileListeners;
 import us.zonix.core.punishment.command.*;
@@ -34,6 +36,7 @@ import us.zonix.core.server.tasks.ServerHandlerTimeoutTask;
 import us.zonix.core.social.SocialHelper;
 import us.zonix.core.shared.redis.JedisSettings;
 import us.zonix.core.social.command.*;
+import us.zonix.core.misc.staffmode.StaffModeManager;
 import us.zonix.core.symbols.commands.PurchaseSymbolsCommand;
 import us.zonix.core.symbols.commands.SymbolCommand;
 import us.zonix.core.tab.TabList;
@@ -78,6 +81,7 @@ public class CorePlugin extends JavaPlugin {
 	private ServerManager serverManager;
 	private QueueManager queueManager;
 	private TabListManager tabListManager;
+	private StaffModeManager staffModeManager;
 
 	private CoreProcessor requestProcessor;
 
@@ -130,6 +134,7 @@ public class CorePlugin extends JavaPlugin {
 		this.queueManager = new QueueManager(this);
 
 		this.socialHelper = new SocialHelper();
+		this.staffModeManager = new StaffModeManager();
 
 		// punishment related
 		new BanCommand();
@@ -155,6 +160,9 @@ public class CorePlugin extends JavaPlugin {
 		new ReportCommand();
 		new AuthCommand();
 		new BuilderCommand();
+		new StaffModeCommand();
+		new InvseeCommand();
+		new VanishCommand();
 
 		// social related
 		new MessageCommand();
@@ -194,6 +202,7 @@ public class CorePlugin extends JavaPlugin {
 		pm.registerEvents(new HideStreamListener(), this);
 		pm.registerEvents(new ServerListener(), this);
 		pm.registerEvents(new UIListener(), this);
+		pm.registerEvents(new StaffModeListener(), this);
 
 		if (this.hub) {
 			this.serverManager = new ServerManager();
@@ -237,6 +246,12 @@ public class CorePlugin extends JavaPlugin {
 	public void onDisable() {
 		this.saveSpawnLocation();
 		doRestartFileCheck();
+
+		for(Player online : Bukkit.getServer().getOnlinePlayers()) {
+			if (this.staffModeManager.hasStaffToggled(online)) {
+				this.staffModeManager.toggleStaffMode(online);
+			}
+		}
 	}
 
 	public void setBoardManager(BoardManager boardManager) {

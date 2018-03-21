@@ -21,6 +21,7 @@ import us.zonix.core.shared.redis.subscription.JedisSubscriptionHandler;
 import us.zonix.core.util.BungeeUtil;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
@@ -49,7 +50,13 @@ public class Queue {
 
             for(Map.Entry<UUID, Integer> entry : this.players.entrySet()) {
                 Player player = this.plugin.getServer().getPlayer(entry.getKey());
-                if(player != null && (entry.getValue() != -1)) {
+
+                if(player == null) {
+                    this.queuePublisher.writeDirectly("remove`" + entry.getKey());
+                    continue;
+                }
+
+                if(entry.getValue() != -1) {
                     player.sendMessage(ChatColor.YELLOW + "You are #" + entry.getValue() + " in the " + ChatColor.GOLD + serverName + ChatColor.YELLOW + " queue.");
                     player.sendMessage(ChatColor.AQUA.toString() + "Skip the queue by purchasing a rank at store.zonix.us");
                 }

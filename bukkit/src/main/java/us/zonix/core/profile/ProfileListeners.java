@@ -11,6 +11,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionAttachment;
 import us.zonix.core.CorePlugin;
 import us.zonix.core.api.request.PlayerRequest;
 import us.zonix.core.board.Board;
@@ -23,6 +25,7 @@ import us.zonix.core.util.inventory.InventoryUI;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -182,6 +185,7 @@ public class ProfileListeners implements Listener {
 				Profile.updateTabList(player, profile.getRank());
 			}
 		}, 20L);
+
 	}
 
 	@EventHandler
