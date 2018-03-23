@@ -48,18 +48,23 @@ public class Queue {
 
         plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
 
-            for(Map.Entry<UUID, Integer> entry : this.players.entrySet()) {
-                Player player = this.plugin.getServer().getPlayer(entry.getKey());
+            Iterator<Map.Entry<UUID, Integer>> iterator = this.players.entrySet().iterator();
+
+            while(iterator.hasNext()) {
+                Map.Entry<UUID, Integer> next = iterator.next();
+                Player player = this.plugin.getServer().getPlayer(next.getKey());
 
                 if(player == null) {
-                    this.queuePublisher.writeDirectly("remove`" + entry.getKey());
+                    this.queuePublisher.writeDirectly("remove`" + next.getKey());
+                    iterator.remove();
                     continue;
                 }
 
-                if(entry.getValue() != -1) {
-                    player.sendMessage(ChatColor.YELLOW + "You are #" + entry.getValue() + " in the " + ChatColor.GOLD + serverName + ChatColor.YELLOW + " queue.");
+                if(next.getValue() != -1) {
+                    player.sendMessage(ChatColor.YELLOW + "You are #" + next.getValue() + " in the " + ChatColor.GOLD + serverName + ChatColor.YELLOW + " queue.");
                     player.sendMessage(ChatColor.AQUA.toString() + "Skip the queue by purchasing a rank at store.zonix.us");
                 }
+
             }
 
         }, 200L, 200L);

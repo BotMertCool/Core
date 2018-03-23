@@ -24,6 +24,7 @@ public enum Rank {
 	SENIOR_MODERATOR(ChatColor.GRAY.toString() + "[", ChatColor.DARK_PURPLE.toString(), "Sr. Moderator", ChatColor.GRAY.toString() + "] "),
 	MEDIA_ADMIN(ChatColor.GRAY.toString() + "[", ChatColor.RED.toString(), "Administrator", ChatColor.GRAY.toString() + "] "),
 	ADMINISTRATOR(ChatColor.GRAY.toString() + "[", ChatColor.RED.toString(), "Administrator", ChatColor.GRAY.toString() + "] "),
+	PLATFORM_ADMINISTRATOR(ChatColor.GRAY.toString() + "[", ChatColor.RED.toString(), "Platform Admin", ChatColor.GRAY.toString() + "] "),
 	MEDIA_OWNER(ChatColor.GRAY.toString() + "[", ChatColor.DARK_RED.toString(), "Owner", ChatColor.GRAY.toString() + "] "),
 	MANAGER(ChatColor.GRAY.toString() + "[", ChatColor.RED.toString(), "Manager", ChatColor.GRAY.toString() + "] "),
 	DEVELOPER(ChatColor.GRAY.toString() + "[", ChatColor.AQUA.toString(), "Developer", ChatColor.GRAY.toString() + "] "),
