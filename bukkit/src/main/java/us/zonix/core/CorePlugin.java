@@ -13,6 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import us.zonix.core.api.CoreProcessor;
 import us.zonix.core.board.BoardManager;
 import us.zonix.core.board.adapter.HubBoard;
+import us.zonix.core.client.CosmeticCommand;
 import us.zonix.core.misc.command.ReportCommand;
 import us.zonix.core.misc.command.*;
 import us.zonix.core.misc.command.game.*;
@@ -136,6 +137,9 @@ public class CorePlugin extends JavaPlugin {
 		this.socialHelper = new SocialHelper();
 		this.staffModeManager = new StaffModeManager();
 
+		// client related
+		new CosmeticCommand();
+
 		// punishment related
 		new BanCommand();
 		new BlacklistCommand();
@@ -224,15 +228,7 @@ public class CorePlugin extends JavaPlugin {
 		// clean cached profiles every minute
 		new BukkitRunnable() {
 			public void run() {
-				Iterator<UUID> it = Profile.getProfiles().keySet().iterator();
-
-				while (it.hasNext()) {
-					UUID uuid = it.next();
-
-					if (Bukkit.getPlayer(uuid) == null) {
-						it.remove();
-					}
-				}
+				Profile.getProfiles().keySet().removeIf(uuid -> Bukkit.getPlayer(uuid) == null);
 			}
 		}.runTaskTimerAsynchronously(this, 0L, 20L * 60);
 
