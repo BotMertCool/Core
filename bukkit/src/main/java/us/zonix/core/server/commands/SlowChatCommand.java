@@ -18,7 +18,7 @@ public class SlowChatCommand extends BaseCommand {
 		Player player = command.getPlayer();
 		String[] args = command.getArgs();
 
-		if(Profile.getByUuid(player.getUniqueId()).getRank() == Rank.MEDIA_ADMIN || Profile.getByUuid(player.getUniqueId()).getRank() == Rank.MEDIA_OWNER) {
+		if(Profile.getByUuid(player.getUniqueId()).getRank() == Rank.MEDIA_OWNER) {
 			player.sendMessage(ChatColor.RED + "You don't have enough permissions.");
 			return;
 		}

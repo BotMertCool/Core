@@ -60,9 +60,6 @@ public class RankCommand extends BaseCommand {
             else if (args[1].toUpperCase().equalsIgnoreCase("MEDIAOWNER")) {
                 rank = Rank.MEDIA_OWNER;
             }
-            else if (args[1].toUpperCase().equalsIgnoreCase("MEDIAADMIN")) {
-                rank = Rank.MEDIA_ADMIN;
-            }
             else if (args[1].toUpperCase().equalsIgnoreCase("PLATADMIN")) {
                 rank = Rank.PLATFORM_ADMINISTRATOR;
             }

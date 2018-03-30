@@ -138,7 +138,7 @@ public class ItemBuilder implements Listener {
             color = Color.FUCHSIA;
         } else if(rank == Rank.TRIAL_MOD || rank == Rank.MODERATOR || rank == Rank.SENIOR_MODERATOR) {
             color = Color.PURPLE;
-        } else if(rank == Rank.ADMINISTRATOR || rank == Rank.MANAGER || rank == Rank.MEDIA_ADMIN) {
+        } else if(rank == Rank.ADMINISTRATOR || rank == Rank.MANAGER) {
             color = Color.RED;
         } else if(rank == Rank.DEVELOPER) {
             color = Color.AQUA;

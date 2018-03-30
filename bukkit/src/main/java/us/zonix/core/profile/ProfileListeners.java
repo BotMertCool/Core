@@ -52,7 +52,7 @@ public class ProfileListeners implements Listener {
             profile.setChatCooldown(0L);
             profile.setChatEnabled(true);
 
-            if(profile.getRank() == Rank.MEDIA_ADMIN || profile.getRank() == Rank.MEDIA_OWNER) {
+            if(profile.getRank() == Rank.MEDIA_OWNER) {
                 profile.setAuthenticated(true);
             } else if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
                 profile.setAuthenticated(false);
@@ -131,7 +131,7 @@ public class ProfileListeners implements Listener {
 
 		Profile profile = Profile.getByUuidIfAvailable(event.getPlayer().getUniqueId());
 
-		if(profile != null && profile.getTwoFactorAuthentication() == null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD) && (profile.getRank() != Rank.MEDIA_OWNER || profile.getRank() != Rank.MEDIA_ADMIN)) {
+		if(profile != null && profile.getTwoFactorAuthentication() == null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD) && (profile.getRank() != Rank.MEDIA_OWNER)) {
 
 			String token = TimeBasedOneTimePasswordUtil.generateBase32Secret();
 			String url = TimeBasedOneTimePasswordUtil.qrImageUrl(player.getName() + "@zonix.us", token);
@@ -216,7 +216,7 @@ public class ProfileListeners implements Listener {
 			return;
 		}
 
-		if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD) && (profile.getRank() != Rank.MEDIA_OWNER || profile.getRank() != Rank.MEDIA_ADMIN)) {
+		if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD) && (profile.getRank() != Rank.MEDIA_OWNER)) {
 			player.sendMessage(ChatColor.DARK_RED.toString() + ChatColor.BOLD + "AUTHENTICATE YOURSELF!");
 			player.sendMessage(ChatColor.GRAY + "Usage: /auth <token>");
 			event.setCancelled(true);
@@ -229,7 +229,7 @@ public class ProfileListeners implements Listener {
 		Profile profile = Profile.getByUuid(player.getUniqueId());
 
 
-		if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD) && (profile.getRank() != Rank.MEDIA_OWNER || profile.getRank() != Rank.MEDIA_ADMIN)) {
+		if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated() && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD) && (profile.getRank() != Rank.MEDIA_OWNER)) {
 			event.setCancelled(true);
 			return;
 		}
