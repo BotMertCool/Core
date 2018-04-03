@@ -9,7 +9,7 @@ import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.punishment.helpers.PunishmentHelper;
 import us.zonix.core.shared.redis.subscription.JedisSubscriptionHandler;
 
-public class WeebCatcherlSubscriptionHandler implements JedisSubscriptionHandler<JsonObject> {
+public class WeebCatcherSubscriptionHandler implements JedisSubscriptionHandler<JsonObject> {
 
     @Override
     public void handleMessage(JsonObject object) {
@@ -19,13 +19,12 @@ public class WeebCatcherlSubscriptionHandler implements JedisSubscriptionHandler
         switch (message) {
             case "ban":
                 String name = object.get("name").getAsString();
-                String check = object.get("check").getAsString();
                 Player target = Bukkit.getPlayer(name);
 
                 if(target != null) {
                     new BukkitRunnable() {
                         public void run() {
-                            new PunishmentHelper(Bukkit.getConsoleSender(), name, PunishmentType.BAN, "Client: " + check, (long) -1, true, false);
+                            new PunishmentHelper(Bukkit.getConsoleSender(), name, PunishmentType.BAN, "[ZAC] Unfair Advantage", (long) -1, false, false);
                         }
                     }.runTaskAsynchronously(CorePlugin.getInstance());
                 }

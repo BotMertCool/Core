@@ -85,13 +85,14 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
                 Player player = Bukkit.getPlayer(profile.getUuid());
 
                 if (player != null) {
-
                     player.sendMessage(ChatColor.GREEN + "Your rank has been updated to " + rank.getName() + ".");
                     profile.updateTabList(rank);
                     if(CorePlugin.getInstance().isHub()) {
                         profile.setDonatorArmor();
                     }
                 }
+
+                Bukkit.getServer().getScheduler().runTaskAsynchronously(CorePlugin.getInstance(), profile::save);
             }
         }
         else if (type.equalsIgnoreCase("staffchat")) {
