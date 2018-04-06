@@ -7,11 +7,6 @@ import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.*;
 
 import org.bukkit.Bukkit;
@@ -20,18 +15,18 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import us.zonix.core.CorePlugin;
 import us.zonix.core.api.callback.AbstractBukkitCallback;
 import us.zonix.core.api.request.PlayerRequest;
 import us.zonix.core.api.request.PunishmentRequest;
+import us.zonix.core.events.RankChangeEvent;
 import us.zonix.core.punishment.Punishment;
 import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
 import us.zonix.core.shared.api.callback.Callback;
 import us.zonix.core.symbols.Symbol;
+import us.zonix.core.util.CC;
 import us.zonix.core.util.ItemBuilder;
-import us.zonix.core.util.ItemUtil;
 
 @Getter
 public class Profile {
@@ -44,7 +39,7 @@ public class Profile {
 	@Setter private Long firstLogin;
 	@Setter private Long lastLogin;
 	@Setter private String ip;
-	@Setter private Rank rank = Rank.DEFAULT;
+	private Rank rank = Rank.DEFAULT;
 	@Setter private Symbol symbol;
 	@Setter private boolean boughtSymbols;
 	@Setter private UUID lastMessaged;
@@ -72,6 +67,16 @@ public class Profile {
 		this.loadPunishments();
 
 		profiles.put(this.uuid, this);
+	}
+
+	public void setRank(Rank rank) {
+		this.rank = rank;
+
+		Player player = getPlayer();
+
+		if (player != null) {
+			new RankChangeEvent(getPlayer(), rank).call();
+		}
 	}
 
 	public boolean isMuted() {
@@ -316,6 +321,17 @@ public class Profile {
 		}
 		else {
         	return profile;
+		}
+	}
+
+	public static String getRankColor(UUID uuid) {
+		Profile profile = Profile.getByUuidIfAvailable(uuid);
+
+		if (profile == null) {
+			return CC.WHITE;
+		}
+		else {
+			return profile.getRank().getColor();
 		}
 	}
 

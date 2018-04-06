@@ -18,8 +18,10 @@ import us.zonix.core.CorePlugin;
 import us.zonix.core.profile.Profile;
 import us.zonix.core.rank.Rank;
 import us.zonix.core.redis.queue.Queue;
+import us.zonix.core.util.CC;
 import us.zonix.core.util.ItemUtil;
 import us.zonix.core.util.LocationUtil;
+import us.zonix.core.util.StringUtil;
 
 
 public class ServerListeners implements Listener {
@@ -64,26 +66,25 @@ public class ServerListeners implements Listener {
         player.getInventory().setHeldItemSlot(4);
 
         String[] message = new String[] {
-                "§8§m----------------------------------------------------",
-                "§7Welcome to the §4§lZonix Network",
+                StringUtil.getBorderLine(CC.GRAY + CC.S),
+                CC.GRAY + "Welcome to the " + CC.DARK_RED + CC.BOLD + "Zonix Network",
                 " ",
-                "§8§l* §c§lWebsite: §7www.zonix.us",
-                "§8§l* §c§lTwitter: §7twitter.com/ZonixUS",
-                "§8§l* §c§lTeamspeak: §7ts.zonix.us",
-                "§8§l* §c§lStore: §7store.zonix.us",
-                " ",
-                "§8§m----------------------------------------------------"
+                CC.DARK_GRAY + CC.BOLD + "* " + CC.RED + CC.BOLD + "Website: " + CC.GRAY + "www.zonix.us",
+                CC.DARK_GRAY + CC.BOLD + "* " + CC.RED + CC.BOLD + "Twitter: " + CC.GRAY + "twitter.com/ZonixUS",
+                CC.DARK_GRAY + CC.BOLD + "* " + CC.RED + CC.BOLD + "Teamspeak: " + CC.GRAY + "ts.zonix.us",
+                CC.DARK_GRAY + CC.BOLD + "* " + CC.RED + CC.BOLD + "Store: " + CC.GRAY + "store.zonix.us",
+                StringUtil.getBorderLine(CC.GRAY + CC.S),
         };
 
         player.sendMessage(message);
 
         Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
 
-        if(profile != null && profile.getRank().isAboveOrEqual(Rank.SILVER)) {
+        if (profile != null && profile.getRank().isAboveOrEqual(Rank.SILVER)) {
             profile.setDonatorArmor();
         }
 
-        for(Player online : Bukkit.getOnlinePlayers()) {
+        for (Player online : Bukkit.getOnlinePlayers()) {
             online.showPlayer(player);
             player.showPlayer(online);
         }

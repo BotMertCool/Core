@@ -2,34 +2,34 @@ package us.zonix.core.rank;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.bukkit.ChatColor;
+import us.zonix.core.util.CC;
 
 @AllArgsConstructor
 @Getter
 public enum Rank {
 
-	DEFAULT("", ChatColor.GREEN.toString(), "Default", ""),
-	E_GIRL(ChatColor.RED + "❤", ChatColor.GREEN.toString(), "E-Girl", ""),
-	SILVER(ChatColor.WHITE + "❖", ChatColor.GRAY.toString(), "Silver", ""),
-	GOLD(ChatColor.YELLOW + "✯", ChatColor.GOLD.toString(), "Gold", ""),
-	PLATINUM(ChatColor.AQUA + "❇", ChatColor.DARK_AQUA.toString(), "Platinum", ""),
-	EMERALD(ChatColor.GREEN + "✵", ChatColor.DARK_GREEN.toString(), "Emerald", ""),
-	ZONIX(ChatColor.GOLD + "❊", ChatColor.DARK_RED.toString() + ChatColor.BOLD.toString(), "Zonix", ""),
-	BUILDER(ChatColor.GRAY.toString() + "[", ChatColor.BLUE.toString(), "Builder", ChatColor.GRAY.toString() + "] "),
-	MEDIA(ChatColor.GRAY.toString() + "[", ChatColor.LIGHT_PURPLE.toString(), "YouTuber", ChatColor.GRAY.toString() + "] "),
-	FAMOUS(ChatColor.GRAY.toString() + "[", ChatColor.LIGHT_PURPLE.toString() + ChatColor.ITALIC.toString(), "Famous", ChatColor.GRAY.toString() + "] "),
-	PARTNER(ChatColor.GRAY.toString() + "[", ChatColor.LIGHT_PURPLE.toString() + ChatColor.ITALIC.toString(), "Partner", ChatColor.GRAY.toString() + "] "),
-	MEDIA_OWNER(ChatColor.GRAY.toString() + "[", ChatColor.DARK_RED.toString(), "Owner", ChatColor.GRAY.toString() + "] "),
-	TRIAL_MOD(ChatColor.GRAY.toString() + "[", ChatColor.YELLOW.toString(), "Trial-Moderator", ChatColor.GRAY.toString() + "] "),
-	MODERATOR(ChatColor.GRAY.toString() + "[", ChatColor.DARK_AQUA.toString(), "Moderator", ChatColor.GRAY.toString() + "] "),
-	SENIOR_MODERATOR(ChatColor.GRAY.toString() + "[", ChatColor.DARK_PURPLE.toString(), "Sr. Moderator", ChatColor.GRAY.toString() + "] "),
-	ADMINISTRATOR(ChatColor.GRAY.toString() + "[", ChatColor.RED.toString(), "Administrator", ChatColor.GRAY.toString() + "] "),
-	PLATFORM_ADMINISTRATOR(ChatColor.GRAY.toString() + "[", ChatColor.RED.toString(), "Platform Admin", ChatColor.GRAY.toString() + "] "),
-	MANAGER(ChatColor.GRAY.toString() + "[", ChatColor.RED.toString(), "Manager", ChatColor.GRAY.toString() + "] "),
-	DEVELOPER(ChatColor.GRAY.toString() + "[", ChatColor.AQUA.toString(), "Developer", ChatColor.GRAY.toString() + "] "),
-	COOWNER(ChatColor.GRAY.toString() + "[", ChatColor.DARK_RED.toString(), "Co-Owner", ChatColor.GRAY.toString() + "] "),
-	OWNER(ChatColor.GRAY.toString() + "[", ChatColor.DARK_RED.toString(), "Owner", ChatColor.GRAY.toString() + "] "),
-	INCOGNITO("", ChatColor.GREEN.toString(), "Incognito", "");
+	DEFAULT("", CC.GREEN, "Default", ""),
+	E_GIRL(CC.RED + "❤", CC.GREEN, "E-Girl", ""),
+	SILVER(CC.WHITE + "❖", CC.GRAY, "Silver", ""),
+	GOLD(CC.YELLOW + "✯", CC.GOLD, "Gold", ""),
+	PLATINUM(CC.AQUA + "❇", CC.DARK_AQUA, "Platinum", ""),
+	EMERALD(CC.GREEN + "✵", CC.DARK_GREEN, "Emerald", ""),
+	ZONIX(CC.GOLD + "❊", CC.DARK_RED + CC.BOLD, "Zonix", ""),
+	BUILDER(CC.GRAY + "[", CC.BLUE, "Builder", CC.GRAY + "] "),
+	MEDIA(CC.GRAY + "[", CC.LIGHT_PURPLE, "YouTuber", CC.GRAY + "] "),
+	FAMOUS(CC.GRAY + "[", CC.LIGHT_PURPLE + CC.ITALIC, "Famous", CC.GRAY + "] "),
+	PARTNER(CC.GRAY + "[", CC.LIGHT_PURPLE + CC.ITALIC, "Partner", CC.GRAY + "] "),
+	MEDIA_OWNER(CC.GRAY + "[", CC.DARK_RED, "Owner", CC.GRAY + "] "),
+	TRIAL_MOD(CC.GRAY + "[", CC.YELLOW, "Trial-Moderator", CC.GRAY + "] "),
+	MODERATOR(CC.GRAY + "[", CC.DARK_AQUA, "Moderator", CC.GRAY + "] "),
+	SENIOR_MODERATOR(CC.GRAY + "[", CC.DARK_PURPLE, "Sr. Moderator", CC.GRAY + "] "),
+	ADMINISTRATOR(CC.GRAY + "[", CC.RED, "Administrator", CC.GRAY + "] "),
+	PLATFORM_ADMINISTRATOR(CC.GRAY + "[", CC.RED, "Platform Admin", CC.GRAY + "] "),
+	MANAGER(CC.GRAY + "[", CC.RED, "Manager", CC.GRAY + "] "),
+	DEVELOPER(CC.GRAY + "[", CC.AQUA, "Developer", CC.GRAY + "] "),
+	COOWNER(CC.GRAY + "[", CC.DARK_RED, "Co-Owner", CC.GRAY + "] "),
+	OWNER(CC.GRAY + "[", CC.DARK_RED, "Owner", CC.GRAY + "] "),
+	INCOGNITO("", CC.GREEN, "Incognito", "");
 
 	private final String prefix;
 	private final String color;

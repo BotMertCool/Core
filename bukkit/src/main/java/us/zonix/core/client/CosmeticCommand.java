@@ -9,10 +9,7 @@ import us.zonix.core.util.command.CommandArgs;
 
 public final class CosmeticCommand extends BaseCommand {
 
-	@Command(
-			name = "cosmetic",
-			rank = Rank.DEVELOPER
-	)
+	@Command(name = "cosmetic", rank = Rank.DEVELOPER)
 	@Override public void onCommand(CommandArgs command) {
 		if (command.isPlayer() && !command.getPlayer().isOp()) {
 			command.getPlayer().sendMessage(ChatColor.RED + "Insufficient permissions.");

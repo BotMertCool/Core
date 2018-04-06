@@ -21,79 +21,79 @@ import us.zonix.core.redis.queue.Queue;
 
 public class HubBoard implements BoardAdapter {
 
-	private final CorePlugin plugin = CorePlugin.getInstance();
+    private final CorePlugin plugin = CorePlugin.getInstance();
 
-	private int online;
+    private int online;
 
-	@Override
-	public String getTitle(Player player) {
-		return ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Zonix Network";
-	}
+    @Override
+    public String getTitle(Player player) {
+        return ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Zonix Network";
+    }
 
-	@Override
-	public void preLoop() {
-		this.online = this.plugin.getRedisManager().getTotalPlayersOnline();
-	}
+    @Override
+    public void preLoop() {
+        this.online = this.plugin.getRedisManager().getTotalPlayersOnline();
+    }
 
-	@Override
-	public List<String> getScoreboard(Player player, Board board) {
-		List<String> strings = new LinkedList<>();
+    @Override
+    public List<String> getScoreboard(Player player, Board board) {
+        List<String> strings = new LinkedList<>();
 
-		Profile profile = Profile.getByUuid(player.getUniqueId());
+        Profile profile = Profile.getByUuid(player.getUniqueId());
 
-		if(profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated()) {
-			strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
-			strings.add(ChatColor.DARK_RED.toString() + ChatColor.BOLD + "AUTHENTICATE");
-			strings.add(ChatColor.GRAY.toString() + "Usage: /auth <token>");
-			strings.add("   ");
-			strings.add(ChatColor.RED.toString() + "Issues? Contact a Manager");
-			strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
-			return strings;
-		}
+        if (profile.getTwoFactorAuthentication() != null && !profile.isAuthenticated()) {
+            strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
+            strings.add(ChatColor.DARK_RED.toString() + ChatColor.BOLD + "AUTHENTICATE");
+            strings.add(ChatColor.GRAY.toString() + "Usage: /auth <token>");
+            strings.add("   ");
+            strings.add(ChatColor.RED.toString() + "Issues? Contact a Manager");
+            strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
+            return strings;
+        }
 
-		Punishment ban = profile.getBannedPunishment();
+        Punishment ban = profile.getBannedPunishment();
 
-		if(ban != null && CorePlugin.getInstance().isHub()) {
-			strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
-			strings.add(ChatColor.DARK_RED.toString() + ChatColor.BOLD + "BANNED");
+        if (ban != null && CorePlugin.getInstance().isHub()) {
+            strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
+            strings.add(ChatColor.DARK_RED.toString() + ChatColor.BOLD + "BANNED");
 
-			strings.add(ChatColor.GRAY.toString() + ban.getTimeLeft());
-			strings.add("   ");
-			strings.add(ChatColor.RED.toString() + "Appeal at www.zonix.us");
-			strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
-			return strings;
-		}
+            strings.add(ChatColor.GRAY.toString() + ban.getTimeLeft());
+            strings.add("   ");
+            strings.add(ChatColor.RED.toString() + "Appeal at www.zonix.us");
+            strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
+            return strings;
+        }
 
-		strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
-		strings.add(ChatColor.RED.toString() + ChatColor.BOLD + "Online" + ChatColor.GRAY + ":");
-		strings.add(ChatColor.WHITE.toString() + this.online);
-		strings.add(" ");
-		strings.add(ChatColor.RED.toString() + ChatColor.BOLD + "Rank" + ChatColor.GRAY + ":");
-		strings.add(profile.getRank().getColor() + profile.getRank().getName());
-		strings.add("  ");
+        strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
+        strings.add(ChatColor.RED.toString() + ChatColor.BOLD + "Online" + ChatColor.GRAY + ":");
+        strings.add(ChatColor.WHITE.toString() + this.online);
+        strings.add(" ");
+        strings.add(ChatColor.RED.toString() + ChatColor.BOLD + "Rank" + ChatColor.GRAY + ":");
+        strings.add(profile.getRank().getColor() + profile.getRank().getName());
+        strings.add("  ");
 
-		Queue queue = this.plugin.getQueueManager().getQueue(player);
+        Queue queue = this.plugin.getQueueManager().getQueue(player);
 
-		if(queue != null) {
-			strings.add(ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Queue" + ChatColor.GRAY + ":");
-			strings.add(ChatColor.RED.toString() + ChatColor.WHITE + queue.getServerName().replace("_", "-"));
-			strings.add(ChatColor.RED.toString() + ChatColor.WHITE + "Position: #" +  queue.getPosition(player) + " of " + queue.getPlayers().size());
-			strings.add("  ");
-		}
+        if (queue != null) {
+            strings.add(ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Queue" + ChatColor.GRAY + ":");
+            strings.add(ChatColor.RED.toString() + ChatColor.WHITE + queue.getServerName().replace("_", "-"));
+            strings.add(ChatColor.RED.toString() + ChatColor.WHITE + "Position: #" + queue.getPosition(player) + " of " + queue.getPlayers().size());
+            strings.add("  ");
+        }
 
-		strings.add(ChatColor.RED.toString() + "www.zonix.us");
-		strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
+        strings.add(ChatColor.RED.toString() + "www.zonix.us");
+        strings.add(ChatColor.DARK_GRAY.toString() + ChatColor.STRIKETHROUGH + "--------------------");
 
-		return strings;
-	}
+        return strings;
+    }
 
-	@Override
-	public void onScoreboardCreate(Player player, Scoreboard scoreboard) {
-	}
+    @Override
+    public void onScoreboardCreate(Player player, Scoreboard scoreboard) {
+    }
 
-	@Override
-	public long getInterval() {
-		return 20L;
-	}
+    @Override
+    public long getInterval() {
+        return 20L;
+    }
 
 }

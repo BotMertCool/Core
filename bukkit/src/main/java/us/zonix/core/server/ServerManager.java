@@ -1,22 +1,12 @@
 package us.zonix.core.server;
 
-import club.minemen.spigot.ClubSpigot;
 import us.zonix.core.CorePlugin;
-import us.zonix.core.profile.Profile;
-import us.zonix.core.rank.Rank;
-import com.google.common.collect.Lists;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import us.zonix.core.server.handler.CustomMovementHandler;
-import us.zonix.core.util.BungeeUtil;
 import us.zonix.core.util.ItemUtil;
 import us.zonix.core.util.inventory.InventoryUI;
 

@@ -15,12 +15,16 @@ import us.zonix.core.rank.Rank;
 import us.zonix.core.server.ServerData;
 import us.zonix.core.shared.redis.subscription.JedisSubscriptionHandler;
 import us.zonix.core.symbols.Symbol;
+import us.zonix.core.util.CC;
 import us.zonix.core.util.Clickable;
 import us.zonix.core.util.UUIDType;
 
 import java.util.UUID;
 
 public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonObject> {
+
+    private static final String REPORT_FORMAT = CC.GRAY + "[" + CC.AQUA + "Report" + CC.GRAY + "] (" + CC.AQUA + "{server}" + CC.GRAY + ")" + CC.GRAY + ": " + CC.LIGHT_PURPLE + "{name}" + CC.GRAY + " reported " + CC.LIGHT_PURPLE + "{target}" + CC.GRAY + " - " + CC.YELLOW + "{reason}";
+    private static final String REQUEST_FORMAT = CC.GRAY + "[" + CC.AQUA + "Request" + CC.GRAY + "] (" + CC.AQUA + "{server}" + CC.GRAY + ")" + CC.GRAY + ": " + CC.LIGHT_PURPLE + "{name}" + CC.GRAY + " - " + CC.YELLOW + "{message}";
 
     @Override
     public void handleMessage(JsonObject object) {
@@ -95,7 +99,6 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
             }
         }
         else if (type.equalsIgnoreCase("staffchat")) {
-
             String name = data.get("name").getAsString();
             Rank rank = Rank.valueOf(data.get("rank").getAsString());
             String message = data.get("message").getAsString();
@@ -107,6 +110,43 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
                     String toSend = ChatColor.AQUA + "(Staff Chat) " + rank.getPrefix() + rank.getColor() + rank.getName() + rank.getSuffix() + rank.getColor() + name + ChatColor.WHITE + ": " + message;
                     player.sendMessage(toSend);
                 }
+            }
+        }
+        else if (type.equalsIgnoreCase("announce")) {
+            String name = data.get("name").getAsString();
+            String game = data.get("game").getAsString();
+            String server = data.get("server").getAsString();
+
+            StringBuilder message = new StringBuilder(CC.GRAY)
+                    .append("[")
+                    .append(CC.RED)
+                    .append("Announce")
+                    .append(CC.GRAY)
+                    .append("] ")
+                    .append(name)
+                    .append(CC.RESET)
+                    .append(" is playing ")
+                    .append(CC.RED)
+                    .append(CC.BOLD)
+                    .append(game)
+                    .append(CC.RESET)
+                    .append(" on ")
+                    .append(CC.RED)
+                    .append(CC.BOLD)
+                    .append(server)
+                    .append(CC.RESET)
+                    .append(". ")
+                    .append(CC.GRAY)
+                    .append("[")
+                    .append(CC.GREEN)
+                    .append("Click to play")
+                    .append(CC.GRAY)
+                    .append("]");
+
+            Clickable clickable = new Clickable(message.toString(), CC.YELLOW + "Click to join!", "/joinqueue " + server);
+
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                clickable.sendToPlayer(player);
             }
         }
         else if (type.equalsIgnoreCase("whitelist")) {
@@ -152,7 +192,11 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
                 Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
 
                 if (profile != null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-                    String toSend = ChatColor.BLUE + "(Report) | " + server + ": " +  ChatColor.GRAY + name + ChatColor.WHITE + " reported " + ChatColor.GRAY + target + ChatColor.WHITE + " for " + ChatColor.YELLOW +  message + ".";
+                    String toSend = REPORT_FORMAT
+                            .replace("{server}", server)
+                            .replace("{name}", name)
+                            .replace("{target}", target)
+                            .replace("{reason}", message);
                     player.sendMessage(toSend);
                 }
             }
@@ -166,7 +210,10 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
                 Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
 
                 if (profile != null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-                    String toSend = ChatColor.BLUE + "(Request) | " + server + ": " + ChatColor.GRAY + name + ChatColor.WHITE + " requested " + ChatColor.YELLOW +  message + ".";
+                    String toSend = REQUEST_FORMAT
+                            .replace("{server}", server)
+                            .replace("{name}", name)
+                            .replace("{reason}", message);
                     player.sendMessage(toSend);
                 }
             }

@@ -84,6 +84,15 @@ public class CoreRedisManager {
         this.write(this.generateMessage("rank", object));
     }
 
+    public void writeAnnounce(String name, String game, String server) {
+        JsonObject object = new JsonObject();
+        object.addProperty("name", name);
+        object.addProperty("game", game);
+        object.addProperty("server", server);
+
+        this.write(this.generateMessage("announce", object));
+    }
+
     public void writeStaffChat(String name, Rank rank, String message) {
         JsonObject object = new JsonObject();
         object.addProperty("name", name);

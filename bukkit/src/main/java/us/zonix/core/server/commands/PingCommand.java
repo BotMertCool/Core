@@ -58,4 +58,5 @@ public class PingCommand extends BaseCommand {
 
         return ping;
     }
+
 }

@@ -72,6 +72,7 @@ public class CorePlugin extends JavaPlugin {
 
 	private String serverId;
 	private boolean hub;
+	@Setter private Long lastAnnounce;
 
 	@Setter private Location spawnLocation;
 
@@ -179,6 +180,7 @@ public class CorePlugin extends JavaPlugin {
 		new PurchaseSymbolsCommand();
 
 		// server related
+		new AnnounceCommand();
 		new SetMaxPlayersCommand();
 		new PingCommand();
 		new WhitelistCommand();

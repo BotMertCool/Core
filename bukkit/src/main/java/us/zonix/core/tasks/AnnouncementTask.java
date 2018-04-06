@@ -2,6 +2,8 @@ package us.zonix.core.tasks;
 
 import org.bukkit.ChatColor;
 import us.zonix.core.CorePlugin;
+import us.zonix.core.util.CC;
+import us.zonix.core.util.StringUtil;
 
 public class AnnouncementTask {
 
@@ -13,20 +15,21 @@ public class AnnouncementTask {
         this.plugin = plugin;
         this.count = 0;
         this.announcements = new String[] {
-                "&8[&4✪&8] &7Check out our Twitter for updates and giveaways! &ctwitter.com/ZonixUS",
-                "&8[&4✪&8] &7We are having a &c50% OFF &7sale in our store. &cstore.zonix.us",
-                "&8[&4✪&8] &7Purchase premium matches on our store at &cstore.zonix.us",
-                "&8[&4✪&8] &7Report cheating players by using &c/report&7.",
-                "&8[&4✪&8] &7Website is now up and running! &cwww.zonix.us",
-                "&8[&4✪&8] &7(Gold to Zonix) ranks can now host events! &c/host",
-                "&8[&4✪&8] &7Change the symbol in your display name! &c/symbols",
-                //"&8[&4✪&8] &7Staff applications are &aopen &7apply at &cwww.zonix.us",
-                "&8[&4✪&8] &7Join our Teamspeak server using: &cts.zonix.us",
-                "&8[&4✪&8] &7Zonix Rank will have ALPHA access to the Zonix Client.",
-                "&8[&4✪&8] &7Check out the leaderboards on our website &cwww.zonix.us/leaderboards"
+                "&cDownload our free client-side anti-cheat:\n&4www.zonix.us/client/&7",
+                "&cFollow our twitter for updates and giveaways:\n&4twitter.com/ZonixUS",
+                "&cReport players that you think are breaking rules:\n&4/report <player> <reason>",
+                "&cDonators get access to special abilities to:\n&4/host, /symbols, /announce",
+                "&cNeed support? Visit our support ticket system:\n&4www.zonix.us/support",
+                "&cGrind out your statistics to the top:\n&4www.zonix.us/leaderboards/"
         };
 
-        this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(this.plugin, () -> plugin.getServer().broadcastMessage(getNextAnnouncerMessage()), 1200L, 1200L);
+        this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(this.plugin, () -> {
+            plugin.getServer().broadcastMessage(StringUtil.getBorderLine(CC.GRAY + CC.STRIKE_THROUGH));
+            plugin.getServer().broadcastMessage(CC.BLANK_LINE);
+            plugin.getServer().broadcastMessage(getNextAnnouncerMessage());
+            plugin.getServer().broadcastMessage(CC.BLANK_LINE);
+            plugin.getServer().broadcastMessage(StringUtil.getBorderLine(CC.GRAY + CC.STRIKE_THROUGH));
+        }, 1200L, 1200L);
     }
 
     private String getNextAnnouncerMessage() {
