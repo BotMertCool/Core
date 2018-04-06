@@ -15,12 +15,12 @@ public class AnnouncementTask {
         this.plugin = plugin;
         this.count = 0;
         this.announcements = new String[] {
-                "&cDownload our free client-side anti-cheat:\n&4www.zonix.us/client/&7",
-                "&cFollow our twitter for updates and giveaways:\n&4twitter.com/ZonixUS",
+                "&cDownload our free client-side anti-cheat:\n&4https://www.zonix.us/client/",
+                "&cFollow our twitter for updates and giveaways:\n&4https://www.twitter.com/ZonixUS",
                 "&cReport players that you think are breaking rules:\n&4/report <player> <reason>",
-                "&cDonators get access to special abilities to:\n&4/host, /symbols, /announce",
-                "&cNeed support? Visit our support ticket system:\n&4www.zonix.us/support",
-                "&cGrind out your statistics to the top:\n&4www.zonix.us/leaderboards/"
+                "&cDonators get access to special abilities:\n&4/host, /symbols, /announce",
+                "&cNeed support? Visit our support ticket system:\n&4https://www.zonix.us/support",
+                "&cGrind out your statistics to the top:\n&4https://www.zonix.us/leaderboards/"
         };
 
         this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(this.plugin, () -> {

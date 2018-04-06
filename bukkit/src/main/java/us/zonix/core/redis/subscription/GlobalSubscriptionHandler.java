@@ -23,8 +23,8 @@ import java.util.UUID;
 
 public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonObject> {
 
-    private static final String REPORT_FORMAT = CC.GRAY + "[" + CC.AQUA + "Report" + CC.GRAY + "] (" + CC.AQUA + "{server}" + CC.GRAY + ")" + CC.GRAY + ": " + CC.LIGHT_PURPLE + "{name}" + CC.GRAY + " reported " + CC.LIGHT_PURPLE + "{target}" + CC.GRAY + " - " + CC.YELLOW + "{reason}";
-    private static final String REQUEST_FORMAT = CC.GRAY + "[" + CC.AQUA + "Request" + CC.GRAY + "] (" + CC.AQUA + "{server}" + CC.GRAY + ")" + CC.GRAY + ": " + CC.LIGHT_PURPLE + "{name}" + CC.GRAY + " - " + CC.YELLOW + "{message}";
+    private static final String REPORT_FORMAT = CC.GRAY + "[" + CC.AQUA + "Report" + CC.GRAY + "] (" + CC.AQUA + "{server}" + CC.GRAY + ")" + CC.GRAY + ": " + CC.RESET + "{name}" + CC.GRAY + " reported " + CC.RESET + "{target}" + CC.GRAY + " - " + CC.YELLOW + "{reason}";
+    private static final String REQUEST_FORMAT = CC.GRAY + "[" + CC.AQUA + "Request" + CC.GRAY + "] (" + CC.AQUA + "{server}" + CC.GRAY + ")" + CC.GRAY + ": " + CC.RESET + "{name}" + CC.GRAY + " - " + CC.YELLOW + "{reason}";
 
     @Override
     public void handleMessage(JsonObject object) {

@@ -9,7 +9,7 @@ import us.zonix.core.util.command.BaseCommand;
 import us.zonix.core.util.command.Command;
 import us.zonix.core.util.command.CommandArgs;
 
-public class CheckCommand extends BaseCommand {
+public class ClientCheckCommand extends BaseCommand {
 
 	@Command(name = "zac")
 	public void onCommand(CommandArgs command) {

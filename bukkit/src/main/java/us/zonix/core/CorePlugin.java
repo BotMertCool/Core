@@ -94,6 +94,8 @@ import us.zonix.core.util.LocationUtil;
 import us.zonix.core.util.command.CommandFramework;
 import us.zonix.core.util.file.ConfigFile;
 import us.zonix.core.util.inventory.UIListener;
+import us.zonix.core.zac.ClientCheckCommand;
+
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 @Getter
@@ -178,6 +180,7 @@ public class CorePlugin extends JavaPlugin {
 
 		// client related
 		new CosmeticCommand();
+		new ClientCheckCommand();
 
 		// punishment related
 		new BanCommand();

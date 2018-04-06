@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.zonix.core.CorePlugin;
+import us.zonix.core.profile.Profile;
 import us.zonix.core.util.command.BaseCommand;
 import us.zonix.core.util.command.Command;
 import us.zonix.core.util.command.CommandArgs;
@@ -49,7 +50,7 @@ public class ReportCommand extends BaseCommand {
 
         new BukkitRunnable() {
             public void run() {
-                main.getRedisManager().writeReport(main.getServerId(), player.getName(), target.getName(), reason);
+                main.getRedisManager().writeReport(main.getServerId(), Profile.getRankColor(player.getUniqueId()) + player.getName(), Profile.getRankColor(target.getUniqueId()) + target.getName(), reason);
                 cooldown.put(player.getUniqueId(), System.currentTimeMillis() + 30 * 1000L);
                 player.sendMessage(ChatColor.GREEN + "Your report has been submitted.");
             }

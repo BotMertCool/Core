@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import us.zonix.core.CorePlugin;
+import us.zonix.core.profile.Profile;
 import us.zonix.core.util.command.BaseCommand;
 import us.zonix.core.util.command.Command;
 import us.zonix.core.util.command.CommandArgs;
@@ -40,7 +41,7 @@ public class RequestCommand extends BaseCommand {
 
         new BukkitRunnable() {
             public void run() {
-                main.getRedisManager().writeRequest(main.getServerId(), player.getName(), reason);
+                main.getRedisManager().writeRequest(main.getServerId(), Profile.getRankColor(player.getUniqueId()) + player.getName(), reason);
                 cooldown.put(player.getUniqueId(), System.currentTimeMillis() + 30 * 1000L);
                 player.sendMessage(ChatColor.GREEN + "Your request has been submitted.");
             }
