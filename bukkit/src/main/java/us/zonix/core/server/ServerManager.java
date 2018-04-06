@@ -15,28 +15,15 @@ public class ServerManager {
 	private final CorePlugin plugin = CorePlugin.getInstance();
 
 	@Getter
-	private final InventoryUI practiceSelector = new InventoryUI("Server Selector", true, 5);
-
-	@Getter
-	private final InventoryUI hcfSelector = new InventoryUI("Server Selector", true, 5);
-
-	@Getter
-	private final InventoryUI kitMapSelector = new InventoryUI("Server Selector", true, 5);
-
-	@Getter
-	private final InventoryUI soupSelector = new InventoryUI("Server Selector", true, 5);
-
+	private final InventoryUI serverSelector = new InventoryUI("Server Selector", true, 5);
 	public ServerManager() {
-		this.setupPracticeInventory();
-		this.setupHCFInventory();
-		this.setupKitMapInventory();
-		this.setupSoupInventory();
+		this.setupServerSelector();
 		this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, this::updateInventories, 20L, 20L);
 	}
 
-	private void setupPracticeInventory() {
+	private void setupServerSelector() {
 
-		this.practiceSelector.setItem(10, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.POTION, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Practice " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " US", 1, (short) 8197)) {
+		this.serverSelector.setItem(10, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.POTION, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Practice " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " US", 1, (short) 8197)) {
 			@Override
 			public void onClick(InventoryClickEvent event) {
 				Player player = (Player) event.getWhoClicked();
@@ -45,7 +32,7 @@ public class ServerManager {
 			}
 		});
 
-		this.practiceSelector.setItem(12, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.POTION, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Practice " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " EU", 1, (short) 8197)) {
+		this.serverSelector.setItem(12, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.POTION, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Practice " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " EU", 1, (short) 8197)) {
 			@Override
 			public void onClick(InventoryClickEvent event) {
 				Player player = (Player) event.getWhoClicked();
@@ -54,7 +41,7 @@ public class ServerManager {
 			}
 		});
 
-		this.practiceSelector.setItem(14, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.POTION, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Practice " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " SA", 1, (short) 8197)) {
+		this.serverSelector.setItem(14, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.POTION, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Practice " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " SA", 1, (short) 8197)) {
 			@Override
 			public void onClick(InventoryClickEvent event) {
 				Player player = (Player) event.getWhoClicked();
@@ -63,7 +50,7 @@ public class ServerManager {
 			}
 		});
 
-		this.practiceSelector.setItem(16, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.POTION, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Practice " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " AS", 1, (short) 8197)) {
+		this.serverSelector.setItem(16, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.POTION, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Practice " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " AS", 1, (short) 8197)) {
 			@Override
 			public void onClick(InventoryClickEvent event) {
 				Player player = (Player) event.getWhoClicked();
@@ -72,49 +59,7 @@ public class ServerManager {
 			}
 		});
 
-		this.practiceSelector.setItem(29, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.DIAMOND_SWORD, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "HCF " + ChatColor.GRAY + "(Click to view servers)")) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.closeInventory();
-				player.openInventory(hcfSelector.getCurrentPage());
-			}
-		});
-
-		this.practiceSelector.setItem(31, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.ENDER_CHEST, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "KitMap " + ChatColor.GRAY + "(Click to view servers)")) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.closeInventory();
-				player.openInventory(kitMapSelector.getCurrentPage());
-			}
-		});
-
-		this.practiceSelector.setItem(33, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.MUSHROOM_SOUP, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Soup PvP " + ChatColor.GRAY + "(Click to view servers)")) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.closeInventory();
-				//player.openInventory(soupSelector.getCurrentPage());
-			}
-		});
-
-		int[] insideSlots = new int[] {11, 13, 15, 19, 20, 21, 22, 23, 24, 25, 28, 30, 32, 34};
-		int[] outsideSlots = new int[] {0,1,2,3,4,5,6,7,8,9,17,18,26,27,35,36,37,38,39,40,41,42,43,44};
-
-		for(int i : insideSlots) {
-			this.practiceSelector.setItem(i, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.STAINED_GLASS_PANE, " ", 1, (short) 7)) {@Override public void onClick(InventoryClickEvent event) {}});
-		}
-
-		for(int i : outsideSlots) {
-			this.practiceSelector.setItem(i, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.STAINED_GLASS_PANE, " ", 1, (short) 14)) {@Override public void onClick(InventoryClickEvent event) {}});
-		}
-
-	}
-
-	private void setupHCFInventory() {
-
-		this.hcfSelector.setItem(10, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.DIAMOND_SWORD, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "HCF " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " US")) {
+		this.serverSelector.setItem(29, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.DIAMOND_SWORD, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "HCF")) {
 			@Override
 			public void onClick(InventoryClickEvent event) {
 				Player player = (Player) event.getWhoClicked();
@@ -123,74 +68,7 @@ public class ServerManager {
 			}
 		});
 
-		this.hcfSelector.setItem(12, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.STAINED_GLASS_PANE, " ", 1, (short) 14)) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.closeInventory();
-			}
-		});
-
-		this.hcfSelector.setItem(14, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.DIAMOND_SWORD, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "HCF " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " SA")) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.performCommand("joinqueue " + "hcf-sa");
-				player.closeInventory();
-			}
-		});
-
-		this.hcfSelector.setItem(16, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.DIAMOND_SWORD, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "HCF " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " AS")) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.sendMessage(ChatColor.RED + "Please connect using as.zonix.us");
-				player.closeInventory();
-			}
-		});
-
-		this.hcfSelector.setItem(29, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.POTION, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Practice " + ChatColor.GRAY + "(Click to view servers)", 1, (short) 8197)) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.closeInventory();
-				player.openInventory(practiceSelector.getCurrentPage());
-			}
-		});
-
-		this.hcfSelector.setItem(31, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.ENDER_CHEST, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "KitMap " + ChatColor.GRAY + "(Click to view servers)")) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.closeInventory();
-				player.openInventory(kitMapSelector.getCurrentPage());
-			}
-		});
-
-		this.hcfSelector.setItem(33, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.MUSHROOM_SOUP, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Soup PvP " + ChatColor.GRAY + "(Click to view servers)")) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.closeInventory();
-				//player.openInventory(soupSelector.getCurrentPage());
-			}
-		});
-
-		int[] insideSlots = new int[] {11, 13, 15, 19, 20, 21, 22, 23, 24, 25, 28, 30, 32, 34};
-		int[] outsideSlots = new int[] {0,1,2,3,4,5,6,7,8,9,17,18,26,27,35,36,37,38,39,40,41,42,43,44};
-
-		for(int i : insideSlots) {
-			this.hcfSelector.setItem(i, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.STAINED_GLASS_PANE, " ", 1, (short) 7)) {@Override public void onClick(InventoryClickEvent event) {}});
-		}
-
-		for(int i : outsideSlots) {
-			this.hcfSelector.setItem(i, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.STAINED_GLASS_PANE, " ", 1, (short) 14)) {@Override public void onClick(InventoryClickEvent event) {}});
-		}
-	}
-
-	private void setupKitMapInventory() {
-
-		this.kitMapSelector.setItem(10, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.ENDER_CHEST, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "KitMap " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " US")) {
+		this.serverSelector.setItem(31, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.ENDER_CHEST, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "KitMap")) {
 			@Override
 			public void onClick(InventoryClickEvent event) {
 				Player player = (Player) event.getWhoClicked();
@@ -199,57 +77,12 @@ public class ServerManager {
 			}
 		});
 
-		this.kitMapSelector.setItem(12, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.ENDER_CHEST, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "KitMap " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " EU")) {
+		this.serverSelector.setItem(33, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.TNT, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Factions")) {
 			@Override
 			public void onClick(InventoryClickEvent event) {
 				Player player = (Player) event.getWhoClicked();
-				player.performCommand("joinqueue " + "kitmap-eu");
+				player.performCommand("joinqueue " + "factions-us");
 				player.closeInventory();
-			}
-		});
-
-		this.kitMapSelector.setItem(14, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.ENDER_CHEST, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "KitMap " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " SA")) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.performCommand("joinqueue " + "kitmap-sa");
-				player.closeInventory();
-			}
-		});
-
-		this.kitMapSelector.setItem(16, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.ENDER_CHEST, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "KitMap " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " AS")) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.sendMessage(ChatColor.RED + "Please connect using as.zonix.us");
-				player.closeInventory();
-			}
-		});
-
-		this.kitMapSelector.setItem(29, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.POTION, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Practice " + ChatColor.GRAY + "(Click to view servers)", 1, (short) 8197)) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.closeInventory();
-				player.openInventory(practiceSelector.getCurrentPage());
-			}
-		});
-
-		this.kitMapSelector.setItem(31, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.DIAMOND_SWORD, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "HCF " + ChatColor.GRAY + "(Click to view servers)")) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.closeInventory();
-				//player.openInventory(hcfSelector.getCurrentPage());
-			}
-		});
-
-		this.kitMapSelector.setItem(33, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.MUSHROOM_SOUP, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Soup PvP " + ChatColor.GRAY + "(Click to view servers)")) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.closeInventory();
-				//player.openInventory(soupSelector.getCurrentPage());
 			}
 		});
 
@@ -257,132 +90,42 @@ public class ServerManager {
 		int[] outsideSlots = new int[] {0,1,2,3,4,5,6,7,8,9,17,18,26,27,35,36,37,38,39,40,41,42,43,44};
 
 		for(int i : insideSlots) {
-			this.kitMapSelector.setItem(i, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.STAINED_GLASS_PANE, " ", 1, (short) 7)) {@Override public void onClick(InventoryClickEvent event) {}});
+			this.serverSelector.setItem(i, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.STAINED_GLASS_PANE, " ", 1, (short) 7)) {@Override public void onClick(InventoryClickEvent event) {}});
 		}
 
 		for(int i : outsideSlots) {
-			this.kitMapSelector.setItem(i, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.STAINED_GLASS_PANE, " ", 1, (short) 14)) {@Override public void onClick(InventoryClickEvent event) {}});
+			this.serverSelector.setItem(i, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.STAINED_GLASS_PANE, " ", 1, (short) 14)) {@Override public void onClick(InventoryClickEvent event) {}});
 		}
+
 	}
 
-	private void setupSoupInventory() {
-
-		this.soupSelector.setItem(10, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.MUSHROOM_SOUP, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Soup PvP " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " US")) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.performCommand("joinqueue " + "soup-us");
-				player.closeInventory();
-			}
-		});
-
-		this.soupSelector.setItem(12, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.MUSHROOM_SOUP, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Soup PvP " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " EU")) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.performCommand("joinqueue " + "soup-eu");
-				player.closeInventory();
-			}
-		});
-
-		this.soupSelector.setItem(14, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.MUSHROOM_SOUP, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Soup PvP " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " SA")) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.performCommand("joinqueue " + "soup-sa");
-				player.closeInventory();
-			}
-		});
-
-		this.soupSelector.setItem(16, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.ENDER_CHEST, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Soup PvP " + ChatColor.GRAY + "|" + ChatColor.RED.toString() + ChatColor.BOLD + " AS")) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.sendMessage(ChatColor.RED + "Please connect using as.zonix.us");
-				player.closeInventory();
-			}
-		});
-
-		this.soupSelector.setItem(29, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.POTION, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "Practice " + ChatColor.GRAY + "(Click to view servers)", 1, (short) 8197)) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.closeInventory();
-				//player.openInventory(hcfSelector.getCurrentPage());
-			}
-		});
-
-		this.soupSelector.setItem(31, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.DIAMOND_SWORD, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "HCF " + ChatColor.GRAY + "(Click to view servers)")) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.closeInventory();
-				//player.openInventory(kitMapSelector.getCurrentPage());
-			}
-		});
-
-		this.soupSelector.setItem(33, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.ENDER_CHEST, ChatColor.DARK_RED.toString() + ChatColor.BOLD + "KitMap " + ChatColor.GRAY + "(Click to view servers)")) {
-			@Override
-			public void onClick(InventoryClickEvent event) {
-				Player player = (Player) event.getWhoClicked();
-				player.closeInventory();
-				//player.openInventory(soupSelector.getCurrentPage());
-			}
-		});
-
-		int[] insideSlots = new int[] {11, 13, 15, 19, 20, 21, 22, 23, 24, 25, 28, 30, 32, 34};
-		int[] outsideSlots = new int[] {0,1,2,3,4,5,6,7,8,9,17,18,26,27,35,36,37,38,39,40,41,42,43,44};
-
-		for(int i : insideSlots) {
-			this.soupSelector.setItem(i, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.STAINED_GLASS_PANE, " ", 1, (short) 7)) {@Override public void onClick(InventoryClickEvent event) {}});
-		}
-
-		for(int i : outsideSlots) {
-			this.soupSelector.setItem(i, new InventoryUI.AbstractClickableItem(ItemUtil.createItem(Material.STAINED_GLASS_PANE, " ", 1, (short) 14)) {@Override public void onClick(InventoryClickEvent event) {}});
-		}
-	}
 
 	private void updateInventories() {
-		for (int i = 0; i < 18; i++) {
+		for (int i = 0; i < 33; i++) {
 
-			InventoryUI.ClickableItem item = this.practiceSelector.getItem(i);
+			InventoryUI.ClickableItem item = this.serverSelector.getItem(i);
 
 			if (item != null && item.getItemStack().getType() == Material.POTION) {
 
 				String serverName = ChatColor.stripColor(item.getItemStack().getItemMeta().getDisplayName()).split(" ")[2];
 				item.setItemStack(this.updateQueueLore(item.getItemStack(), "practice-" + serverName.toLowerCase()));
 
-				this.practiceSelector.setItem(i, item);
+				this.serverSelector.setItem(i, item);
 			}
-
-			item = this.hcfSelector.getItem(i);
 
 			if (item != null && item.getItemStack().getType() == Material.DIAMOND_SWORD) {
-
-				String serverName = ChatColor.stripColor(item.getItemStack().getItemMeta().getDisplayName()).split(" ")[2];
-				item.setItemStack(this.updateQueueLore(item.getItemStack(), "hcf-" + serverName.toLowerCase()));
-
-				this.hcfSelector.setItem(i, item);
+				item.setItemStack(this.updateQueueLore(item.getItemStack(), "hcf-us"));
+				this.serverSelector.setItem(i, item);
 			}
-
-			item = this.kitMapSelector.getItem(i);
 
 			if (item != null && item.getItemStack().getType() == Material.ENDER_CHEST) {
-
-				String serverName = ChatColor.stripColor(item.getItemStack().getItemMeta().getDisplayName()).split(" ")[2];
-				item.setItemStack(this.updateQueueLore(item.getItemStack(), "kitmap-" + serverName.toLowerCase()));
-
-				this.kitMapSelector.setItem(i, item);
+				item.setItemStack(this.updateQueueLore(item.getItemStack(), "kitmap-us"));
+				this.serverSelector.setItem(i, item);
 			}
 
-			item = this.soupSelector.getItem(i);
-
-			if (item != null && item.getItemStack().getType() == Material.MUSHROOM_SOUP) {
-
-				String serverName = ChatColor.stripColor(item.getItemStack().getItemMeta().getDisplayName()).split(" ")[3];
-				item.setItemStack(this.updateQueueLore(item.getItemStack(), "soup-" + serverName.toLowerCase()));
-
-				this.soupSelector.setItem(i, item);
+			if (item != null && item.getItemStack().getType() == Material.TNT) {
+				item.setItemStack(this.updateQueueLore(item.getItemStack(), "factions-us"));
+				this.serverSelector.setItem(i, item);
 			}
 		}
 	}

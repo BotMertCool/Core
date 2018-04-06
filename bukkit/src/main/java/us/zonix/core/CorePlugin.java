@@ -1,6 +1,13 @@
 package us.zonix.core;
 
 import club.minemen.spigot.ClubSpigot;
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.BooleanSupplier;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.io.FileUtils;
@@ -14,30 +21,71 @@ import us.zonix.core.api.CoreProcessor;
 import us.zonix.core.board.BoardManager;
 import us.zonix.core.board.adapter.HubBoard;
 import us.zonix.core.client.CosmeticCommand;
+import us.zonix.core.misc.command.AuthCommand;
+import us.zonix.core.misc.command.RegisterCommand;
 import us.zonix.core.misc.command.ReportCommand;
-import us.zonix.core.misc.command.*;
-import us.zonix.core.misc.command.game.*;
-import us.zonix.core.misc.command.staff.*;
+import us.zonix.core.misc.command.RequestCommand;
+import us.zonix.core.misc.command.game.AlertCommand;
+import us.zonix.core.misc.command.game.CraftCommand;
+import us.zonix.core.misc.command.game.EnchantCommand;
+import us.zonix.core.misc.command.game.FeedCommand;
+import us.zonix.core.misc.command.game.GamemodeCommand;
+import us.zonix.core.misc.command.game.HealCommand;
+import us.zonix.core.misc.command.game.SpawnerCommand;
+import us.zonix.core.misc.command.game.TeleportCommand;
+import us.zonix.core.misc.command.game.TeleportHereCommand;
+import us.zonix.core.misc.command.game.TeleportPositionCommand;
+import us.zonix.core.misc.command.game.TopCommand;
+import us.zonix.core.misc.command.game.WorldCommand;
+import us.zonix.core.misc.command.staff.AltsCommand;
+import us.zonix.core.misc.command.staff.BuilderCommand;
+import us.zonix.core.misc.command.staff.FreezeCommand;
+import us.zonix.core.misc.command.staff.HistoryCommand;
+import us.zonix.core.misc.command.staff.InvseeCommand;
+import us.zonix.core.misc.command.staff.StaffAuditCommand;
+import us.zonix.core.misc.command.staff.StaffChatCommand;
+import us.zonix.core.misc.command.staff.StaffModeCommand;
+import us.zonix.core.misc.command.staff.VanishCommand;
 import us.zonix.core.misc.listener.HideStreamListener;
 import us.zonix.core.misc.listener.ServerListener;
 import us.zonix.core.misc.listener.StaffModeListener;
+import us.zonix.core.misc.staffmode.StaffModeManager;
 import us.zonix.core.profile.Profile;
 import us.zonix.core.profile.ProfileListeners;
-import us.zonix.core.punishment.command.*;
+import us.zonix.core.punishment.command.BanCommand;
+import us.zonix.core.punishment.command.BlacklistCommand;
+import us.zonix.core.punishment.command.KickCommand;
+import us.zonix.core.punishment.command.MuteCommand;
+import us.zonix.core.punishment.command.TempBanCommand;
+import us.zonix.core.punishment.command.UnbanCommand;
+import us.zonix.core.punishment.command.UnblacklistCommand;
+import us.zonix.core.punishment.command.UnmuteCommand;
 import us.zonix.core.rank.command.RankCommand;
 import us.zonix.core.rank.listeners.RankListeners;
 import us.zonix.core.redis.CoreRedisManager;
 import us.zonix.core.redis.QueueManager;
 import us.zonix.core.server.ServerManager;
-import us.zonix.core.server.commands.*;
+import us.zonix.core.server.commands.ClearChatCommand;
+import us.zonix.core.server.commands.JoinQueueCommand;
+import us.zonix.core.server.commands.LeaveQueueCommand;
+import us.zonix.core.server.commands.PingCommand;
+import us.zonix.core.server.commands.SetMaxPlayersCommand;
+import us.zonix.core.server.commands.SetSpawnCommand;
+import us.zonix.core.server.commands.SilenceChatCommand;
+import us.zonix.core.server.commands.SlowChatCommand;
+import us.zonix.core.server.commands.WhitelistCommand;
 import us.zonix.core.server.handler.CustomMovementHandler;
 import us.zonix.core.server.listeners.ServerListeners;
 import us.zonix.core.server.tasks.ServerHandlerTask;
 import us.zonix.core.server.tasks.ServerHandlerTimeoutTask;
-import us.zonix.core.social.SocialHelper;
 import us.zonix.core.shared.redis.JedisSettings;
-import us.zonix.core.social.command.*;
-import us.zonix.core.misc.staffmode.StaffModeManager;
+import us.zonix.core.social.SocialHelper;
+import us.zonix.core.social.command.IgnoreCommand;
+import us.zonix.core.social.command.MessageCommand;
+import us.zonix.core.social.command.ReplyCommand;
+import us.zonix.core.social.command.SocialSpyCommand;
+import us.zonix.core.social.command.ToggleChatCommand;
+import us.zonix.core.social.command.ToggleMessagesCommand;
 import us.zonix.core.symbols.commands.PurchaseSymbolsCommand;
 import us.zonix.core.symbols.commands.SymbolCommand;
 import us.zonix.core.tab.TabList;
@@ -49,14 +97,6 @@ import us.zonix.core.util.LocationUtil;
 import us.zonix.core.util.command.CommandFramework;
 import us.zonix.core.util.file.ConfigFile;
 import us.zonix.core.util.inventory.UIListener;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.function.BooleanSupplier;
-
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 @Getter
@@ -127,7 +167,8 @@ public class CorePlugin extends JavaPlugin {
 		this.jedisSettings = new JedisSettings(
 				this.configFile.getString("jedis.host"),
 				this.configFile.getInt("jedis.port"),
-				this.configFile.getConfiguration().contains("jedis.password") ? this.configFile.getString("jedis.password") : null
+				this.configFile.getConfiguration().contains("jedis.password") ?
+						this.configFile.getString("jedis.password") : null
 		);
 
 		this.redisManager = new CoreRedisManager(this);
@@ -245,7 +286,7 @@ public class CorePlugin extends JavaPlugin {
 		this.saveSpawnLocation();
 		doRestartFileCheck();
 
-		for(Player online : Bukkit.getServer().getOnlinePlayers()) {
+		for (Player online : Bukkit.getServer().getOnlinePlayers()) {
 			if (this.staffModeManager.hasStaffToggled(online)) {
 				this.staffModeManager.toggleStaffMode(online);
 			}
@@ -278,8 +319,8 @@ public class CorePlugin extends JavaPlugin {
 		try {
 			this.configFile.getConfiguration().set("server.spawn", LocationUtil.parseLocation(this.spawnLocation));
 			this.configFile.getConfiguration().save(this.configFile.getFile());
+		} catch (Exception ex) {
 		}
-		catch (Exception ex) {}
 	}
 
 	private void doRestartFileCheck() {
@@ -288,17 +329,17 @@ public class CorePlugin extends JavaPlugin {
 		File uploadsFolder = new File(isHub() ? "../../uploads/hub" : "../uploads/practice").getAbsoluteFile();
 		File pluginFolder = new File("./plugins").getAbsoluteFile();
 
-		if(!uploadsFolder.exists() || !pluginFolder.exists()) {
+		if (!uploadsFolder.exists() || !pluginFolder.exists()) {
 			System.out.println("[Restart] Nothing to change, folder doesn't exist.");
 			return;
 		}
 
-		if(uploadsFolder.isDirectory() && uploadsFolder.list().length == 0) {
+		if (uploadsFolder.isDirectory() && uploadsFolder.list().length == 0) {
 			System.out.println("[Restart] There's no files to transfer.");
 			return;
 		}
 
-		for(File file : uploadsFolder.listFiles()) {
+		for (File file : uploadsFolder.listFiles()) {
 			try {
 				FileUtils.copyFileToDirectory(file, pluginFolder);
 				System.out.println("[Restart] Copying " + file.getName() + " to plugin folder.");

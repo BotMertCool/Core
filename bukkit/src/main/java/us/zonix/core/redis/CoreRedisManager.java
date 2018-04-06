@@ -9,7 +9,7 @@ import us.zonix.core.CorePlugin;
 import us.zonix.core.punishment.Punishment;
 import us.zonix.core.rank.Rank;
 import us.zonix.core.redis.subscription.GlobalSubscriptionHandler;
-import us.zonix.core.redis.subscription.WeebCatcherlSubscriptionHandler;
+import us.zonix.core.redis.subscription.WeebCatcherSubscriptionHandler;
 import us.zonix.core.server.ServerData;
 import us.zonix.core.shared.redis.JedisPublisher;
 import us.zonix.core.shared.redis.JedisSubscriber;
@@ -46,7 +46,7 @@ public class CoreRedisManager {
         this.chatSilenced = false;
         this.chatSlowDownTime = 0L;
 
-        new JedisSubscriber<>(this.plugin.getJedisSettings(), "client-bans", JsonObject.class, new WeebCatcherlSubscriptionHandler());
+        new JedisSubscriber<>(this.plugin.getJedisSettings(), "client-bans", JsonObject.class, new WeebCatcherSubscriptionHandler());
         this.messagesSubscriber = new JedisSubscriber<>(this.plugin.getJedisSettings(), "global-messages", JsonObject.class, new GlobalSubscriptionHandler());
         this.messagesPublisher = new JedisPublisher<>(this.plugin.getJedisSettings(), "global-messages");
     }
