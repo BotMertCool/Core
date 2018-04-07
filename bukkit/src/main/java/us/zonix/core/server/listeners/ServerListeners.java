@@ -23,7 +23,6 @@ import us.zonix.core.util.ItemUtil;
 import us.zonix.core.util.LocationUtil;
 import us.zonix.core.util.StringUtil;
 
-
 public class ServerListeners implements Listener {
 
     private ItemStack[] items = new ItemStack[]{
@@ -81,10 +80,6 @@ public class ServerListeners implements Listener {
         if (profile != null) {
             if (profile.getRank().isAboveOrEqual(Rank.SILVER)) {
                 profile.setDonatorArmor();
-            }
-
-            if (profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-                CorePlugin.getInstance().getRedisManager().writeStaffJoin(player.getName(), profile.getRank(), CorePlugin.getInstance().getServerId());
             }
         }
 
