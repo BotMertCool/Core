@@ -24,7 +24,6 @@ public class SetMaxPlayersCommand extends BaseCommand {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Command(name = "setmaxplayers", rank = Rank.OWNER, requiresPlayer = true)
@@ -32,13 +31,13 @@ public class SetMaxPlayersCommand extends BaseCommand {
         Player player = command.getPlayer();
         String[] args = command.getArgs();
 
-        if(args.length < 1) {
+        if (args.length < 1) {
             player.sendMessage(ChatColor.RED + "Usage: /setmaxplayers [amount]");
             player.sendMessage(ChatColor.YELLOW + "Current Max Players: " + this.main.getServer().getMaxPlayers());
             return;
         }
 
-        if(!NumberUtils.isNumber(args[0])) {
+        if (!NumberUtils.isNumber(args[0])) {
             player.sendMessage(ChatColor.RED + "Invalid amount.");
             return;
         }

@@ -25,6 +25,8 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
 
     private static final String REPORT_FORMAT = CC.GRAY + "[" + CC.AQUA + "Report" + CC.GRAY + "] (" + CC.AQUA + "{server}" + CC.GRAY + ")" + CC.GRAY + ": " + CC.RESET + "{name}" + CC.GRAY + " reported " + CC.RESET + "{target}" + CC.GRAY + " - " + CC.YELLOW + "{reason}";
     private static final String REQUEST_FORMAT = CC.GRAY + "[" + CC.AQUA + "Request" + CC.GRAY + "] (" + CC.AQUA + "{server}" + CC.GRAY + ")" + CC.GRAY + ": " + CC.RESET + "{name}" + CC.GRAY + " - " + CC.YELLOW + "{reason}";
+    private static final String STAFF_CHAT_FORMAT = CC.GRAY + "[" + CC.LIGHT_PURPLE + "Staff" + CC.GRAY + "] {name}" + CC.RESET + ": {message}";
+    private static final String STAFF_JOIN_FORMAT = CC.GRAY + "[" + CC.LIGHT_PURPLE + "Staff" + CC.GRAY + "] {name}" + CC.GRAY + " joined {server}";
 
     @Override
     public void handleMessage(JsonObject object) {
@@ -43,14 +45,12 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
                 return;
             }
 
-            // remove non updated punishment
             if (punishment.isRemoved()) {
                 profile.getPunishments().removeIf((other) -> {
                     return other.getId() == punishment.getId();
                 });
             }
 
-            // add updated punishment
             profile.getPunishments().add(punishment);
 
             Player player = Bukkit.getPlayer(punishment.getUuid());
@@ -79,11 +79,11 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
             Profile profile = Profile.getByUuidIfAvailable(uuid);
 
             if (profile != null && profile.getRank() != rank) {
-
                 profile.setRank(rank);
 
                 Symbol symbol = Symbol.getDefaultSymbolByRank(profile.getRank());
                 profile.setSymbol(symbol);
+
                 CorePlugin.getInstance().getRequestProcessor().sendRequestAsync(new PlayerRequest.UpdateSymbolRequest(profile.getUuid(), symbol));
 
                 Player player = Bukkit.getPlayer(profile.getUuid());
@@ -91,7 +91,8 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
                 if (player != null) {
                     player.sendMessage(ChatColor.GREEN + "Your rank has been updated to " + rank.getName() + ".");
                     profile.updateTabList(rank);
-                    if(CorePlugin.getInstance().isHub()) {
+
+                    if (CorePlugin.getInstance().isHub()) {
                         profile.setDonatorArmor();
                     }
                 }
@@ -104,11 +105,31 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
             Rank rank = Rank.valueOf(data.get("rank").getAsString());
             String message = data.get("message").getAsString();
 
+            String toSend = STAFF_CHAT_FORMAT
+                    .replace("{name}", rank.getColor() + name)
+                    .replace("{message}", message);
+
             for (Player player : Bukkit.getOnlinePlayers()) {
                 Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
 
                 if (profile != null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
-                    String toSend = ChatColor.AQUA + "(Staff Chat) " + rank.getPrefix() + rank.getColor() + rank.getName() + rank.getSuffix() + rank.getColor() + name + ChatColor.WHITE + ": " + message;
+                    player.sendMessage(toSend);
+                }
+            }
+        }
+        else if (type.equalsIgnoreCase("staffjoin")) {
+            String name = data.get("name").getAsString();
+            Rank rank = Rank.valueOf(data.get("rank").getAsString());
+            String server = data.get("server").getAsString();
+
+            String toSend = STAFF_JOIN_FORMAT
+                    .replace("{name}", rank.getColor() + name)
+                    .replace("{server}", server);
+
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
+
+                if (profile != null && profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
                     player.sendMessage(toSend);
                 }
             }
@@ -157,7 +178,7 @@ public class GlobalSubscriptionHandler implements JedisSubscriptionHandler<JsonO
             if (action.equalsIgnoreCase("add")) {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(target);
 
-                if(player != null) {
+                if (player != null) {
                     CorePlugin.getInstance().getServer().getWhitelistedPlayers().add(player);
                     CorePlugin.getInstance().getServer().reloadWhitelist();
                 }

@@ -9,27 +9,25 @@ import us.zonix.core.CorePlugin;
 
 public class CustomMovementHandler implements MovementHandler {
 
-	private final CorePlugin plugin = CorePlugin.getInstance();
+    @Override
+    public void handleUpdateLocation(Player player, Location to, Location from, PacketPlayInFlying packetPlayInFlying) {
+        if (player.getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
 
-	@Override
-	public void handleUpdateLocation(Player player, Location to, Location from, PacketPlayInFlying packetPlayInFlying) {
+        if (player.getLocation().getBlockY() <= 0 && CorePlugin.getInstance().getSpawnLocation() != null) {
+            player.teleport(CorePlugin.getInstance().getSpawnLocation());
+        }
 
-		if (player.getGameMode() == GameMode.CREATIVE) {
-			return;
-		}
+        if (player.isOnGround()) {
+            player.setAllowFlight(true);
+            player.setFlying(false);
+        }
+    }
 
-		if (player.getLocation().getBlockY() <= 0 && CorePlugin.getInstance().getSpawnLocation() != null) {
-			player.teleport(CorePlugin.getInstance().getSpawnLocation());
-		}
+    @Override
+    public void handleUpdateRotation(Player player, Location location, Location location1, PacketPlayInFlying packetPlayInFlying) {
 
-		if (player.isOnGround()) {
-			player.setAllowFlight(true);
-			player.setFlying(false);
-		}
-	}
+    }
 
-	@Override
-	public void handleUpdateRotation(Player player, Location location, Location location1, PacketPlayInFlying packetPlayInFlying) {
-
-	}
 }

@@ -12,7 +12,9 @@ public class SetSpawnCommand extends BaseCommand {
     @Command(name = "setspawn", rank = Rank.OWNER, requiresPlayer = true)
     public void onCommand(CommandArgs command) {
         Player player = command.getPlayer();
+
         this.main.setSpawnLocation(player.getLocation());
+
         player.sendMessage(ChatColor.GREEN + "Spawn location has been set.");
     }
 

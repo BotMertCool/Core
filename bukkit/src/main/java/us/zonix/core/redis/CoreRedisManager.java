@@ -102,6 +102,15 @@ public class CoreRedisManager {
         this.write(this.generateMessage("staffchat", object));
     }
 
+    public void writeStaffJoin(String name, Rank rank, String server) {
+        JsonObject object = new JsonObject();
+        object.addProperty("name", name);
+        object.addProperty("rank", rank.name());
+        object.addProperty("server", server);
+
+        this.write(this.generateMessage("staffjoin", object));
+    }
+
     public void writeRequest(String server, String name, String message) {
         JsonObject object = new JsonObject();
         object.addProperty("name", name);

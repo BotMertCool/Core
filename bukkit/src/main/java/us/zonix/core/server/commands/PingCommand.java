@@ -13,21 +13,14 @@ import us.zonix.core.util.command.CommandArgs;
 
 public class PingCommand extends BaseCommand {
 
-    @Command(name = "ping", rank = Rank.DEFAULT)
+    @Command(name = "ping", rank = Rank.DEFAULT, requiresPlayer = true)
     public void onCommand(CommandArgs command) {
         CommandSender sender = command.getSender();
         String[] args = command.getArgs();
 
-        if (!(sender instanceof Player)) {
-            return;
-        }
-
         Player toCheck;
+
         if (args.length == 0) {
-            if (!(sender instanceof Player)) {
-                sender.sendMessage(ChatColor.RED + "Usage: /ping [player]");
-                return;
-            }
             toCheck = (Player) sender;
         } else {
             toCheck = Bukkit.getPlayer(StringUtils.join(args));
@@ -42,21 +35,7 @@ public class PingCommand extends BaseCommand {
     }
 
     private int getPing(Player player) {
-        int ping = ((CraftPlayer)player).getHandle().ping;
-
-        if (ping >= 100) {
-            return ping - 30;
-        }
-
-        if (ping >= 50) {
-            return ping - 20;
-        }
-
-        if (ping >= 20) {
-            return ping - 10;
-        }
-
-        return ping;
+        return ((CraftPlayer) player).getHandle().ping;
     }
 
 }

@@ -41,8 +41,7 @@ public enum Symbol {
 
         try {
             symbol = Symbol.valueOf(symbolName.toUpperCase());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             symbol = Symbol.SYMBOL_1;
         }
 
@@ -50,18 +49,19 @@ public enum Symbol {
     }
 
     public static Symbol getDefaultSymbolByRank(Rank rank) {
-        if(rank == Rank.SILVER) {
+        if (rank == Rank.SILVER) {
             return SYMBOL_1;
-        } else if(rank == Rank.GOLD) {
+        } else if (rank == Rank.GOLD) {
             return SYMBOL_4;
-        } else if(rank == Rank.PLATINUM) {
+        } else if (rank == Rank.PLATINUM) {
             return SYMBOL_7;
-        } else if(rank == Rank.EMERALD) {
+        } else if (rank == Rank.EMERALD) {
             return SYMBOL_11;
-        } else if(rank == Rank.ZONIX) {
+        } else if (rank == Rank.ZONIX) {
             return SYMBOL_16;
         } else {
             return SYMBOL_0;
         }
     }
+
 }

@@ -27,21 +27,20 @@ import us.zonix.core.util.StringUtil;
 public class ServerListeners implements Listener {
 
     private ItemStack[] items = new ItemStack[]{
-                null,
-                null,
-                null,
-                null,
-                ItemUtil.createItem(Material.COMPASS, ChatColor.YELLOW.toString() + ChatColor.BOLD + "Server Selector"),
-                null,
-                null,
-                null,
-                null
+            null,
+            null,
+            null,
+            null,
+            ItemUtil.createItem(Material.COMPASS, ChatColor.YELLOW.toString() + ChatColor.BOLD + "Server Selector"),
+            null,
+            null,
+            null,
+            null
     };
 
     @EventHandler
     public void onLoginPrevention(PlayerLoginEvent event) {
-
-        if(event.getAddress().getHostAddress().equalsIgnoreCase("127.0.0.1")) {
+        if (event.getAddress().getHostAddress().equalsIgnoreCase("127.0.0.1")) {
             event.setKickMessage(ChatColor.RED + "You are not allowed to connect.");
             event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
         }
@@ -49,7 +48,6 @@ public class ServerListeners implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
-
         Player player = event.getPlayer();
 
         event.setJoinMessage(null);
@@ -59,20 +57,20 @@ public class ServerListeners implements Listener {
         player.getInventory().setContents(this.items);
         player.setHealth(20F);
 
-        if(CorePlugin.getInstance().getSpawnLocation() != null) {
+        if (CorePlugin.getInstance().getSpawnLocation() != null) {
             player.teleport(CorePlugin.getInstance().getSpawnLocation());
         }
 
         player.getInventory().setHeldItemSlot(4);
 
-        String[] message = new String[] {
+        String[] message = new String[]{
                 StringUtil.getBorderLine(CC.GRAY + CC.S),
                 CC.GRAY + "Welcome to the " + CC.DARK_RED + CC.BOLD + "Zonix Network",
                 " ",
-                CC.DARK_GRAY + CC.BOLD + "* " + CC.RED + CC.BOLD + "Website: " + CC.GRAY + "www.zonix.us",
-                CC.DARK_GRAY + CC.BOLD + "* " + CC.RED + CC.BOLD + "Twitter: " + CC.GRAY + "twitter.com/ZonixUS",
+                CC.DARK_GRAY + CC.BOLD + "* " + CC.RED + CC.BOLD + "Website: " + CC.GRAY + "https://www.zonix.us",
+                CC.DARK_GRAY + CC.BOLD + "* " + CC.RED + CC.BOLD + "Twitter: " + CC.GRAY + "https://www.twitter.com/ZonixUS",
                 CC.DARK_GRAY + CC.BOLD + "* " + CC.RED + CC.BOLD + "Teamspeak: " + CC.GRAY + "ts.zonix.us",
-                CC.DARK_GRAY + CC.BOLD + "* " + CC.RED + CC.BOLD + "Store: " + CC.GRAY + "store.zonix.us",
+                CC.DARK_GRAY + CC.BOLD + "* " + CC.RED + CC.BOLD + "Store: " + CC.GRAY + "https://store.zonix.us",
                 StringUtil.getBorderLine(CC.GRAY + CC.S),
         };
 
@@ -80,8 +78,14 @@ public class ServerListeners implements Listener {
 
         Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
 
-        if (profile != null && profile.getRank().isAboveOrEqual(Rank.SILVER)) {
-            profile.setDonatorArmor();
+        if (profile != null) {
+            if (profile.getRank().isAboveOrEqual(Rank.SILVER)) {
+                profile.setDonatorArmor();
+            }
+
+            if (profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+                CorePlugin.getInstance().getRedisManager().writeStaffJoin(player.getName(), profile.getRank(), CorePlugin.getInstance().getServerId());
+            }
         }
 
         for (Player online : Bukkit.getOnlinePlayers()) {
@@ -93,7 +97,6 @@ public class ServerListeners implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-
         Player player = event.getPlayer();
         event.setQuitMessage(null);
 
@@ -135,7 +138,7 @@ public class ServerListeners implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
-        if(event.getEntity() instanceof Player) {
+        if (event.getEntity() instanceof Player) {
             event.setCancelled(true);
         }
     }
@@ -147,7 +150,7 @@ public class ServerListeners implements Listener {
 
     @EventHandler
     public void onHealthChange(EntityRegainHealthEvent event) {
-        if(event.getEntity() instanceof Player) {
+        if (event.getEntity() instanceof Player) {
             event.setCancelled(true);
         }
     }
@@ -155,7 +158,7 @@ public class ServerListeners implements Listener {
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
 
-        if(CorePlugin.getInstance().getSpawnLocation() == null) {
+        if (CorePlugin.getInstance().getSpawnLocation() == null) {
             return;
         }
 
@@ -170,7 +173,7 @@ public class ServerListeners implements Listener {
 
     @EventHandler
     public void onInventoryClickEvent(InventoryClickEvent event) {
-        if((event.getSlotType() == InventoryType.SlotType.ARMOR || event.getSlotType() == InventoryType.SlotType.QUICKBAR) && CorePlugin.getInstance().isHub()) {
+        if ((event.getSlotType() == InventoryType.SlotType.ARMOR || event.getSlotType() == InventoryType.SlotType.QUICKBAR) && CorePlugin.getInstance().isHub()) {
             event.setCancelled(true);
         }
     }
@@ -188,7 +191,7 @@ public class ServerListeners implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
 
-        if(event.getPlayer().isOp()) {
+        if (event.getPlayer().isOp()) {
             return;
         }
 
@@ -198,7 +201,7 @@ public class ServerListeners implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
 
-        if(event.getPlayer().isOp()) {
+        if (event.getPlayer().isOp()) {
             return;
         }
 
@@ -207,11 +210,19 @@ public class ServerListeners implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
-
         Player player = event.getPlayer();
-        if (player.getItemInHand() == null) return;
-        if (!player.getItemInHand().hasItemMeta()) return;
-        if (!player.getItemInHand().getItemMeta().hasDisplayName()) return;
+
+        if (player.getItemInHand() == null) {
+            return;
+        }
+
+        if (!player.getItemInHand().hasItemMeta()) {
+            return;
+        }
+
+        if (!player.getItemInHand().getItemMeta().hasDisplayName()) {
+            return;
+        }
 
         if (player.getItemInHand().getType() == Material.COMPASS && Profile.getByUuid(player.getUniqueId()).isAuthenticated()) {
             player.openInventory(CorePlugin.getInstance().getServerManager().getServerSelector().getCurrentPage());
@@ -220,15 +231,14 @@ public class ServerListeners implements Listener {
 
     @EventHandler
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
-
-        if(!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) {
+        if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) {
             return;
         }
 
         Player player = (Player) event.getEntity();
         Player damager = (Player) event.getDamager();
 
-        if(damager.canSee(player)) {
+        if (damager.canSee(player)) {
             damager.hidePlayer(player);
             damager.sendMessage(ChatColor.GOLD.toString() + ChatColor.BOLD + "Pop!");
             damager.playSound(damager.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
@@ -249,6 +259,6 @@ public class ServerListeners implements Listener {
 
         LocationUtil.multiplyVelocity(player, player.getLocation().getDirection(), 1.4D, 0.2D);
         player.playSound(player.getLocation(), Sound.ARROW_HIT, 2, 2);
-
     }
+
 }

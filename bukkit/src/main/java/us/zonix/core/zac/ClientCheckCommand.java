@@ -5,18 +5,20 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import us.zonix.core.CorePlugin;
+import us.zonix.core.rank.Rank;
 import us.zonix.core.util.command.BaseCommand;
 import us.zonix.core.util.command.Command;
 import us.zonix.core.util.command.CommandArgs;
 
 public class ClientCheckCommand extends BaseCommand {
 
-	@Command(name = "zac")
+	@Command(name = "zac", rank = Rank.DEVELOPER)
 	public void onCommand(CommandArgs command) {
 		CommandSender sender = command.getSender();
 		String[] args = command.getArgs();
 
 		Player target;
+
 		if (args.length == 0) {
 			if (sender instanceof Player) {
 				target = (Player) sender;
@@ -34,6 +36,7 @@ public class ClientCheckCommand extends BaseCommand {
 		}
 
 		Player finalTarget = target;
+
 		CorePlugin.getInstance().getRequestProcessor().sendRequestAsync(new SessionCheckRequest(target.getUniqueId()),
 				object -> {
 					if (object.getAsJsonObject().get("value").getAsBoolean()) {

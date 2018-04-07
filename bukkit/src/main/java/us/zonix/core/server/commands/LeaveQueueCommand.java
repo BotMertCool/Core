@@ -10,10 +10,8 @@ import us.zonix.core.util.command.CommandArgs;
 
 public class LeaveQueueCommand extends BaseCommand {
 
-
     @Command(name = "leavequeue", requiresPlayer = true, aliases = {"queueleave"})
     public void onCommand(CommandArgs command) {
-
         Player player = command.getPlayer();
 
         if (!CorePlugin.getInstance().getQueueManager().isServerOnline()) {
@@ -29,6 +27,8 @@ public class LeaveQueueCommand extends BaseCommand {
         }
 
         player.sendMessage(ChatColor.RED + "You left the queue for " + queue.getServerName() + ".");
+
         this.main.getServer().getScheduler().runTaskAsynchronously(this.main, () -> queue.removeFromQueue(player));
     }
+
 }

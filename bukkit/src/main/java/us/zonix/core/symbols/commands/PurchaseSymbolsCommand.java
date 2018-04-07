@@ -14,9 +14,8 @@ import us.zonix.core.util.command.CommandArgs;
 
 public class PurchaseSymbolsCommand extends BaseCommand {
 
-    @Command(name = "purchasesymbol", aliases ={ "purchasesymbols"}, rank = Rank.MANAGER)
+    @Command(name = "purchasesymbol", aliases = {"purchasesymbols"}, rank = Rank.MANAGER)
     public void onCommand(CommandArgs command) {
-
         CommandSender player = command.getSender();
         String[] args = command.getArgs();
 
@@ -33,13 +32,16 @@ public class PurchaseSymbolsCommand extends BaseCommand {
         }
 
         boolean value = Boolean.parseBoolean(args[1]);
+
         CorePlugin.getInstance().getRequestProcessor().sendRequestAsync(new PlayerRequest.UpdateBoughtSymbolsRequest(target.getUniqueId(), value));
+
         player.sendMessage(ChatColor.GREEN + "Updated " + target.getName() + " symbols to " + value + ".");
 
-        if(value) {
+        if (value) {
             target.sendMessage(ChatColor.GREEN + "You now have access to all of the symbols.");
         }
 
         Profile.getByUuidIfAvailable(target.getUniqueId()).setBoughtSymbols(value);
     }
+
 }

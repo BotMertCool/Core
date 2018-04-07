@@ -12,13 +12,13 @@ public class AlertCommand extends BaseCommand {
     @Command(name = "alertsilent", rank = Rank.MANAGER)
 
     public void onCommand(CommandArgs command) {
-
-        if(command.getArgs().length == 0) {
+        if (command.getArgs().length == 0) {
             command.getSender().sendMessage(ChatColor.RED + "Usage: /alertsilent <message>");
             return;
         }
 
         String message = "";
+
         for (int i = 0; i < command.getArgs().length; i++) {
             message += command.getArgs()[i] + " ";
         }

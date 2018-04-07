@@ -20,16 +20,15 @@ public enum Rank {
 	FAMOUS(CC.GRAY + "[", CC.LIGHT_PURPLE + CC.ITALIC, "Famous", CC.GRAY + "] "),
 	PARTNER(CC.GRAY + "[", CC.LIGHT_PURPLE + CC.ITALIC, "Partner", CC.GRAY + "] "),
 	MEDIA_OWNER(CC.GRAY + "[", CC.DARK_RED, "Owner", CC.GRAY + "] "),
-	TRIAL_MOD(CC.GRAY + "[", CC.YELLOW, "Trial-Moderator", CC.GRAY + "] "),
-	MODERATOR(CC.GRAY + "[", CC.DARK_AQUA, "Moderator", CC.GRAY + "] "),
-	SENIOR_MODERATOR(CC.GRAY + "[", CC.DARK_PURPLE, "Sr. Moderator", CC.GRAY + "] "),
-	ADMINISTRATOR(CC.GRAY + "[", CC.RED, "Administrator", CC.GRAY + "] "),
-	PLATFORM_ADMINISTRATOR(CC.GRAY + "[", CC.RED, "Platform Admin", CC.GRAY + "] "),
+	TRIAL_MOD(CC.GRAY + "[", CC.YELLOW, "Trial-Mod", CC.GRAY + "] "),
+	MODERATOR(CC.GRAY + "[", CC.DARK_AQUA, "Mod", CC.GRAY + "] "),
+	SENIOR_MODERATOR(CC.GRAY + "[", CC.DARK_PURPLE, "Sr. Mod", CC.GRAY + "] "),
+	ADMINISTRATOR(CC.GRAY + "[", CC.RED, "Admin", CC.GRAY + "] "),
+	PLATFORM_ADMINISTRATOR(CC.GRAY + "[", CC.RED, "Platform-Admin", CC.GRAY + "] "),
 	MANAGER(CC.GRAY + "[", CC.RED, "Manager", CC.GRAY + "] "),
 	DEVELOPER(CC.GRAY + "[", CC.AQUA, "Developer", CC.GRAY + "] "),
 	COOWNER(CC.GRAY + "[", CC.DARK_RED, "Co-Owner", CC.GRAY + "] "),
-	OWNER(CC.GRAY + "[", CC.DARK_RED, "Owner", CC.GRAY + "] "),
-	INCOGNITO("", CC.GREEN, "Incognito", "");
+	OWNER(CC.GRAY + "[", CC.DARK_RED, "Owner", CC.GRAY + "] ");
 
 	private final String prefix;
 	private final String color;

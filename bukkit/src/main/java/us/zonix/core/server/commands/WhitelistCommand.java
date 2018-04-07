@@ -21,7 +21,7 @@ public class WhitelistCommand extends BaseCommand {
             return;
         }
 
-        if(args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("on") || args[0].equalsIgnoreCase("off")) {
+        if (args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("on") || args[0].equalsIgnoreCase("off")) {
             this.writeWhitelist(sender, args[0], args[1]);
         } else {
             sender.sendMessage(ChatColor.RED + "Usage: /glw <add/remove/on/off> [player/server]");

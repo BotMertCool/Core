@@ -38,14 +38,14 @@ public class MessageCommand extends BaseCommand {
             return;
         }
 
-        if(profile.getIgnored().contains(target.getUniqueId())) {
+        if (profile.getIgnored().contains(target.getUniqueId())) {
             player.sendMessage(ChatColor.RED + "You can't send a message to an ignored player.");
             return;
         }
 
         Profile targetProfile = Profile.getByUuid(target.getUniqueId());
 
-        if(targetProfile == null) {
+        if (targetProfile == null) {
             return;
         }
 
@@ -54,7 +54,7 @@ public class MessageCommand extends BaseCommand {
             return;
         }
 
-        if(targetProfile.getIgnored().contains(player.getUniqueId())) {
+        if (targetProfile.getIgnored().contains(player.getUniqueId())) {
             player.sendMessage(ChatColor.RED + "That player has ignored you.");
             return;
         }

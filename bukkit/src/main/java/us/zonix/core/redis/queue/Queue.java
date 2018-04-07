@@ -31,7 +31,8 @@ public class Queue {
 
     private final CorePlugin plugin;
 
-    @Getter private volatile Map<UUID, Integer> players;
+    @Getter
+    private volatile Map<UUID, Integer> players;
     String serverName;
 
     private final JedisSubscriber<String> queueSubscriber;
@@ -43,7 +44,7 @@ public class Queue {
         this.gson = new Gson();
         this.players = new HashMap<>();
 
-        this.queueSubscriber = new JedisSubscriber<>(this.plugin.getJedisSettings(), "queue-" + this.serverName.toLowerCase().replace("-", "_") , String.class, new QueueSubscriptionHandler());
+        this.queueSubscriber = new JedisSubscriber<>(this.plugin.getJedisSettings(), "queue-" + this.serverName.toLowerCase().replace("-", "_"), String.class, new QueueSubscriptionHandler());
         this.queuePublisher = new JedisPublisher<>(this.plugin.getJedisSettings(), "queue-" + this.serverName.toLowerCase().replace("-", "_"));
 
         plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
@@ -79,44 +80,33 @@ public class Queue {
     }
 
     private int position(Player player) {
-
         Profile profile = Profile.getByUuid(player.getUniqueId());
 
-        if(profile == null) {
+        if (profile == null) {
             return 0;
         }
 
-        if(profile.getRank().isAboveOrEqual(Rank.DEVELOPER)) {
+        if (profile.getRank().isAboveOrEqual(Rank.DEVELOPER)) {
             return 30;
-        }
-        else if(profile.getRank().isAboveOrEqual(Rank.MEDIA_OWNER)) {
+        } else if (profile.getRank().isAboveOrEqual(Rank.MEDIA_OWNER)) {
             return 25;
-        }
-        else if(profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
+        } else if (profile.getRank().isAboveOrEqual(Rank.TRIAL_MOD)) {
             return 20;
-        }
-        else if(profile.getRank().isAboveOrEqual(Rank.MEDIA)) {
+        } else if (profile.getRank().isAboveOrEqual(Rank.MEDIA)) {
             return 15;
-        }
-        else if(profile.getRank().isAboveOrEqual(Rank.BUILDER)) {
+        } else if (profile.getRank().isAboveOrEqual(Rank.BUILDER)) {
             return 10;
-        }
-        else if(profile.getRank().isAboveOrEqual(Rank.ZONIX)) {
+        } else if (profile.getRank().isAboveOrEqual(Rank.ZONIX)) {
             return 9;
-        }
-        else if(profile.getRank().isAboveOrEqual(Rank.EMERALD)) {
+        } else if (profile.getRank().isAboveOrEqual(Rank.EMERALD)) {
             return 8;
-        }
-        else if(profile.getRank().isAboveOrEqual(Rank.PLATINUM)) {
+        } else if (profile.getRank().isAboveOrEqual(Rank.PLATINUM)) {
             return 6;
-        }
-        else if(profile.getRank().isAboveOrEqual(Rank.GOLD)) {
+        } else if (profile.getRank().isAboveOrEqual(Rank.GOLD)) {
             return 7;
-        }
-        else if(profile.getRank().isAboveOrEqual(Rank.SILVER)) {
+        } else if (profile.getRank().isAboveOrEqual(Rank.SILVER)) {
             return 5;
-        }
-        else if(profile.getRank().isAboveOrEqual(Rank.DEFAULT)) {
+        } else if (profile.getRank().isAboveOrEqual(Rank.DEFAULT)) {
             return 4;
         }
 
@@ -132,7 +122,7 @@ public class Queue {
 
         Profile profile = Profile.getByUuidIfAvailable(player.getUniqueId());
 
-        if(profile == null) {
+        if (profile == null) {
             return;
         }
 
@@ -179,7 +169,7 @@ public class Queue {
 
         Profile profile = Profile.getByUuid(player.getUniqueId());
 
-        if(profile == null) {
+        if (profile == null) {
             return;
         }
 
@@ -188,19 +178,19 @@ public class Queue {
 
     public String getServerName() {
 
-        if(serverName.toLowerCase().equalsIgnoreCase("practice-us")) {
+        if (serverName.toLowerCase().equalsIgnoreCase("practice-us")) {
             return "Practice US";
-        } else if(serverName.toLowerCase().equalsIgnoreCase("practice-eu")) {
+        } else if (serverName.toLowerCase().equalsIgnoreCase("practice-eu")) {
             return "Practice EU";
-        } else if(serverName.toLowerCase().equalsIgnoreCase("practice-sa")) {
+        } else if (serverName.toLowerCase().equalsIgnoreCase("practice-sa")) {
             return "Practice SA";
-        } else if(serverName.toLowerCase().equalsIgnoreCase("practice-au")) {
+        } else if (serverName.toLowerCase().equalsIgnoreCase("practice-au")) {
             return "Practice AU";
-        } else if(serverName.toLowerCase().equalsIgnoreCase("practice-as")) {
+        } else if (serverName.toLowerCase().equalsIgnoreCase("practice-as")) {
             return "Practice AS";
-        } else if(serverName.toLowerCase().equalsIgnoreCase("kitmap-us")) {
+        } else if (serverName.toLowerCase().equalsIgnoreCase("kitmap-us")) {
             return "KitMap US";
-        } else if(serverName.toLowerCase().equalsIgnoreCase("hcf-us")) {
+        } else if (serverName.toLowerCase().equalsIgnoreCase("hcf-us")) {
             return "HCF US";
         }
 
@@ -257,13 +247,11 @@ public class Queue {
 
                 players.clear();
                 players.putAll(newPositions);
-            }
-
-            else if (command.equals("send")) {
+            } else if (command.equals("send")) {
 
                 Player player = Bukkit.getPlayer(UUID.fromString(messageSplit[1]));
 
-                if(player != null) {
+                if (player != null) {
                     BungeeUtil.sendToServer(player, serverName);
                 }
 

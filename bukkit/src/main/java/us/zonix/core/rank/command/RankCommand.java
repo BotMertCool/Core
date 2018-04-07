@@ -39,47 +39,34 @@ public class RankCommand extends BaseCommand {
         Rank rank;
 
         try {
-            if (args[1].toUpperCase().equalsIgnoreCase("ADMIN")) {
+            if (args[1].equalsIgnoreCase("ADMIN")) {
                 rank = Rank.ADMINISTRATOR;
-            }
-            else if (args[1].toUpperCase().equalsIgnoreCase("MOD")) {
+            } else if (args[1].equalsIgnoreCase("MOD")) {
                 rank = Rank.MODERATOR;
-            }
-            else if (args[1].toUpperCase().equalsIgnoreCase("TMOD") || args[1].toUpperCase().equalsIgnoreCase("TRIALMOD")) {
+            } else if (args[1].equalsIgnoreCase("TMOD") || args[1].equalsIgnoreCase("TRIALMOD")) {
                 rank = Rank.TRIAL_MOD;
-            }
-            else if (args[1].toUpperCase().equalsIgnoreCase("SRMOD")) {
+            } else if (args[1].equalsIgnoreCase("SRMOD")) {
                 rank = Rank.SENIOR_MODERATOR;
-            }
-            else if (args[1].toUpperCase().equalsIgnoreCase("DEV")) {
+            } else if (args[1].equalsIgnoreCase("DEV")) {
                 rank = Rank.DEVELOPER;
-            }
-            else if (args[1].toUpperCase().equalsIgnoreCase("YOUTUBE") || args[1].toUpperCase().equalsIgnoreCase("YOUTUBER") || args[1].toUpperCase().equalsIgnoreCase("YT")) {
+            } else if (args[1].equalsIgnoreCase("YOUTUBE") || args[1].equalsIgnoreCase("YOUTUBER") || args[1].equalsIgnoreCase("YT")) {
                 rank = Rank.MEDIA;
-            }
-            else if (args[1].toUpperCase().equalsIgnoreCase("MEDIAOWNER")) {
+            } else if (args[1].equalsIgnoreCase("MEDIAOWNER")) {
                 rank = Rank.MEDIA_OWNER;
-            }
-            else if (args[1].toUpperCase().equalsIgnoreCase("PLATADMIN")) {
+            } else if (args[1].equalsIgnoreCase("PLATADMIN")) {
                 rank = Rank.PLATFORM_ADMINISTRATOR;
-            }
-            else if (args[1].toUpperCase().equalsIgnoreCase("HIDDEN")) {
-                rank = Rank.INCOGNITO;
-            }
-            else if (args[1].toUpperCase().equalsIgnoreCase("EGIRL") || args[1].toUpperCase().equalsIgnoreCase("GURL")) {
+            } else if (args[1].equalsIgnoreCase("EGIRL") || args[1].equalsIgnoreCase("GURL")) {
                 rank = Rank.E_GIRL;
-            }
-            else {
+            } else {
                 rank = Rank.valueOf(args[1].toUpperCase());
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             sender.sendMessage(ChatColor.RED + "Could not parse that rank.");
             return;
         }
 
-        if(sender instanceof Player && Profile.getByUuid(((Player) sender).getUniqueId()).getRank() == Rank.MANAGER) {
-            if(rank.isAboveOrEqual(Rank.MANAGER) || rank == Rank.MEDIA_OWNER) {
+        if (sender instanceof Player && Profile.getByUuid(((Player) sender).getUniqueId()).getRank() == Rank.MANAGER) {
+            if (rank.isAboveOrEqual(Rank.MANAGER) || rank == Rank.MEDIA_OWNER) {
                 sender.sendMessage(ChatColor.RED + "You are not allowed to set up ranks above Admin.");
                 return;
             }
@@ -92,8 +79,7 @@ public class RankCommand extends BaseCommand {
                     public void callback(JsonElement object) {
                         if (object == null) {
                             sender.sendMessage(ChatColor.RED + "Failed to find that player.");
-                        }
-                        else {
+                        } else {
                             JsonObject o = object.getAsJsonObject();
 
                             UUID uuid = UUIDType.fromString(o.get("uuid").getAsString());

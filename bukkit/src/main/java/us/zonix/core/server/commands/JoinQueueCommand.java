@@ -12,18 +12,17 @@ import us.zonix.core.util.command.CommandArgs;
 
 public class JoinQueueCommand extends BaseCommand {
 
-
     @Command(name = "joinqueue", requiresPlayer = true, aliases = {"queuejoin"})
     public void onCommand(CommandArgs command) {
 
         Player player = command.getPlayer();
         String[] args = command.getArgs();
 
-
         if (args.length < 1) {
             player.sendMessage(ChatColor.RED + "Usage: /joinqueue (server)");
             return;
         }
+
         if (!CorePlugin.getInstance().getQueueManager().isServerOnline()) {
             player.sendMessage(ChatColor.RED + "Queue Server is currently under maintenance.");
             return;
@@ -31,7 +30,6 @@ public class JoinQueueCommand extends BaseCommand {
 
         final String name = args[0];
         final Queue queue;
-
 
         if ((queue = CorePlugin.getInstance().getQueueManager().getQueue(name.toLowerCase())) == null) {
             player.sendMessage(ChatColor.RED + "The specified queue doesn't exist.");
@@ -52,4 +50,5 @@ public class JoinQueueCommand extends BaseCommand {
 
         this.main.getServer().getScheduler().runTaskAsynchronously(this.main, () -> queue.addToQueue(player, Profile.getByUuid(player.getUniqueId()).getRank().isAboveOrEqual(Rank.SILVER)));
     }
+
 }
