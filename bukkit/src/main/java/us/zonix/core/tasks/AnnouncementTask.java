@@ -24,11 +24,9 @@ public class AnnouncementTask {
         };
 
         this.plugin.getServer().getScheduler().runTaskTimerAsynchronously(this.plugin, () -> {
-            plugin.getServer().broadcastMessage(StringUtil.getBorderLine(CC.GRAY + CC.STRIKE_THROUGH));
             plugin.getServer().broadcastMessage(CC.BLANK_LINE);
             plugin.getServer().broadcastMessage(getNextAnnouncerMessage());
             plugin.getServer().broadcastMessage(CC.BLANK_LINE);
-            plugin.getServer().broadcastMessage(StringUtil.getBorderLine(CC.GRAY + CC.STRIKE_THROUGH));
         }, 1200L, 1200L);
     }
 

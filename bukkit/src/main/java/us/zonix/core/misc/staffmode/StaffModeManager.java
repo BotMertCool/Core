@@ -69,7 +69,6 @@ public class StaffModeManager  {
             player.removePotionEffect(PotionEffectType.NIGHT_VISION);
         }
 
-
         player.sendMessage(ChatColor.GREEN + "You have toggled Staff Mode.");
 
     }
