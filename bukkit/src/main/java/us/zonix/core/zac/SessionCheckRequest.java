@@ -12,7 +12,7 @@ public class SessionCheckRequest implements Request {
 	private final UUID uuid;
 
 	@Override public String getPath() {
-		return "/client/session/get";
+		return "/zac/session/get";
 	}
 
 	@Override public Map<String, Object> toMap() {

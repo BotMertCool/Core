@@ -37,7 +37,7 @@ public class ClientCheckCommand extends BaseCommand {
 
 		Player finalTarget = target;
 
-		CorePlugin.getInstance().getRequestProcessor().sendRequestAsync(new SessionCheckRequest(target.getUniqueId()),
+		CorePlugin.getInstance().getClientProcessor().sendRequestAsync(new SessionCheckRequest(target.getUniqueId()),
 				object -> {
 					if (object.getAsJsonObject().get("value").getAsBoolean()) {
 						sender.sendMessage(ChatColor.GOLD + finalTarget.getName() +
