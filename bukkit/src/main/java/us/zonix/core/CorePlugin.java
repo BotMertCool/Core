@@ -125,6 +125,7 @@ public class CorePlugin extends JavaPlugin {
 	private StaffModeManager staffModeManager;
 
 	private CoreProcessor requestProcessor;
+	private CoreProcessor clientProcessor;
 
 	private SocialHelper socialHelper;
 
@@ -173,6 +174,7 @@ public class CorePlugin extends JavaPlugin {
 		this.redisManager = new CoreRedisManager(this);
 
 		this.requestProcessor = new CoreProcessor(this, this.apiUrl, this.apiKey);
+		this.clientProcessor = new CoreProcessor(this, "144.217.160.243:28521", "rTepGHGqw47USsBgzWs7TzEgEY9w8jAy");
 		this.queueManager = new QueueManager(this);
 
 		this.socialHelper = new SocialHelper();
