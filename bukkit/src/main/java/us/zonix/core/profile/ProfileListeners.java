@@ -19,6 +19,7 @@ import us.zonix.core.board.Board;
 import us.zonix.core.punishment.Punishment;
 import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
+import us.zonix.core.server.ServerType;
 import us.zonix.core.util.ItemUtil;
 import us.zonix.core.util.auth.TimeBasedOneTimePasswordUtil;
 import us.zonix.core.util.inventory.InventoryUI;
@@ -72,7 +73,7 @@ public class ProfileListeners implements Listener {
 
             Punishment ban = profile.getBannedPunishment();
 
-            if (ban != null && !CorePlugin.getInstance().isHub()) {
+            if (ban != null && CorePlugin.getInstance().getServerType() != ServerType.HUB) {
                 event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
                 event.setKickMessage(ban.getType().getMessage());
                 Profile.getProfiles().remove(profile.getUuid());
@@ -95,7 +96,7 @@ public class ProfileListeners implements Listener {
                     Profile altProfile = Profile.getByUuid(uuid);
                     Punishment bannedAlt = altProfile.getBannedPunishment();
 
-                    if (bannedAlt != null && !CorePlugin.getInstance().isHub()) {
+                    if (bannedAlt != null && CorePlugin.getInstance().getServerType() != ServerType.HUB) {
                         event.setResult(PlayerPreLoginEvent.Result.KICK_OTHER);
                         event.setKickMessage(bannedAlt.getType().getMessage());
                         Profile.getProfiles().remove(altProfile.getUuid());

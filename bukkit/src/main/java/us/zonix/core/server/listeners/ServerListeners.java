@@ -63,14 +63,14 @@ public class ServerListeners implements Listener {
         player.getInventory().setHeldItemSlot(4);
 
         String[] message = new String[]{
-                StringUtil.getBorderLine(CC.GRAY + CC.S),
-                CC.GRAY + "Welcome to the " + CC.DARK_RED + CC.BOLD + "Zonix Network",
+                StringUtil.getBorderLine(CC.DARK_RED + CC.S),
+                StringUtil.center(CC.RED + "Welcome to the " + CC.DARK_RED + CC.BOLD + "Zonix Network"),
                 " ",
-                CC.DARK_GRAY + CC.BOLD + "* " + CC.RED + CC.BOLD + "Website: " + CC.GRAY + "https://www.zonix.us",
-                CC.DARK_GRAY + CC.BOLD + "* " + CC.RED + CC.BOLD + "Twitter: " + CC.GRAY + "https://www.twitter.com/ZonixUS",
-                CC.DARK_GRAY + CC.BOLD + "* " + CC.RED + CC.BOLD + "Teamspeak: " + CC.GRAY + "ts.zonix.us",
-                CC.DARK_GRAY + CC.BOLD + "* " + CC.RED + CC.BOLD + "Store: " + CC.GRAY + "https://store.zonix.us",
-                StringUtil.getBorderLine(CC.GRAY + CC.S),
+                CC.GRAY + "* " + CC.RED + CC.BOLD + "Website: " + CC.GRAY + "https://www.zonix.us",
+                CC.GRAY + "* " + CC.RED + CC.BOLD + "Store: " + CC.GRAY + "https://store.zonix.us",
+                CC.GRAY + "* " + CC.RED + CC.BOLD + "Twitter: " + CC.GRAY + "https://www.twitter.com/ZonixUS",
+                CC.GRAY + "* " + CC.RED + CC.BOLD + "Teamspeak: " + CC.GRAY + "ts.zonix.us",
+                StringUtil.getBorderLine(CC.DARK_RED + CC.S),
         };
 
         player.sendMessage(message);
@@ -89,10 +89,10 @@ public class ServerListeners implements Listener {
         }
     }
 
-
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
+
         event.setQuitMessage(null);
 
         if (!CorePlugin.getInstance().getQueueManager().isServerOnline()) {
@@ -108,16 +108,19 @@ public class ServerListeners implements Listener {
         }
 
         player.sendMessage(ChatColor.RED + "You left the queue for " + queue.getServerName() + ".");
-        CorePlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(CorePlugin.getInstance(), () -> queue.removeFromQueue(player));
 
+        CorePlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(CorePlugin.getInstance(), () -> queue.removeFromQueue(player));
     }
 
     @EventHandler
     public void onPlayerDrop(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
+
         ItemStack item = event.getItemDrop().getItemStack().clone();
         item.setAmount(player.getInventory().getItemInHand().getAmount() + 1);
+
         event.getItemDrop().remove();
+
         player.getInventory().setItem(player.getInventory().getHeldItemSlot(), item);
     }
 
@@ -152,7 +155,6 @@ public class ServerListeners implements Listener {
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-
         if (CorePlugin.getInstance().getSpawnLocation() == null) {
             return;
         }
@@ -168,7 +170,7 @@ public class ServerListeners implements Listener {
 
     @EventHandler
     public void onInventoryClickEvent(InventoryClickEvent event) {
-        if ((event.getSlotType() == InventoryType.SlotType.ARMOR || event.getSlotType() == InventoryType.SlotType.QUICKBAR) && CorePlugin.getInstance().isHub()) {
+        if ((event.getSlotType() == InventoryType.SlotType.ARMOR || event.getSlotType() == InventoryType.SlotType.QUICKBAR)) {
             event.setCancelled(true);
         }
     }
@@ -185,7 +187,6 @@ public class ServerListeners implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-
         if (event.getPlayer().isOp()) {
             return;
         }

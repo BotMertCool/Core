@@ -6,6 +6,9 @@ import us.zonix.core.CorePlugin;
 import us.zonix.core.profile.Profile;
 import us.zonix.core.rank.Rank;
 import us.zonix.core.redis.queue.Queue;
+import us.zonix.core.server.ServerData;
+import us.zonix.core.server.ServerState;
+import us.zonix.core.server.ServerType;
 import us.zonix.core.util.command.BaseCommand;
 import us.zonix.core.util.command.Command;
 import us.zonix.core.util.command.CommandArgs;
@@ -14,7 +17,6 @@ public class JoinQueueCommand extends BaseCommand {
 
     @Command(name = "joinqueue", requiresPlayer = true, aliases = {"queuejoin"})
     public void onCommand(CommandArgs command) {
-
         Player player = command.getPlayer();
         String[] args = command.getArgs();
 
@@ -33,6 +35,13 @@ public class JoinQueueCommand extends BaseCommand {
 
         if ((queue = CorePlugin.getInstance().getQueueManager().getQueue(name.toLowerCase())) == null) {
             player.sendMessage(ChatColor.RED + "The specified queue doesn't exist.");
+            return;
+        }
+
+        ServerData serverData = CorePlugin.getInstance().getRedisManager().getServerDataByName(name.toLowerCase());
+
+        if (serverData != null && serverData.getServerType() == ServerType.SURVIVAL_GAMES && serverData.getServerState() == ServerState.SETUP) {
+            player.sendMessage(ChatColor.RED + "That server is currently offline.");
             return;
         }
 

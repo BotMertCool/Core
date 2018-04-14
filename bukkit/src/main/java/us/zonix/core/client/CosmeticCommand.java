@@ -17,16 +17,16 @@ public final class CosmeticCommand extends BaseCommand {
 		}
 
 		String[] args = command.getArgs();
+
 		if (args.length == 0) {
 			command.getSender().sendMessage(ChatColor.RED + "Usage: /cosmetic [args...]");
 			return;
 		}
 
-		boolean add = false;
 		String subCommand = args[0].toLowerCase();
+
 		switch (subCommand) {
 			case "add": // /cosmetic add [player] [type]
-				add = true;
 			case "remove": // /cosmetic remove [player] [type]
 				if (args.length < 3) {
 					command.getSender().sendMessage(ChatColor.RED + "Usage: /cosmetic " + subCommand +
@@ -36,8 +36,8 @@ public final class CosmeticCommand extends BaseCommand {
 
 				String player = args[1];
 				String type = args[2];
-
 				String data = null;
+
 				if (type.equalsIgnoreCase("cape")) {
 					if (args.length < 4) {
 						command.getSender().sendMessage(ChatColor.RED + "Usage: /cosmetic " + subCommand +

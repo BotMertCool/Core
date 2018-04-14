@@ -1,6 +1,6 @@
 server:
-  id: 'practice'
-  hub: false
+  id: 'default-server'
+  type: HUB
 api:
   url: "localhost:1982"
   key: "ce07a742-cccc-4888-b595-a62a7dd3bb19"

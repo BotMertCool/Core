@@ -1,29 +1,16 @@
 package us.zonix.core.redis;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.atomic.*;
 import java.util.concurrent.*;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.scheduler.*;
-import redis.clients.jedis.*;
 import org.bukkit.event.*;
 import org.bukkit.entity.*;
 import us.zonix.core.CorePlugin;
-import us.zonix.core.profile.Profile;
-import us.zonix.core.punishment.Punishment;
-import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.redis.queue.Queue;
 import us.zonix.core.shared.redis.JedisPublisher;
 import us.zonix.core.shared.redis.JedisSubscriber;
 import us.zonix.core.shared.redis.subscription.JedisSubscriptionHandler;
-import us.zonix.core.util.BungeeUtil;
 
 public class QueueManager implements Listener {
 
@@ -36,7 +23,18 @@ public class QueueManager implements Listener {
     private final JedisSubscriber<String> managerSubscriber;
     private final JedisPublisher<String> managerPublisher;
 
-    private String[] availableQueues = new String[] {"practice-us", "practice-eu", "practice-as", "practice-sa", "kitmap-us", "hcf-us"};
+    private String[] availableQueues = new String[] {
+            "practice-us",
+            "practice-eu",
+            "practice-as",
+            "practice-sa",
+            "kitmap-us",
+            "hcf-us",
+            "sg-01",
+            "sg-02",
+            "sg-03",
+            "sg-04"
+    };
     
     public QueueManager(CorePlugin plugin) {
         this.plugin = plugin;
@@ -62,46 +60,39 @@ public class QueueManager implements Listener {
                 }
             }
         });
-
     }
     
     public Queue getQueue(final String name) {
         return this.queues.get(name);
     }
 
-    
     public boolean isServerOnline() {
         return this.serverOnline;
     }
 
-    
     public Queue getQueue(final Player player) {
         for (final Queue queue : this.queues.values()) {
             if (queue.contains(player)) {
                 return queue;
             }
         }
+
         return null;
     }
 
     private class QueueManagerSubscriptionHandler implements JedisSubscriptionHandler<String> {
-
         @Override
         public void handleMessage(String message) {
-
             if (message.equals("hello")) {
-
                 for (final String server : queues.keySet()) {
                     managerPublisher.writeDirectly("addServer`" + server.toLowerCase().replace("-", "_"));
                 }
-            }
-            else if (message.equals("goodbye")) {
-
+            } else if (message.equals("goodbye")) {
                 for (final Queue queue : queues.values()) {
                     queue.clear();
                 }
             }
-
         }
     }
+
 }

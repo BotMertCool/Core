@@ -139,7 +139,6 @@ public class CoreRedisManager {
     }
 
     public ServerData getServerDataByName(String name) {
-
         if (this.getServers().size() == 0) {
             return null;
         }

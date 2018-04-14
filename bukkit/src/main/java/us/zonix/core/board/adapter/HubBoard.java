@@ -12,6 +12,7 @@ import us.zonix.core.board.BoardAdapter;
 import us.zonix.core.profile.Profile;
 import us.zonix.core.punishment.Punishment;
 import us.zonix.core.redis.queue.Queue;
+import us.zonix.core.server.ServerType;
 import us.zonix.core.util.CC;
 
 public class HubBoard implements BoardAdapter {
@@ -48,17 +49,17 @@ public class HubBoard implements BoardAdapter {
 
         Punishment ban = profile.getBannedPunishment();
 
-        if (ban != null && CorePlugin.getInstance().isHub()) {
-            strings.add(CC.DARK_GRAY + CC.STRIKE_THROUGH + "--------------------");
+        if (ban != null && CorePlugin.getInstance().getServerType() == ServerType.HUB) {
+            strings.add(CC.GRAY + CC.STRIKE_THROUGH + "--------------------");
             strings.add(CC.DARK_RED + CC.BOLD + "BANNED");
             strings.add(CC.GRAY + ban.getTimeLeft());
             strings.add("   ");
             strings.add(CC.RED + "Appeal at www.zonix.us");
-            strings.add(CC.DARK_GRAY + CC.STRIKE_THROUGH + "--------------------");
+            strings.add(CC.GRAY + CC.STRIKE_THROUGH + "--------------------");
             return strings;
         }
 
-        strings.add(CC.DARK_GRAY + CC.STRIKE_THROUGH + "--------------------");
+        strings.add(CC.GRAY + CC.STRIKE_THROUGH + "--------------------");
         strings.add(CC.RED + CC.BOLD + "Online" + CC.GRAY + ":");
         strings.add(CC.WHITE + this.online);
         strings.add(" ");
@@ -76,7 +77,7 @@ public class HubBoard implements BoardAdapter {
         }
 
         strings.add(CC.RED + "www.zonix.us");
-        strings.add(CC.DARK_GRAY + CC.STRIKE_THROUGH + "--------------------");
+        strings.add(CC.GRAY + CC.STRIKE_THROUGH + "--------------------");
 
         return strings;
     }
