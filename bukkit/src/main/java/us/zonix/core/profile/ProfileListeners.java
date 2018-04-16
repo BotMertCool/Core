@@ -183,6 +183,11 @@ public class ProfileListeners implements Listener {
             if (profile != null && profile.getRank() != null) {
                 Profile.updateTabList(player, profile.getRank());
             }
+
+            if(profile != null && profile.isBlacklisted()) {
+                player.kickPlayer(PunishmentType.BLACKLIST.getMessage());
+            }
+            
         }, 20L);
 
     }
