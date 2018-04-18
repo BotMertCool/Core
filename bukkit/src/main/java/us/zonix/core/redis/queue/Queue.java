@@ -7,21 +7,17 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerPreLoginEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import us.zonix.core.CorePlugin;
 import us.zonix.core.profile.Profile;
 import us.zonix.core.punishment.Punishment;
 import us.zonix.core.punishment.PunishmentType;
 import us.zonix.core.rank.Rank;
-import us.zonix.core.redis.QueueManager;
 import us.zonix.core.shared.redis.JedisPublisher;
 import us.zonix.core.shared.redis.JedisSubscriber;
 import us.zonix.core.shared.redis.subscription.JedisSubscriptionHandler;
 import us.zonix.core.util.BungeeUtil;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
@@ -248,7 +244,6 @@ public class Queue {
                 players.clear();
                 players.putAll(newPositions);
             } else if (command.equals("send")) {
-
                 Player player = Bukkit.getPlayer(UUID.fromString(messageSplit[1]));
 
                 if (player != null) {

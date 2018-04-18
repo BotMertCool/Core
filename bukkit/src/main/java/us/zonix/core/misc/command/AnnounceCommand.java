@@ -6,6 +6,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import us.zonix.core.CorePlugin;
 import us.zonix.core.profile.Profile;
 import us.zonix.core.rank.Rank;
+import us.zonix.core.server.ServerType;
 import us.zonix.core.util.CC;
 import us.zonix.core.util.command.BaseCommand;
 import us.zonix.core.util.command.Command;
@@ -19,8 +20,8 @@ public class AnnounceCommand extends BaseCommand {
 
         String serverId = CorePlugin.getInstance().getServerId();
 
-        if (!serverId.startsWith("sg-")) {
-            player.sendMessage(CC.RED + "You cannot announce this server.");
+        if (main.getServerType() != ServerType.SURVIVAL_GAMES) {
+            player.sendMessage(CC.RED + "You cannot announce this type of game.");
             return;
         }
 

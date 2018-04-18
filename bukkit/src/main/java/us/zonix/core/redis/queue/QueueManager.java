@@ -1,4 +1,4 @@
-package us.zonix.core.redis;
+package us.zonix.core.redis.queue;
 
 import java.util.Map;
 import java.util.concurrent.*;
@@ -23,7 +23,7 @@ public class QueueManager implements Listener {
     private final JedisSubscriber<String> managerSubscriber;
     private final JedisPublisher<String> managerPublisher;
 
-    private String[] availableQueues = new String[] {
+    private String[] availableQueues = new String[]{
             "practice-us",
             "practice-eu",
             "practice-as",
@@ -35,7 +35,7 @@ public class QueueManager implements Listener {
             "sg-03",
             "sg-04"
     };
-    
+
     public QueueManager(CorePlugin plugin) {
         this.plugin = plugin;
         this.gson = new Gson();
@@ -43,25 +43,28 @@ public class QueueManager implements Listener {
         this.queues = new ConcurrentHashMap<>(10, 0.5f, 4);
         this.serverOnline = true;
 
-        this.managerSubscriber = new JedisSubscriber<>(this.plugin.getJedisSettings(), "queuemanager" , String.class, new QueueManagerSubscriptionHandler());
+        this.managerSubscriber = new JedisSubscriber<>(this.plugin.getJedisSettings(), "queuemanager", String.class, new QueueManagerSubscriptionHandler());
         this.managerPublisher = new JedisPublisher<>(this.plugin.getJedisSettings(), "queuemanager");
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-
-            for(String queue : this.availableQueues) {
+            for (String queue : this.availableQueues) {
                 Queue actualQueue = new Queue(plugin, queue);
+
                 this.queues.put(queue.toLowerCase(), actualQueue);
+
                 this.managerPublisher.writeDirectly("addServer`" + queue.replace("-", "_").toLowerCase());
+
                 System.out.println("[Queue] Added " + queue.toLowerCase() + " server.");
 
-                if(queue.toLowerCase().equalsIgnoreCase(this.plugin.getServerId())) {
+                if (queue.toLowerCase().equalsIgnoreCase(this.plugin.getServerId())) {
                     actualQueue.runServerStatus();
+
                     System.out.println("[Queue] Server status detected & now running on " + queue.toLowerCase() + ".");
                 }
             }
         });
     }
-    
+
     public Queue getQueue(final String name) {
         return this.queues.get(name);
     }

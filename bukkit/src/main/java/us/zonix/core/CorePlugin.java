@@ -62,7 +62,7 @@ import us.zonix.core.punishment.command.UnmuteCommand;
 import us.zonix.core.rank.command.RankCommand;
 import us.zonix.core.rank.listeners.RankListeners;
 import us.zonix.core.redis.CoreRedisManager;
-import us.zonix.core.redis.QueueManager;
+import us.zonix.core.redis.queue.QueueManager;
 import us.zonix.core.server.ServerManager;
 import us.zonix.core.server.ServerType;
 import us.zonix.core.server.commands.*;
@@ -109,6 +109,7 @@ public class CorePlugin extends JavaPlugin {
 
     private String serverId;
     private ServerType serverType;
+    @Setter
     private ServerDataProvider serverDataProvider;
 
     @Setter
@@ -163,15 +164,18 @@ public class CorePlugin extends JavaPlugin {
         if (!this.configFile.getConfiguration().contains("server.id")) {
             this.getLogger().info("Server ID not set in Core config!");
             this.getServer().shutdown();
+            return;
         }
 
         if (!this.configFile.getConfiguration().contains("server.type")) {
             this.getLogger().info("Server type not set in Core config!");
             this.getServer().shutdown();
+            return;
         }
 
         this.serverId = this.configFile.getString("server.id");
         this.serverType = ServerType.valueOf(this.configFile.getString("server.type"));
+
         this.serverDataProvider = new DefaultServerDataProvider();
 
         if (this.configFile.getConfiguration().contains("server.spawn")) {
