@@ -21,7 +21,8 @@
             <groupId>club.minemen.clubspigot</groupId>
             <artifactId>clubspigot</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+	    <scope>system</scope>
+	    <systemPath>${project.basedir}/lib/server.jar</systemPath>
         </dependency>
 
         <dependency>
